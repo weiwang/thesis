@@ -1,0 +1,104 @@
+\documentclass[xetex,mathserif,serif]{beamer}
+\usetheme{Frankfurt}
+% \usepackage{nips10submit_e,times}
+% setfont command is only available after usepackage{fontspec}
+% \usepackage{ifxetex}
+% \ifxetex
+\usepackage{fontspec}
+\usepackage{xltxtra}
+% \usepackage[sc]{mathpazo}
+% \usepackage[BoldFont，CJKnumbb] {xeCJK}
+% \defaultfontfeatures{Ligatures={Common}, Mapping={tex-text}}
+\setmainfont{Minion Pro}
+% \setsansfont{Minion Pro}
+% \setmonofont[Scale=0.8]{Monaco}
+%   % \setCJKmainfont{Adobe Song Std}
+%   % \XeTeXlinebreaklocale "zh"
+%   % \XeTeXlinebreakskip = 0pt plus 1pt
+% \else
+
+%\usepackage[sc]{mathpazo}
+%\usepackage[T1]{fontenc}
+% \fi
+
+% converts LaTeX specials (``quotes'' --- dashes etc.) to unicode
+
+% \setromanfont{Liberation Serif} % Roman font is Serif font, \setromanfont has been
+% replaced by \setmainfont
+% \RequirePackage{mathptmx}
+% \setromanfont{FreeSerif}
+
+% can't find free version of Electra LH fonts
+% \setromanfont [Mapping=tex-text,Ligatures={Common},BoldFont={ElectraLH-Bold},ItalicFont={ElectraLH-CursiveOsF},BoldItalicFont={ElectraLH-BoldCursiveOsF},SmallCapsFont={ElectraLH-RegularSC}]{ElectraLH-RegularOsF}
+% \setsansfont[Mapping=tex-text,BoldFont={Delicious-Bold},ItalicFont={Delicious-Italic},SmallCapsFont={Delicious-SmallCaps}] {Delicious-Roman}
+
+
+% \usepackage{cmbright}
+% \renewcommand\sfdefault{phv}% use helvetica for sans serif
+% \renewcommand\familydefault{\sfdefault}% use sans serif by default
+% \usepackage[dvipsnames,usenames]{xcolor}
+% \usepackage[opticals,medfamily,minionint,footnotefigures]{MinionPro}
+\AtBeginSection[] {
+  \begin{frame}[plain]
+    \frametitle{Overview}
+    \tableofcontents[currentsection]
+  \end{frame}
+  \addtocounter{framenumber}{-1}
+}
+\graphicspath{{./figures/}}
+\usepackage[lotdepth, lofdepth]{subfig}
+\usepackage{ucs}
+%\usepackage[utf8]{inputenc}
+
+% \usepackage[final,expansion=true,protrusion=true,spacing=true,kerning=true]{microtype}
+\usepackage{amsmath, epsfig}
+\usepackage{amsfonts}
+% \usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+% \usepackage{easybmat}
+\usepackage{footmisc}
+% \usepackage{fullpage}
+\renewcommand\algorithmiccomment[1]{// \textit{#1}}
+%
+
+\title{Bayesian Hierarchical Models in Survey and Meta-analysis Applications}
+\author{Wei Wang}
+\date{Dec 2\textsuperscript{th}, 2013}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% \section[Outline]{}
+% \frame{\tableofcontents}
+%
+% \section{Introduction}
+% \subsection{Overview of Topics}
+%
+% \section{Bayesian Analysis}
+% \subsection{Single Parameter Model}
+
+\begin{frame}
+\frametitle{Overview}
+        \tableofcontents
+\end{frame}
+
+\section{Hierarchical Non-parametric Models for Individual-level Meta-analysis}
+\begin{frame}
+  haha
+\end{frame}
+
+\section{Accurate Prediction via Higly-biased Online Survey Data with MRP
+  Correction}
+\begin{frame}
+  haha
+\end{frame}
+
+
+\section{Sensitivity of Cross-validation in Hierarchical Model comparison}
+\begin{frame}
+  haha
+\end{frame}
+
+\end{document}
