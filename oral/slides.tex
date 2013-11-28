@@ -58,12 +58,16 @@
 \usepackage{algorithmic}
 % \usepackage{easybmat}
 \usepackage{footmisc}
+\usepackage{bm}
 % \usepackage{fullpage}
 \renewcommand\algorithmiccomment[1]{// \textit{#1}}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
 %
 
-\title{Bayesian Hierarchical Models in Survey and Meta-analysis Applications}
-\author{Wei Wang}
+\title{Bayesian Hierarchical Models with Applications Survey Methods and Meta-analysis}
+\author{Wei Wang \\ Oral Examination for the degree of \\ Master of Philosophy in
+  the subject of \\ Statistics}
 \date{Dec 2\textsuperscript{th}, 2013}
 
 \begin{document}
@@ -75,30 +79,143 @@
 %
 % \section{Introduction}
 % \subsection{Overview of Topics}
-%
+% 
 % \section{Bayesian Analysis}
 % \subsection{Single Parameter Model}
 
 \begin{frame}
-\frametitle{Overview}
-        \tableofcontents
+  \frametitle{Overview}
+\tableofcontents
 \end{frame}
-
 \section{Hierarchical Non-parametric Models for Individual-level Meta-analysis}
+\subsection{A Causal Framework for Meta-analysis}
 \begin{frame}
-  haha
+  \begin{itemize}
+  \item Meta-anayses synthesize evidence from multiple studies.
+  \item Traditionally, meta-anlysis researchers go through thorough literature
+    reviews and number extractions.
+  \item Increasingly, researchers begin to have access to original data from a
+    suite of studies and individual-level meta-analysis becomes feasible.
+  \end{itemize}
 \end{frame}
 
-\section{Accurate Prediction via Higly-biased Online Survey Data with MRP
+\begin{frame}
+  \begin{itemize}
+  \item Potential outcome framework is the standard tool for causal inference
+    (Neyman, 1923; Rubin 1977).
+  \item However, meta-analysis researchers rarely take on the potential outcome
+    framework.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+  \item Sobel et al. (2013) lays out an extended potential outcome framework for
+    meta-analysis.
+  \item The main goal in Sobel et al.(2013) is to codify different sources of
+    heterogeneity that researchers tend to mesh together with the standard
+    random-effect model.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Recap of Sobel et al. (2013)}
+  \begin{itemize}
+  \item The extended potential outcome for meta-analysis is to consider all
+    possible outcomes that individual $i$ can experience under every combination
+    of study membership and treatment assignment,
+    \begin{equation*}
+      \label{eq:fpo}
+      \bm Y_i=
+      \begin{pmatrix}
+        Y_i(1,1) & Y_i(1,2) & \cdots & Y_i(1,L)\\
+        Y_i(2,1) & Y_i(2,2) & \cdots & Y_i(2,L)\\
+        \vdots & \vdots & \ddots & \vdots\\
+        Y_i(G,1) & Y_i(G,2) & \cdots & Y_i(G,L)
+      \end{pmatrix}.
+    \end{equation*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Recap of Sobel et al. (2013) Cont'd}
+  \begin{itemize}
+  \item[A1] Extended stable unit treatment value assumption: $Y_i(\bm s,\bm
+    z)=Y_i(s_i, z_i)$ for all possible $\bm s$ and $\bm z$.
+  \item[A2] Sampling assumption: $Y_i|s,z,x\sim F(y|s,z,x)$.
+  \item[A3] Response consistency:
+    $p(y(s,z)|S=s^{\prime\prime},X=x)=p(y(s,z)|S=s^{\prime\prime},X=x)$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Recap of Sobel et al. (2013) Cont'd}
+  \begin{itemize}
+  \item[A6] Strongly ignorable treatment assignment:\\
+     \[\{Y(s,z):s = 1,...,G, z = 1,...,L\} \independent Z\mid S = s, X =
+     x\] and
+     \[0<P(Z=z\mid S=s, X=x)<1, \text{ for seen combinations of } s,z\]
+   \item[A7] Ignorable study selection: \\
+     \[\{Y(s,z): s = 1,...,G, z = 1,...,L\} \independent S \mid X\]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Heterogeneity in Meta-analysis}
+  \begin{itemize}
+  \item There are several statistical issues in meta-analysis, including
+    publication bias, choices of effect parameters and study qualities.
+  \item The heterogeneity of effects across studies hinders research synthesis.
+  \item Random-effects model (DerSimonion and Laird 1986) is the most popular
+    choice, which state that effect sizes $\hat\theta_i$ from different studies
+    have a prior distribution.
+    \[\hat\theta_i=\theta_i+\varepsilon_i\text{  and  }\theta_i\sim \Psi(\cdot)\]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Two Sources of Heterogeneity}
+  \begin{itemize}
+  \item Extended potential outcome framework provide insights into the possible
+    sources of heterogeneity that could be introduced into meta-anlysis.
+  \item First, the violation of the response consistency assumption (A3).
+  \item Second, the violation of the no study selection assumption (A7).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Two Sources of Heterogeneity Cont'd}
+  \begin{itemize}
+  \item These two sources are inherently different and it might not be meaningful
+    to adopt a model that blends these two sources. 
+  \item As common in causal inference, assessing how reasonable a particularly
+    assumption is is very important for practical model choice and anlaysis.
+  \item If (A7) is reasonable and (A3) is unlikely to hold, a random-effects
+    model might be warranted.
+  \item  If (A3) is reasonable and (A7) is unlikely to hold, random-effects
+    models could be questionable.
+  \end{itemize}
+\end{frame}
+\subsection{Non-parametric Models for Causal Inference}
+
+\subsection{Future Work}
+
+\section{Accurate Prediction Using Higly-biased Online Survey Data via MRP
   Correction}
 \begin{frame}
   haha
 \end{frame}
+\subsection{MRP}
+\subsection{Xbox Data}
+\subsection{Results}
+\subsection{Future Work}
 
-
-\section{Sensitivity of Cross-validation in Hierarchical Model comparison}
+\section{Sensitivity of Cross-validation in Hierarchical Model Comparison}
 \begin{frame}
   haha
 \end{frame}
+\subsection{Future Work}
+%%\bibliographystyle{elsa}
+%%\bibliography{ref}
 
 \end{document}

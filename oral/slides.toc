@@ -1,4 +1,0 @@
-\beamer@endinputifotherversion {3.10pt}
-\beamer@sectionintoc {1}{Hierarchical Non-parametric Models for Individual-level Meta-analysis}{3}{0}{1}
-\beamer@sectionintoc {2}{Accurate Prediction via Higly-biased Online Survey Data with MRP Correction}{5}{0}{2}
-\beamer@sectionintoc {3}{Sensitivity of Cross-validation in Hierarchical Model comparison}{7}{0}{3}

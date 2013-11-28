@@ -1,6 +1,12 @@
 (TeX-add-style-hook "slides"
  (lambda ()
+    (LaTeX-add-labels
+     "eq:fpo")
+    (TeX-add-symbols
+     "independent"
+     "independenT")
     (TeX-run-style-hooks
+     "bm"
      "footmisc"
      "algorithmic"
      "algorithm"
