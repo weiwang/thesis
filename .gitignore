@@ -3,6 +3,7 @@
 *.nav
 *.out
 *.pdf
+*.png
 *.snm
 *.toc
 auto/*
