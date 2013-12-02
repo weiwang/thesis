@@ -1,5 +1,8 @@
 \documentclass[xetex,mathserif,serif]{beamer}
 \usetheme{Frankfurt}
+%\usecolortheme{beaver}
+%\usecolortheme{dolphin}
+\usecolortheme{beaver}
 % \usepackage{nips10submit_e,times}
 % setfont command is only available after usepackage{fontspec}
 % \usepackage{ifxetex}
@@ -10,6 +13,7 @@
 % \usepackage[BoldFont，CJKnumbb] {xeCJK}
 % \defaultfontfeatures{Ligatures={Common}, Mapping={tex-text}}
 \setmainfont{Minion Pro}
+%\setbeamerfont{title}{family=\rm\addfontfeatures{Scale=1.18, Numbers={Lining, Proportional}}}
 % \setsansfont{Minion Pro}
 % \setmonofont[Scale=0.8]{Monaco}
 %   % \setCJKmainfont{Adobe Song Std}
@@ -60,15 +64,17 @@
 \usepackage{footmisc}
 \usepackage{bm}
 % \usepackage{fullpage}
+\graphicspath{{./figures/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \renewcommand\algorithmiccomment[1]{// \textit{#1}}
 \newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
 \def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
 %
 
-\title{Bayesian Hierarchical Models with Applications Survey Methods and Meta-analysis}
-\author{Wei Wang \\ Oral Examination for the degree of \\ Master of Philosophy in
-  the subject of \\ Statistics}
-\date{Dec 2\textsuperscript{th}, 2013}
+\title{Bayesian Hierarchical Models with Applications in Meta-analysis and
+  Large-scale Survey} \author{Wei Wang \\ Oral Examination for the degree of \\
+  Master of Philosophy in the subject of \\ Statistics} \date{Dec
+  2\textsuperscript{th}, 2013}
 
 \begin{document}
 
@@ -79,15 +85,16 @@
 %
 % \section{Introduction}
 % \subsection{Overview of Topics}
-% 
+%
 % \section{Bayesian Analysis}
 % \subsection{Single Parameter Model}
 
 \begin{frame}
   \frametitle{Overview}
-\tableofcontents
+  \tableofcontents[hideallsubsections]
 \end{frame}
-\section{Hierarchical Non-parametric Models for Individual-level Meta-analysis}
+\section[Meta-anlaysis]{Hierarchical Non-parametric Models for Individual-level
+  Meta-analysis}
 \subsection{A Causal Framework for Meta-analysis}
 \begin{frame}
   \begin{itemize}
@@ -169,14 +176,14 @@
   \item Random-effects model (DerSimonion and Laird 1986) is the most popular
     choice, which state that effect sizes $\hat\theta_i$ from different studies
     have a prior distribution.
-    \[\hat\theta_i=\theta_i+\varepsilon_i\text{  and  }\theta_i\sim \Psi(\cdot)\]
+    \[\hat\theta_i=\theta_i+\varepsilon_i, \theta_i\sim \Psi(\cdot)\]
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Two Sources of Heterogeneity}
   \begin{itemize}
-  \item Extended potential outcome framework provide insights into the possible
+  \item Extended potential outcome framework provides insights into the possible
     sources of heterogeneity that could be introduced into meta-anlysis.
   \item First, the violation of the response consistency assumption (A3).
   \item Second, the violation of the no study selection assumption (A7).
@@ -187,35 +194,573 @@
   \frametitle{Two Sources of Heterogeneity Cont'd}
   \begin{itemize}
   \item These two sources are inherently different and it might not be meaningful
-    to adopt a model that blends these two sources. 
+    to use a model that blends these two.
   \item As common in causal inference, assessing how reasonable a particularly
     assumption is is very important for practical model choice and anlaysis.
-  \item If (A7) is reasonable and (A3) is unlikely to hold, a random-effects
-    model might be warranted.
-  \item  If (A3) is reasonable and (A7) is unlikely to hold, random-effects
-    models could be questionable.
+  \item If (A7) is reasonable and (A3) is unlikely to hold, then the
+    heteogeneity is the result of treatment effect variations across studies. In this
+    case, a random-effects model might be warranted.
+  \item If (A3) is reasonable and (A7) is unlikely to hold, then the
+    heterogeneity is the result of differential selection into studies. In this
+    case, random-effects models are questionable.
   \end{itemize}
 \end{frame}
-\subsection{Non-parametric Models for Causal Inference}
-
-\subsection{Future Work}
-
-\section{Accurate Prediction Using Higly-biased Online Survey Data via MRP
-  Correction}
 \begin{frame}
-  haha
+  \frametitle{Vioxx Example}
+  \begin{itemize}
+  \item In Sobel et al. (2013), an illustrative example of Vioxx is used to
+    demonstrate the use of the potential outcome framework.
+  \item Vioxx is a COX-2 selective, non-steroidal anti-inflammatory drug (NSAID)
+    that was approved by the FDA for the relief of signs and symptoms of
+    osteoarthritis, the management of acute pain in adults, and the treatment of
+    menstrual symptoms.
+  \item It was withdrawn from the market several years later as clinical trials
+    began to reveal severe negative impact on cardiovascular system of the
+    patients.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Analysis of the Vioxx Example}
+  \begin{itemize}
+  \item In Sobel et al. (2013), we conducted a meta-anlaysis of 29 Vioxx
+    trials. In particular, we differntiate between different dosages in our
+    analysis
+  \item In this context, we deem assumptioin (A3), reponse consistency,
+    reasonable, as one dose of Vioxx is one dose of Vioxx is one dose of Vioxx;
+    this means that any heterogeneity will be the results of differential
+    selection into studies.
+  \item This leads to the choice of study indicators and fixed-effects models
+    rather than random-effects models. The meta-analysis confirms the negative
+    impact of Vioxx on cadiovascular system, and differentiation of dosage leads
+    to the finding of dosage-response relation that was ignored in previous
+    Vioxx studies.
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{An Alternative Bayesian Approach}
+  \begin{itemize}
+  \item There are situations where the treatment response consistency might not
+    hold, e.g., in an education intervention program, an intervention is carried
+    out by different teachers. In this case, a random-effects model might be
+    warranted.
+  \item In this case, we would like to build a formal Hierarchical Bayesian
+    framework.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Hierarchical Bayesian Framework}
+  \begin{itemize}
+  \item The group structrue of the extended potential outcome naturally lends
+    itself to Hierarchial Bayesian Framework. For one individual under one
+    treatment assignment, a total number of $G$(number of studies) outcomes could
+    have been experienced. In machine learning literature, this is known as
+    multi-task learning problem.
+  \item The key idea is that paritally pooling across studies should help us
+    improve our estimates.
+  \item A major problem is that the proportion of missingness is very high.
+  \end{itemize}
+\end{frame}
+
+\subsection{Non-parametric Models for Causal Inference}
+\begin{frame}
+  \frametitle{Non-parametric Methods in Causal Inference}
+  \begin{itemize}
+  \item Causal inference in observational studies often involves fitting two
+    models: a model for treatment assignment given variables pertinent to the
+    selection process and a model for the potential outcomes given treatment and
+    confounding variables. Rubin (2005) referes to the former as the model for
+    selection and the latter as the model for science.
+  \item Mostly, simple parametric models, e.g., linear least square regression,
+    are used to fit the selection model and potential outcome model. The
+    consideration for missepcification leads to the popular doubly robust method
+    (Scharfstein, Rotnitzky and Robins 1999).
+  \item However, there have been a growing interest in developing flexible
+    non-parametric models for the potential outcomes. Hill (2011) uses Bayesian
+    Additive Regression Tree (BART) to model the potential outcomes without fitting the
+    selection models.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Gaussian Processes}
+  \begin{itemize}
+  \item Gaussian Process is another highly-flexible and also computationally
+    attractive non-parametric model.
+  \item A random function $f$ follows a Gaussian Process if its arbitrary finite
+    distribution follows a multivariate Gaussian distribution, i.e.,
+    $f(x_1,x_2,\ldots,x_n)\sim N(\mu(\vec x), K(\vec x, \vec x)), \forall n$,
+    where $K(\vec x, \vec x)=(\kappa(x_i, x_j)))_{n\times n}$ and $\kappa$ is the kernel
+    that describes the underlying Gaussian process.
+  \item Gaussian Process is also used to model the mean function of a regression
+    $y=f(x)+\varepsilon$, while the observational noise $\varepsilon$ is often
+    given a normal distribution $N(0, \sigma^2)$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Hierarchical Gaussian Processes}
+  \begin{itemize}
+  \item In the context of meta-analysis, each study has its own mean function
+    $f_s$, which is a function of the treatment $z$ and confounders $x$, that
+    follows a Gaussian process with kernel $\kappa_s$.
+  \item Bonilla (2008) proposes to decompose $\kappa_s=\kappa_1\cdot\kappa_2$, in
+    which $\kappa_1$ describes ``inter-task similarities", and $\kappa_2$ describes
+    within similarity resulting from individual similarities.
+  \item Another approach is to give all $\kappa_s$ a prior distribution. This is
+    discussed in Yu et al. (2005) and Schwaighofter et al. (2006).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Why Hierarachical Gaussian Process}
+\end{frame}
+
+\begin{frame}
+  \frametitle{References}
+  \begin{itemize}
+  \item Sobel, Michael E and Madigan, David B and Wang, Wei, 2013.. Meta-Analysis: a
+    causal framework, with application to randomized.  studies of
+    Vioxx. Technical Report
+  \item Rubin, Donald, 2005. Causal Inference Using Potential Outcomes. JASA.
+  \item Schwaighofer, Anton and Tresp, Volker and Yu, Kai, 2004. Learning
+    gaussian process kernels via hierarchical bayes. NIPS.
+  \item Yu, Kai and Tresp, Volker and Schwaighofer, Anton, 2005. Learning Gaussian
+    processes from multiple tasks. ICML.
+  \item 
+  \end{itemize}
+  
+\end{frame}
+\section[Highly-biased Polls]{Accurate Prediction Using Higly-biased Online Survey Data via MRP
+  Correction}
+\subsection{Introduction}
+\begin{frame}
+  \frametitle{Introduction}
+  \begin{itemize}
+  \item Natinal Survey data is another example that Bayesian Hierarchical Models
+    could be a vital tool.
+  \item Typiaclly, national survey data is cross-tabulated by
+    categorical geographical-demographic variables. (It is a common practice to
+    discretize continuous variables such as age and income.) This creates a complex
+    group structure. 
+  \item Multilevel-Regression and Poststratification (MRP) takes advantage of
+    this strucutre and is popular in small-area estimation at state level and
+    sub-state level (Park et al., 2004; Lax and Phillips, 2009; Ghitza and
+    Gelman, 2013 ).
+  \item We apply MRP technique to a highly-biased online survey data set to
+    construct accurate state-level prediction for 2012 Presidental Election.
+  \end{itemize}
 \end{frame}
 \subsection{MRP}
-\subsection{Xbox Data}
-\subsection{Results}
-\subsection{Future Work}
-
-\section{Sensitivity of Cross-validation in Hierarchical Model Comparison}
 \begin{frame}
-  haha
+  \frametitle{Multilevel Regression and Poststratification}
+  \begin{itemize}
+  \item The core idea of MRP is to partition the data set into small cells, use
+    the sample to estimate the proportion in each cells using multilevel
+    regression, and aggregating the cell-level proportion to the population-level
+    proportion by reweighting each cell according to the population information.
+    \[\hat{y}^{\text{PS}}=\frac{\sum_{j=1}^JN_j\hat{y}_j}{\sum_{j=1}^JN_j}\]
+  \item The multilevel regression makes possible ``borrowing strength'' across
+    demographically/geographically similar cells, and thus producing more stable
+    cell-level estimates.
+  \end{itemize}
 \end{frame}
-\subsection{Future Work}
-%%\bibliographystyle{elsa}
-%%\bibliography{ref}
+\subsection{Xbox Data}
+\begin{frame}
+  \frametitle{Description of the Xbox data set}
+  \begin{itemize}
+  \item An opt-in poll was placed on Xbox gaming platform daily in the period
+    leading up to the 2012 US Presidential Election. 
+  \item Users' daily voting intention as well as their demographic information
+    were collected.
+  \item In total, 750,148 interviews were conducted with 345,858 unique
+    respondents—over 30,000 of whom completed five or more polls—making this one
+    of the largest ever election panel studies.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{But highly-biased...}
+  \begin{itemize}
+  \item However, the survey is highly biased in gender and age. 93 \% respondents
+    are male and 65 \% are 18-to-29-year-olds. The raw result is drawn below
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.7\textwidth]{"raw_response"}
+      \caption{Raw results of the Xbox data.}
+      \label{fig:raw}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Is non-representative survey salvable?}
+  \begin{itemize}
+  \item The non-representative nature of the Xbox survey makes it deemed as
+    unsalvable to traditional survey methodologits.
+  \item However, we will show that with sophisticated statistical adjustments,
+    non-representative survey can still yield accurate information about the
+    population in question, and thus a solid alternative to traditional
+    probablistic sampling.
+  \item It shoud be noted that representative sampling suffers heavily from
+    non-response and collect much smaller sample size due to expensive sampling
+    cost.
+  \end{itemize}
+\end{frame}
+
+\subsection{Methods}
+\begin{frame}
+  \frametitle{Multilevel model for voter intents}
+  \begin{itemize}
+  \item For each day in the 45 days period leading up to the presidential
+    election, we fit two multilevel models, one with the support for a
+    major party candidate as the outcome, and another with the support for
+    Democratic candidate Barrack Obama given the voter supports a major party
+    candidate as the outcome.
+    \footnotesize{
+      \begin{align*}
+        \text{Pr}(Y_i \in \, &\{\text{Obama, Romney}\})=\\
+        &\text{logit}^{-1}\big(\alpha_0+  \alpha_1\text{(state last vote share)} 
+        + a^{\text{state}}_{j[i]}+a^{\text{edu}}_{j[i]}\\
+        &+a^{\text{sex}}_{j[i]}+a^{\text{age}}_{j[i]}
+        +a^{\text{race}}_{j[i]}+a^{\text{party ID}}_{j[i]}
+        +b^{\text{ideology}}_{j[i]} + b^{\text{last vote}}_{j[i]} \big)
+      \end{align*}
+      \begin{align*}
+        \text{Pr}(Y_i = \, &\text{Obama} \, |\, Y_i\in\{\text{Obama, Romney}\})=\\
+        &\text{logit}^{-1}\big(\beta_0+ \beta_1\text{(state last vote share)} +
+        b^{\text{state}}_{j[i]}+b^{\text{edu}}_{j[i]}+b^{\text{sex}}_{j[i]}\\
+        &+b^{\text{age}}_{j[i]} +b^{\text{race}}_{j[i]}+b^{\text{party
+            ID}}_{j[i]} + b^{\text{ideology}}_{j[i]} + b^{\text{last
+            vote}}_{j[i]} \big)
+      \end{align*}
+    }
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Poststratification Population}
+  \begin{itemize}
+  \item Another key ingredient in MRP is an appropriate poststratification
+    population with cross-tabulation information.
+  \item Typical choice in public opinion analysis is the Current Population
+    Survey (CPS). However, since we are concerned about the lectorate rather than
+    the general population, we use the exit poll from the 2008 presidential
+    election as our poststratification population.
+  \item Admittedly, this choice ignores the demographic shift in the intervening
+    years. A more principled choice is to combine 2008 exit poll with CPS.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Results of MRP adjustments}
+  \begin{itemize}
+  \item MRP adjustment produces a daily snapshot of the voters' intent before the
+    2012 presidential election. The national voters' intent of Obama's two-party
+    support is plotted below
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.8\textwidth]{mrp_snapshots_national}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{State-level Results}
+  \begin{itemize}
+    \item Further, due to the flexibility of MRP, we can break down the daily
+      snapshots by states. The results from 12 largest states are plotted below
+      \begin{figure}[htbp]
+        \centering
+          \includegraphics[width=.8\textwidth]{mrp_snapshots_state}
+      \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Demographic Groups Results}
+  \begin{itemize}
+  \item Comparison between the 2012 exit poll estimates and MRP last day
+    snapshots for demographic subgroups and two-way interacted demographic
+    subgroups are also shown
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.6\textwidth]{"demo_group_marginals"}
+      \caption{Demographi subgroups two-party Obama support.}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Demographic Groups Results Cont'd}
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\textwidth]{"demo_groups_two_way_interaction"}
+    \caption{Two-way interaction demographic subgroups two-party Obama support.}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{From Daily Snapshots to Election Day Prediction}
+  \begin{itemize}
+  \item One final step is required to convert the daily snapshots to election day
+    prediction.
+  \item We follow the approach of Erikson and Wlezien (2008). A regression is fit
+    on historical top-line data and final results (2000, 2004 and 2008 elections)
+    and projection is made based on MRP snapshot for 2012. 
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Results of Prediction}
+  \begin{itemize}
+  \item The daily predictions of the 12 largest states are plotted below
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.8\textwidth]{projected_voteshare_state}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Results of Prediction Cont'd}
+  \begin{itemize}
+  \item Comparison with Prediction Market Data
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.8\textwidth]{pred_market_xbox_comp}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Results of Prediction Cont'd}
+  \begin{itemize}
+  \item The daily predictions of Obama's electoral votes.
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.8\textwidth]{electoral_vote_dist_over_time}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{References}
+  \begin{itemize}
+  \item Wang, Wei and Rothschild, David and Goel, Sharad and Gelman, Andrew,
+    2013. Forecasting Elections with Non-Representative Polls. Technical Report.
+  \item Erikson, Robert S and Wlezien, Christopher, 2008. Are political markets
+    really superior to polls as election predictors? Public Opinion Quarterly.
+  \end{itemize}
+\end{frame}
+\section[Cross-validation]{Use of Cross-validation in Comparing Hierarchical Models}
+
+\begin{frame}
+  \frametitle{}
+  \begin{itemize}
+  \item Multilevel/Hierarchical models are effective tools in survey research.
+  \item Cross-validation is a very popular method for estimating generalization
+    errors and controlling for overfitting.
+  \item We want to compare the performance of multilevel models and traditional
+    models using cross-validatory metrics.
+  \end{itemize}
+\end{frame}
+
+\subsection{Model Comparison in A Decision Theoretic Framework}
+\begin{frame}
+  \frametitle{A Formal Framekwork}
+  \begin{itemize}
+  \item Our focus is on predictive power/generalization error.
+  \item To take a decision theoretic view, the predictive loss incurred by a
+    decision action $\alpha$ based on a model $M$ in face of future observation
+    $\tilde y$ under loss function $l$ is given below
+    \begin{equation*}
+      PL(p^t, M, D)=E_{p^t}l(\tilde y, a_M)=\int l(\tilde y, a_M) p^t(\tilde y)d\tilde y,
+    \end{equation*}
+  \item We use the whole predictive distribution $p(\tilde y|D,M)$ as the
+    decision action $\alpha$ and log loss, the predictive loss materializes as
+    \begin{equation*}
+      PL(p^t, M, D)=E_{p^t}\log p(\tilde y|D, M)=-\int p^t(\tilde y) \log p(\tilde y|D, M) d\tilde y
+    \end{equation*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Predictive Errors and Empirical Counterparts}
+  \begin{itemize}
+  \item We can substract the entropy of the true distribution $p^t(\tilde y)$
+    from the predictive loss to obtain the predictive error
+    \begin{align*}
+      PE(p^t, M, D)&= PL(p^t, M, D) - LB(p^t) \\  
+      &=-\int p^t(\tilde y) \log p(\tilde y|D, M) d\tilde y+\int p^t(\tilde y) \log p^t(\tilde y) d\tilde y.
+    \end{align*}
+  \item The scale of the predictive error is more interpretable.
+  \item We need to estimate the two parts in the predictive error.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{$k-$fold Cross-validation for Predictive Loss}
+  \begin{itemize}
+  \item $k-$fold cross-validation estimate of the predictive loss is given by
+    \begin{align*}
+      \widehat{PL}^{\text{CV}}(M, D) &=-\,\frac{1}{N}\sum_{k=1}^K\sum_{i\in
+        \text{test}_k}\log p(y_i|D^k, M)\\
+      &=-\,\frac{1}{N}\sum_{i=1}^N\log p(y_i|D^{(\backslash i)}, M),
+\end{align*}
+where $D^k$ represents the $k$\textsuperscript{th} training set and
+$D^{(\backslash i)}$ denotes the training set that excludes the
+$i$\textsuperscript{th} observation.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Lower Bound and Data Partition}
+  \begin{itemize}
+  \item The lower bound of the predicitve loss, i.e., the entropy of the true
+    distribution, is approximated by the training loss the of saturated model
+    $M_s$, which gives an estimates of the predictive error
+    \begin{align*}
+      \widehat{PE}(M, D)&=\widehat{PL}^{\text{CV}}(M,D)-TL(M_{\text{s}},D)\\  \label{eq:esti_preerror}
+      &= -\,\frac{1}{N}\sum_{i=1}^N\log p(y_i|D^{(\backslash i)},
+      M)+\frac{1}{N}\sum_{y\in D}\log p(y | D, M_{\text{s}}).
+    \end{align*}
+  \item Partition of structured data in cross-validation can be tricky. One
+    possibility is to do cluster sampling, in which we fit the model on training
+    cells and test on hold-out cells. We adopt a stratified sampling approach and
+    partition each cell into training and testing sets.
+  \end{itemize}
+\end{frame}
+\subsection{Data and Model Descriptions}
+\begin{frame}
+  \frametitle{CCES 2006 Survey Data}
+  \begin{itemize}
+  \item Collaborative Congressional Election Survey 2006 is a national stratified
+    sample of size 30,000, with a wide variety of response outcomes. 
+  \item We convert all outcomes (71 in total) into binary, and fit multilevel
+    models for each of the outcomes.
+  \item This provides an ideal setting to evaluate cross-valiation.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Model Descriptions}
+  \begin{itemize}
+  \item For simplicity, we only consider two predictors, state and income. The
+    data is cross-tabulated by these two variables, and for respondents in cell
+    $(j_1,j_2)$, the probability that they give a positive response is
+    $\pi_{j_1,j_2}$, which is modeled using a logistic regression
+    $\text{logit}(\pi_{j_1j_2})=\bm Z\bm\beta$, in which $\bm Z$ is the design
+    matrix and $\bm\beta$ includes the main and interaction effects.
+  \item We compare three models
+    \begin{itemize}
+    \item Complete pooling:
+      $    \pi_{j_1j_2}=\text{logit}^{-1}\left(\beta^{\text{state}}_{j_1}+\beta^{\text{inc}}_{j_2}\right)$
+    \item No pooling (staturated model): $
+      \pi_{j_1j_2}=\text{logit}^{-1}\left(\beta^{\text{state}}_{j_1}+\beta^{\text{inc}}_{j_2}+\beta^{\text{state*inc}}_{j_1j_2}\right)$
+    \item
+      Partial pooling:
+      $ \pi_{j_1j_2}=\text{logit}^{-1}\left(\beta^{\text{state}}_{j_1}+\beta^{\text{inc}}_{j_2}+\beta^{\text{state*inc}}_{j_1j_2}\right)$, with
+      $\beta^{\text{state*inc}}_{j_1j_2}\stackrel{i.i.d.}{\sim} \Phi(\cdot)$.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+\subsection{Results}
+\begin{frame}
+  \frametitle{The Real Data}
+  \begin{itemize}
+  \item The estimated predictive errors for all 71 outcomes are plotted
+    below. The x-axis is ordered by the training loss of the saturated model. The
+    no pooling model gives a bad fit.  Partial pooling does best but in most
+    cases is almost indistinguishable from complete pooling under the
+    cross-validation criterion.
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.8\textwidth]{alloutcomesx1.pdf}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Simulated Data: Changing Sample Size}
+  \begin{itemize}
+  \item From the previous graph, it seems that the multilevel model fails to pick
+    up the interaction between income and state. We augment the data set by
+    replicating each observation multiple times. 
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.6\textwidth]{outcome234.pdf}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Simulated Data: Changing Sample Size Cont'd}
+  \begin{itemize}
+  \item We also look at one particular outcome, two-party republican support in
+    the congressional election. Again, partial pooling performs the best, but its
+    performance is roughly matched by no pooling in large sample sizes and by
+    complete pooling in small sample sizes.
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.8\textwidth]{hourvote.pdf}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Simulated Data: Balancedness of Cells}
+  \begin{itemize}
+  \item Another factor behind the poor performance of the multilevel model might
+    be the highly-unbalanced structure of the survey data. We simulate data of
+    the same sample size as the originaldata but with balanced cell sample sizes.
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.8\textwidth]{alloutcomesxbal.pdf}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Simulated Data: Balancedness of Cells Cont'd}
+  \begin{itemize}
+  \item In this case, we also let sample size grow and see the relative
+    performance of the three models for the congressional electon republican
+    vote.
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.8\textwidth]{hourvote_bal.pdf}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Discussion}
+  \begin{itemize}
+  \item Multilevel models capture the important interactions that are not included
+    in the complete pooling model, while at the same time avoiding the inevitable
+    overfitting from the no pooling model.  
+  \item However, the improvement of the multilevel model as given by
+    cross-validation is surprisingly tiny, almost negligible to unsuspecting
+    eyes.
+  \item Simulations based on real data show that sample size and structure of the
+    cross-tabulated cells play important roles in the relative margins of
+    different models in cross-validation based model selection.
+  \item Caution should be exercised in applying cross-validation for model
+    selection with structured data.
+  \end{itemize}  
+\end{frame}
+
+\begin{frame}
+  \frametitle{References}
+  \begin{itemize}
+  \item Wang, Wei and Gelman, Andrew, 2013. A problem with the use of
+    cross-validation for selecting among multilevel models. Technical Report.  
+  \end{itemize}
+\end{frame}
 
 \end{document}
