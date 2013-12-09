@@ -1,4 +1,6 @@
 *.aux
+*.bbl
+*.blg
 *.log
 *.nav
 *.out
@@ -6,4 +8,5 @@
 *.png
 *.snm
 *.toc
-auto/*
+auto/
+oral/figures/

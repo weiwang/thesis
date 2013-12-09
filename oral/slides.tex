@@ -275,7 +275,7 @@
 \end{frame}
 \subsection{A Bayesian Approach}
 \begin{frame}
-  \frametitle{An Alternative Bayesian Approach}
+  \frametitle{A Bayesian Approach}
   \begin{itemize}
   \item There are situations where the treatment response consistency might not
     hold, e.g., in an education intervention program, an intervention is carried
@@ -347,9 +347,10 @@
   \item In the context of meta-analysis, each study has its own mean function
     $f_s$, which is a function of the treatment $z$ and confounders $x$, that
     follows a Gaussian process with kernel $\kappa_s$.
-  \item Bonilla (2008) proposes to decompose $\kappa_s=\kappa^1\cdot\kappa^2$, in
-    which $\kappa^1$ describes "inter-task similarities" based on task-level
-    characteristics, and $\kappa^2$ describes the similarity resulting from
+    \pause
+  \item Bonilla (2008) proposes to decompose $\kappa_s=\tilde\kappa\cdot\check\kappa$, in
+    which $\tilde\kappa$ describes "inter-task similarities" based on task-level
+    characteristics, and $\check\kappa$ describes the similarity resulting from
     individual characteristics.
   \end{itemize}
 \end{frame}
@@ -362,7 +363,7 @@
   \item Restricting the infinite dimensional kernel function $\kappa_s$ on the
     $N$ individual observed in the data as the Gram matrix $K^s$, we can assign a
     standard Wishart prior with a base kernel $\kappa_0$, whose Gram matrix is $K_o$
-    \[Q(K_s)\sim \text{InvW}(\tau, K_0), \forall s=1,\ldots,G\]
+    \[Q(K_s)\sim \text{InvW}(\tau, K_0),  s=1,\ldots,G\]
   \end{itemize}
 \end{frame}
 
@@ -703,14 +704,14 @@ $i$\textsuperscript{th} observation.
   \frametitle{Lower Bound and Data Partition}
   \begin{itemize}
   \item The lower bound of the predictive loss, i.e., the entropy of the true
-    distribution, is approximated by the training loss the of saturated model
-    $M_s$, which gives an estimates of the predictive error
+    distribution, is approximated by the in-sample training loss the of saturated
+    model $M_s$, which gives an estimates of the predictive error
     \begin{align*}
       \widehat{PE}(M, D)&=\widehat{PL}^{\text{CV}}(M,D)-TL(M_{\text{s}},D)\\  \label{eq:esti_preerror}
       &= -\,\frac{1}{N}\sum_{i=1}^N\log p(y_i|D^{(\backslash i)},
       M)+\frac{1}{N}\sum_{y\in D}\log p(y | D, M_{\text{s}}).
     \end{align*}
-  \item Partition of structured data in cross-validation can be tricky. One
+  \item Partition of structured data in cross-validation could be tricky. One
     possibility is to do cluster sampling, in which we fit the model on training
     cells and test on hold-out cells. We adopt a stratified sampling approach and
     partition each cell into training and testing sets.
@@ -796,9 +797,10 @@ $i$\textsuperscript{th} observation.
 \begin{frame}
   \frametitle{Simulated Data: Balancedness of Cells}
   \begin{itemize}
-  \item Another factor behind the poor performance of the multilevel model might
-    be the highly-unbalanced structure of the survey data. We simulate data of
-    the same sample size as the original data but with balanced cell sample sizes.
+  \item Another factor underlying the relative performance of different models
+    might be the highly-unbalanced structure of the survey data. We simulate data
+    of the same sample size and cell proportion as the original data but with
+    balanced cell sample sizes.
     \begin{figure}[htbp]
       \centering
       \includegraphics[width=.8\textwidth]{alloutcomesxbal.pdf}
