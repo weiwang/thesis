@@ -1,0 +1,119 @@
+\documentclass[8pt]{article}
+\usepackage{titling}
+% \usepackage{nips10submit_e,times}
+% setfont command is only available after usepackage{fontspec}
+%\usepackage{ifxetex}
+%\ifxetex
+\usepackage{fontspec}
+\usepackage{authblk}
+%\setmainfont{Minion Pro}
+\setmainfont{TeX Gyre Pagella}
+\usepackage[dvipsnames,usenames]{xcolor}
+% \usepackage[opticals,medfamily,minionint,footnotefigures]{MinionPro}
+
+
+\usepackage[lotdepth, lofdepth]{subfig}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+% \usepackage{times}
+\usepackage{supertabular}
+
+%% Set up bold MinionPro math
+\usepackage{bm}
+\usepackage{natbib}
+\setlength{\bibsep}{0.3pt}
+
+%%% Want to change the section head of the bib??
+% \AtBeginDocument{\renewcommand\LITERATURE CITED}}
+
+%%% Document layout, margins
+\usepackage{geometry}
+\geometry{letterpaper, textwidth=6.5in, textheight=8in, marginparsep=1em}
+\setlength{\parskip}{-.25cm plus2mm minus2mm}
+\setlength{\droptitle}{-7.5em} 
+%%% Document layout, margins
+\usepackage{geometry}
+\geometry{letterpaper, textwidth=6.5in, textheight=8in, marginparsep=1em}
+\usepackage{amsmath, epsfig}
+\usepackage{amsfonts}
+% \usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+% \usepackage{easybmat}
+\usepackage{footmisc}
+\usepackage{fullpage}
+\renewcommand\algorithmiccomment[1]{// \textit{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{assumption}[theorem]{Assumption}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+%
+\title{Healthcare Data Meta-Analysis via Gaussian Processes}
+
+\author[1]{Wei Wang}
+\vspace{-4ex}
+\affil[1]{\small{Department of Statistics, Columbia University}}
+\begin{document}
+\pagenumbering{gobble}
+\date{}
+\maketitle
+
+\vspace{-6ex}
+% \begin{abstract}
+% \end{abstract}
+
+\section{Introduction}
+Meta-analysis aims to synthesize results from multiple studies and identify
+patterns and heterogeneity in relation to the contexts of different
+studies. Open Health Data, which promote data sharing and research synthesis
+from often heterogeneous sources, pose challenges for traditional
+meta-analytical framework, both in terms of sheer scale and modeling
+strategies. Bayesian Non-Parametric methods, in particular Gaussian Processes,
+hold major promise in addressing these issues.
+
+\section{Literature Review}
+Due to the constraints of data collection, traditional meta-analysis focus
+mostly on synthesizing study-level summary results \citep{dersimonian1986meta}.
+Deidentified Individual-Patient Data (IPD) offers detailed demographic and
+medical covariates that can help disentangle incongruities constantly found in
+meta-analysis. Based on parametric Bayesian Hierarchical Modeling, there has
+developed a body of literature on IPD meta-analysis, particularly in clinical
+trial settings \citep{higgins2001meta,
+  tudorsmith2005investigating}. % However, a
+% lack of solid causal framework, such as the standard potential outcome model
+% , often renders the meta-analysis results causally
+Recently, \citep{sobel2014meta} proposes an extension of the standard potential
+outcome framework \citep{rubin1978bayesian} for causal inference, and applying
+the framework to the analysis of Vioxx clinical trials.  On the other hand,
+recent developments in Bayesian non-parametric methods
+\citep{hjort2010bayesian}, in particular Gaussian process regression
+\citep{williams2006gaussian}, demonstrate the possibility of flexible modeling
+of large scale structured data sets. Combining a solid causal framework with
+hierarchical Gaussian process models in healthcare meta-analysis is my main
+motivation.
+
+\section{Proposed Work}
+The most salient feature of meta-analysis is the hierarchical
+structure. Individual studies form the natural atomic blocks, on top of which a
+myriad of structure induced by factors such as indications studied, protocols
+followed and population targeted could exists. Hierarchical Gaussian processes
+models are effective in flexibly modeling the mean functions as well as
+correlation structures \citep{ikemoto2009generalizing, williams2009multi}. This
+could be exploited to enable borrowing strength in meta-analysis; for example,
+studies in which certain demographics are abundant can supplement studies that
+lack those demographics, thus providing a higher resolution picture of the
+patterns and heterogeneity as well as the driving factors. Computationally,
+since time complexity of Gaussian processes is cubic of the sample size, various
+approximation schemes have been proposed for different application areas
+\citep{archambeau2007gaussian, banerjee2008gaussian}. I would like to evaluate
+the suitability and effectiveness of different approximation schemes in the
+context of healthcare data meta-analysis.
+
+\bibliographystyle{plain}
+\small{\bibliography{ref}}
+
+
+\end{document}
