@@ -20,7 +20,7 @@ MEXT = md
 SRC = $(wildcard *.$(MEXT))
 
 ## Location of Pandoc support files.
-PREFIX = /Users/weiwang/.pandoc
+PREFIX = $(HOME)/.pandoc
 
 ## Location of your working bibliography file
 BIB = npb_meta.bib
@@ -48,7 +48,7 @@ tex:	clean $(TEX)
 
 
 %.pdf:	%.md
-	pandoc -r markdown+simple_tables+table_captions+yaml_metadata_block -s -S --latex-engine=pdflatex --template=$(PREFIX)/templates/latex.template --filter pandoc-citeproc --csl=$(PREFIX)/csl/$(CSL).csl --bibliography=$(BIB) -o $@ $<
+	pandoc -r markdown+raw_tex+simple_tables+table_captions+yaml_metadata_block -s -S --latex-engine=pdflatex --template=$(PREFIX)/templates/latex.template --filter pandoc-citeproc --csl=$(PREFIX)/csl/$(CSL).csl --bibliography=$(BIB) -o $@ $<
 
 
 clean:
