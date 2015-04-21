@@ -4,7 +4,7 @@ author:
 - name: Wei Wang
   affiliation: Columbia University
   email: ww2243@columbia.edu
-date: Apr 20, 2015
+date: Apr 21, 2015
 abstract: 
     Meta-Analysis, the synthesis of evidence from multiple study sources, has
     become increasing popular in fields such as education, psychology and public
@@ -86,7 +86,7 @@ require explicit modeling assumptions from the researchers, which makes the
 model sensitive and facilitate cheery-picking. Non-parametric modeling allows
 flexible functional form and requires little manual tuning from the researchers.
 
-# Meta-Analysis using Potential Outcomes #
+# Potential Outcomes for Meta-Analysis#
 
 [@sobel2015] put meta-anlaysis on a concrete causal foundation by introducing a
 extended potential outcome framework. This section is joint work with Michael
@@ -146,6 +146,14 @@ y_i(S,1) & y_i(S,2) & \cdots & y_i(S,Z)
 \end{pmatrix}
 \end{equation*}
 
+With this notation, we can interpret some commonly discussed meta-analytical
+estimates in a causal way. For example, assuming there are only two level of
+treatment (0 and 1) and the causal comparison is the difference,
+*study-specific* treatment effect for study $s$ is $E(y(z,s)-y(z^\prime,
+s))$. Note that this is different from *study-level* treatment effect $\theta_s$
+in random effects models, which is $E(y(z,s)-y(z^\prime, s)\mid S=s)$. Below we will
+discuss conditions that will connect these two quantities.
+
 In the context of meta-analyses, unconfoundedness can be recast as
 unconfoundedness within each study, i.e.,
 
@@ -189,23 +197,61 @@ y(S,1) & y(S,2) & \cdots & y(S,Z)
 \end{pmatrix}
  \perp S \mid X\end{equation*}.
 
-[@sobel2015] suggests that meta-analysts first assess the plausibilities of the
-two assumptions based on the characteristics of the studies and
+From a frequentist point of view, these two assumptions cannot be distinguished
+from one other. Thus [@sobel2015] suggests that meta-analysts first assess the
+plausibilities of the two assumptions based on the characteristics of the
+studies, and typically assume one of these two to hold and then build models to
+see whether the heterogeneity could be accounted for by the other
+assumption. From a Bayesian point of view, we can use a very general model, and
+encode regularization through appropriate prior distributions to allow for
+reasonalbe separation of these two sources of heterogeneities. This will be the
+topic of the following sections.
 
-# Meta-Analysis using Non-parametric Models #
+# Meta-Analysis using Bayesian Non-parametrics #
 
-# Causal Inference #
+Traditionally, causal inference using potential outcomes focuses on two
+questions. Modeling of the treatment assignment process $p(z\mid x)$, also known
+as the propensity score, and modeling of the scientific process of how responses
+relate to treatment and covariates $p(y\mid z, x)$, also known as the response
+surface [See @rubin2005causal for more details]. A myriad of methods based on
+the either treatment assignment mechanism (e.g., propensity score matching), or
+response surface modeling (e.g., regression), or combination of these two (e.g.,
+the doubly-robust method), has been proposed for causal inference of
+observational data.
 
-## Non-parametric Approach to Causal Inference ##
+Recently, inspired by the advances in Bayesian non-parametic models
+[@hjort2010bayesian], [@hill2011bayesian] proposed a model that focuses on
+accurately estimating the response surface using flexible Bayesian Additive
+Regression Trees, or BART [@chipman2010bart]. Besides the well-known benefits of
+being robust to model misspecifications and being able to capture highly
+non-linear and interaction patterns, Bayesian non-parametric models provide
+natrual and coherent posterior intervals to convey inferential uncertainty.
 
+## Gaussian Processes ##
 
-See the [section on Gaussian Processes](#gp).
+Gaussia Processes (GP) have become a popular tool for nonparametric
+regression. A random function $f:\mathcal{X}\rightarrow\mathbb{R}$ is said to
+follow a GP process with kernel $K$ if any finite-dimensional marginal of it is
+Gaussian distributed, i.e.
 
-## Network Meta-Analysis ##
+\begin{equation*}
+    f(\bm x) \sim N(\bm\mu, \bm K(\bm x, \bm x)), \forall \bm x \in
+    \mathbb{R}^{d} \text{ and } d
+\end{equation*}
 
-# Gaussian Processes {#gp} #
+where $\bm K(\bm x, \bm x)$ is the Gram matrix of $K$.  The key component in a
+GP model is the kernel $K$, a semi-definite function defined on
+$\mathcal{X}\times\mathcal{X}$ that encodes the structure. Judiciously choosing
+$K$ is the most important aspect of fitting a GP model. A large part of its
+popularity is probably due to the fact it can be interpretated as a
+generalization of linear regression with Gaussian errors, the predominant model
+for parametric regression.
 
 ## Generative Models ##
+
+## Vector- and Matrix-Valued Gaussian Processes ## 
+
+## Network Meta-Analysis ##
 
 # Models Descriptions #
 
