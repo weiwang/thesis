@@ -252,19 +252,24 @@ for parametric regression.
 ## Gaussian Processes Vector- and Matrix-Valued Functions##
 
 In the context of meta-analysis, we can natrually extend the function $f$ to be
-a matrix-valued function, i.e., $f:\mathcal{X}\rightarrow\mathbb{R}^{S\times
+a matrix-valued function, i.e., $\bm f:\mathcal{X}\rightarrow\mathbb{R}^{S\times
 Z}$. The finite dimensional marginal of $f$ should follow a high-dimensional
 equivalent of Gaussian distribution. First consider one dimensional marginal,
-$f(x_0)\in\mathbb{R}^{S\times Z}$, we can define its distribution as a matrix
-normal distribution
+$\bm f(x_0)\in\mathbb{R}^{S\times Z}$, we can define its distribution as a
+matrix normal distribution
 
 \begin{equation*}
-f(x_0) \sim \text{MN}(M_{S\times Z}, U_{S\times S}, V_{Z\times Z})
+\bm f(x_0) \sim \text{MN}(M_{S\times Z}, U_{S\times S}, V_{Z\times Z})
 \end{equation*}
 
 where $M$ is the mean matrix, $U$ is the between-row covariance and $V$ is the
-between-column covariance. Instead of working with random matrices, however, we
-can work with random vectors using the well-known fact that
+between-column covariance. Then the consistency assumption (A1) for study $s_1,
+s_2$ and treatment $z$ indicates $\bm f_{s_1, z}(x_0){\buildrel d \over =} \bm
+f_{s_2, z}(x_0)$.
+
+
+Instead of working with random matrices, however, we can work with random
+vectors using the well-known fact that
 
 \begin{equation*}
 \text{vec}{f(x_0)} \sim \text{N}(\text{vec}{M}, U\otimes V)
@@ -275,6 +280,18 @@ problems, where $U\otimes V$ represents between-task similarity and allows
 borrowing-strength among tasks
 [@yu2005learning; @bonilla2008multi]. [@alvarez2011kernels] gives comprehensive
 reviews of the typical kernels used for vector-valued functions.
+
+Talk about Separable Kernels and Intrinsic Coregionalization
+
+## From Seperable Kernels to Higher Dimensional Feature Space ##
+
+Further, we can convert vector-valued Gaussian Process to a scalar-valued
+Gaussian Process on a higher dimentional feature space with a tensor-product
+kernel, i.e.,
+
+\begin{equation*}
+\bm K_{X\times S\times T}=\bm K_{X} \otimes \bm K_{S} \otimes K_{T}
+\end{equation*}
 
 ## Network Meta-Analysis ##
 
