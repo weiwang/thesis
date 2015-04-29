@@ -47,7 +47,7 @@ underlying population of effect sizes, i.e.
 
 \begin{align*}
     y_s&=\mu_s + \sigma_s^2\\
-    \mu_s &\sim N(\mu_0, \tau^2)
+    \mu_s &\sim \mathcal{N}(\mu_0, \tau^2)
 \end{align*}
 
 Admittedly, meta-analyses based on study-level summary is still effective when
@@ -173,11 +173,11 @@ would result in misleading results.
 However, study selection is not the only factor contributing to heterogneities
 in treatment effects across studies. One lingering question is whether the same
 treatment $z$ is implemented identically in all studies, or in another word,
-whether $Y_i(s_1, z){\buildrel d \over =}Y_i(s_2, z)$ for all pair of $s_1, s_2
-\in \{1,\dots, S\}$, where ${\buildrel d \over =}$ stands for equal in
+whether $Y_i(s_1, z)\disteq Y_i(s_2, z)$ for all pair of $s_1, s_2
+\in \{1,\dots, S\}$, where $\disteq$ stands for equal in
 distribution. Consider an example of education intervention, in which
 interventions are carried out by teachers with various experience levels, then
-it is reasonable to question whether $Y_i(s_1, z){\buildrel d \over =}Y_i(s_2,
+it is reasonable to question whether $Y_i(s_1, z)\disteq Y_i(s_2,
 x)$ holds.
 
 Two assumptions from [@sobel2015] codify these two sources of heterogeneities.
@@ -185,7 +185,7 @@ Two assumptions from [@sobel2015] codify these two sources of heterogeneities.
 A1.  _Weak response consistency assumption for treatment $z$_: For any
 $z\in\{1,\dots,Z\}$ and any pair $s_1, s_2\in\{1,\ldots,S\}$,
 \begin{equation*}
-Y_i(s_1, z){\buildrel d \over =}Y_i(s_2, z)
+Y_i(s_1, z)\disteq Y_i(s_2, z)
 \end{equation*}
 
 A2.  _Unconfounded study selection_: \begin{equation*}\bm Y=
@@ -231,21 +231,74 @@ natrual and coherent posterior intervals to convey inferential uncertainty.
 
 Gaussia Processes (GP) have become a popular tool for nonparametric
 regression. A random function $f:\mathcal{X}\rightarrow\mathbb{R}$ is said to
-follow a GP process with kernel $K$ if any finite-dimensional marginal of it is
+follow a GP process with kernel $k$ if any finite-dimensional marginal of it is
 Gaussian distributed, i.e.
 
 \begin{equation*}
-    f(\bm x) \sim N(\bm\mu, \bm K(\bm x, \bm x)), \forall \bm x \in
+    f(\bm x) \sim \mathcal{N}(\bm\mu, \bm K_{\bm x, \bm x}), \forall\ \bm x \in
     \mathbb{R}^{d} \text{ and } d
 \end{equation*}
 
-where $\bm K(\bm x, \bm x)$ is the Gram matrix of $K$.  The key component in a
-GP model is the kernel $K$, a semi-definite function defined on
+where $\bm K_{\bm x, \bm x}$ is the Gram matrix of kernel $k$.  The key
+component in a GP model is the kernel $k$, a semi-definite function defined on
 $\mathcal{X}\times\mathcal{X}$ that encodes the structure. Judiciously choosing
-$K$ is the most important aspect of fitting a GP model. A large part of its
-popularity is probably due to the fact it can be interpretated as a
-generalization of linear regression with Gaussian errors, the predominant model
-for parametric regression.
+$K$ is the most important part of fitting a GP model.
+
+A large part of its popularity is probably due to the fact it can be
+interpretated as a generalization of linear regression with Gaussian errors, the
+predominant model for parametric regression. In fact, according to Mercer's
+Theorem [@williams2006gaussian], kernel $k$ can be decomposed into
+
+\begin{equation*}
+k(x, x^\prime)=\sum_{i=1}^\infty\lambda_i\phi_i(x)\phi^\intercal_i(x^\prime)
+\end{equation*}
+
+where $\lambda_i$ and $\phi_i$ are respective eigenvalues and eigenfunctions of
+kernel $k$ with respect to a measure $\mu$, i.e.,
+
+\begin{equation*}
+\int k_i(x, x^\prime)\phi_i(x) \,d\mu(x)=\lambda\phi_i(x^\prime),
+\end{equation*}
+
+Then GP can be considered as a basis expansion method that maps input $x$ to an
+ infinite dimensional space via the infinite series of functions
+ $\{\phi_i(x)\}_{i=1}^\infty$.
+
+## Inference for Standard GP ##
+
+Standard GP model for observation pairs $(y_i, \bm x_i)_{i=1}^N$ is
+
+\begin{align*}
+    y_i\mid f &\sim \mathcal{N}(f(\bm x_i), \sigma^2) \\
+    f &\sim GP(0, k)
+\end{align*}
+
+For a given kernel $k$, the marginal distribution of $\bm y$ is
+
+\begin{equation*}
+\bm y \sim \mathcal{N}(0, K_{\bm x, \bm x}+\sigma^2I_N)
+\end{equation*}
+
+where $K_{\bm x, \bm x}$ is the Gram matrix of kernel $k$ whose entries are
+$k(x_i, x_j)$. The predictive distribution at test points $\bm X^\star$ is
+
+\begin{align*}
+\bm y^\star \mid \bm X^\star, \bm y, \bm X \sim \mathcal{N}(&K_{\bm X^\star, \bm X}(K_{\bm X,
+\bm X}+\sigma^2I_N)^{-1}\bm y, \\
+& K_{\bm X^\star, \bm X^\star}-K_{\bm X^\star, \bm X}(K_{\bm X, \bm X}+\sigma^2I_N)^{-1}K_{\bm X^\star, \bm X}^\intercal)
+\end{align*}
+
+For inference on hyperparameters, e.g., parameteres governing the kernels, a
+standard practice is to maximize log marginal likelihood
+
+\begin{align*}
+\log p(\bm y \mid \bm X, \theta)&=\log \int p(\bm y \mid f, \bm X, \theta) p(f)\, df \\
+    & \propto
+    -\big[\bm y^\intercal(K_{\bm X, \bm X}(\theta)+\sigma^2I_N)^{-1} \bm y + \log|K_{\bm X, \bm X}(\theta)+\sigma^2I_N|\big]
+\end{align*}
+
+and plug in the fitted value $\hat \theta$ into the predictive distribution of
+new points $\bm X^\star$.
 
 ## Generative Models ##
 
@@ -259,29 +312,30 @@ $\bm f(x_0)\in\mathbb{R}^{S\times Z}$, we can define its distribution as a
 matrix normal distribution
 
 \begin{equation*}
-\bm f(x_0) \sim \text{MN}(M_{S\times Z}, U_{S\times S}, V_{Z\times Z})
+\bm f(x_0) \sim \mathcal{MN}(M_{S\times Z}, U_{S\times S}, V_{Z\times Z})
 \end{equation*}
 
 where $M$ is the mean matrix, $U$ is the between-row covariance and $V$ is the
 between-column covariance. Then the consistency assumption (A1) for study $s_1,
-s_2$ and treatment $z$ indicates $\bm f_{s_1, z}(x_0){\buildrel d \over =} \bm
+s_2$ and treatment $z$ indicates $\bm f_{s_1, z}(x_0)\disteq \bm
 f_{s_2, z}(x_0)$.
 
 
-Instead of working with random matrices, however, we can work with random
-vectors using the well-known fact that
+Instead of working with random matrices, however, it is easier to work with
+random vectors by exploiting the connection between matrix normal distribution
+and multivariate (vector) normal distribution. In fact, it is well know that
 
 \begin{equation*}
-\text{vec}{f(x_0)} \sim \text{N}(\text{vec}{M}, U\otimes V)
+\text{vec}{f(x_0)} \sim \mathcal{N}(\text{vec}{M}, U\kr V)
 \end{equation*}
 
 In GP literature, vector-valued functions are known as multi-task learning
-problems, where $U\otimes V$ represents between-task similarity and allows
+problems, where $U\kr V$ represents between-task similarity and allows
 borrowing-strength among tasks
 [@yu2005learning; @bonilla2008multi]. [@alvarez2011kernels] gives comprehensive
 reviews of the typical kernels used for vector-valued functions.
 
-Talk about Separable Kernels and Intrinsic Coregionalization
+
 
 ## From Seperable Kernels to Higher Dimensional Feature Space ##
 
@@ -290,7 +344,7 @@ Gaussian Process on a higher dimentional feature space with a tensor-product
 kernel, i.e.,
 
 \begin{equation*}
-\bm K_{X\times S\times T}=\bm K_{X} \otimes \bm K_{S} \otimes K_{T}
+\bm K_{X\times S\times T}=\bm K_{X} \kr \bm K_{S} \kr K_{T}
 \end{equation*}
 
 ## Network Meta-Analysis ##
