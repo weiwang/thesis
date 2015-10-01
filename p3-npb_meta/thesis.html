@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title>Structured Meta-Analysis via Hierarchical Gaussian Processes and Potential Outcomes</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/Users/weiwang/.pandoc/marked/kultiad-serif.css">
+</head>
+<body>
+<header>
+<h3 class="date">Spet 30, 2015</h3>
+
+<h1 class="title">Structured Meta-Analysis via Hierarchical Gaussian Processes and Potential Outcomes</h1>
+
+
+<h2 class="author">Wei Wang</h2>
+<p class="affilation"><em>Columbia University</em></p>
+
+</header>
+
+
+<p class="small"><strong>Abstract: </strong><em>Meta-Analysis, the synthesis of evidence from multiple study sources, has become increasing popular in fields such as education, psychology and public health. The major obstacle for meta-analysis is the interpretation and proper handeling of study-by-study heterogeneity. Based on <span class="citation">(Sobel, Madigan, and Wang 2015)</span>, which proposed a potential outcome framework for a formal causal approach to meta-analysis, I develop a high-dimensional Gaussian Process model that explicitly handels heterogeneities across studies, allows flexible modeling of response functions and admits fully probabilistic inference.</em></p>
+
+
+
+<h1 id="introducation">Introducation</h1>
+<p>Meta-Analysis, the synthesis of evidence from multiple study sources, has become increasing popular in fields such as education, psychology and public health. The major obstacle for meta-analysis is the interpretation and proper handeling of study-by-study heterogeneity. Based on <span class="citation">(Sobel, Madigan, and Wang 2015)</span>, which proposed a potential outcome framework for a formal causal approach to meta-analysis, I develop a high-dimensional Gaussian Process model that explicitly handels heterogeneities across studies, allows flexible modeling of response functions and admits fully probabilistic inference.</p>
+<h1 id="meta-analysis">Meta-Analysis</h1>
+<p>Meta-anlyses combine data from distinct but related studies for higher resolution inference and more nuanced understanding of the effect under investigation. Originally hailed in medical and education research, meta-analyses gain traction in wider academic disciplines as the awareness for open data is increasing across all scientific communities.</p>
+<p>However, traditional meta-analyses mostly are conducted based on extracting and combining study-level effect summaries, since access to individual-paticipant level data are historically inhabitantly difficult to obtain. In this framework, researchers extract effect size estimates <span class="math inline"><em>y</em><sub><em>s</em></sub></span> and standard errors <span class="math inline"><em>σ</em><sub><em>s</em></sub><sup>2</sup></span>, where <span class="math inline"><em>s</em> ∈ {1, …, <em>S</em>}</span> and <span class="math inline"><em>S</em></span> is the number of studies. To handle effect size heterogeneity, a random effect model is typically used <span class="citation">(DerSimonian and Laird 1986)</span>, in which all study effect sizes are random samples of a underlying population of effect sizes, i.e.</p>
+
+<p>Admittedly, meta-analyses based on study-level summary is still effective when the effects are homogeneous and different studies sample from similar population, they nevertheless are prone to well-knowen statistical fallacies, such as ecological bias, when the underlying populations and effects are heterogeneous, as it is often the case in real data.</p>
+<h2 id="individual-paticipant-meta-analyses">Individual-Paticipant Meta-Analyses</h2>
+<p>Individual-Paticipatn Data (IPD) Meta-Analysis is becoming increasing common <span class="citation">(Higgins et al. 2001)</span>. It has been argued that IPD data increases the power of analysis <span class="citation">(Cooper and Patall 2009)</span> and more robust to heterogenous effects sizes and populations [cite]. To account for between study heterogeneity in treatment effects, the use of covariates and/or random effects models is often recommended <span class="citation">(Aitkin 1999; Tudur Smith, Williamson, and Marson 2005)</span>. The random effects models can be seen as Bayesian Hierarchical Models <span class="citation">(Gelman and Hill 2006)</span>, based on the justification that conditioned on appropriate set of covariates, both individual-level and study-level, the residual heterogeneities are exchagneable. There are mature softwares for fitting various types of Bayesian Hierarchical models, including Generalized Linear models and Proportional Hazard models. [cite lme4, coxme and stan]</p>
+<p>Despite its convenient form and ease of inference, traditional IPD meta-analysis based on parametric Hierarchical models suffer two problems. The first is the lack of formal causal framework. It is difficult to pinpoint the causal interpretation of the effect estimates from a traditional IPD hierarchical model. Consider the following example, education researchers try to determine the effect of a new intervention program, applied to different classroom and administered by different teachers. In this case, the heterogeneity might come from either the different teachers or the different populations of schools, or both. Is the effect estimate averaging over teachers? Schools? Or both? What can we say about the effect for a new teacher, or a new school? The second problem is the inflexible form of parametric models. Traditional parametric models require explicit modeling assumptions from the researchers, which makes the model sensitive and facilitate cheery-picking. Non-parametric modeling allows flexible functional form and requires little manual tuning from the researchers.</p>
+<h1 id="potential-outcomes-for-meta-analysis">Potential Outcomes for Meta-Analysis</h1>
+<p><span class="citation">(Sobel, Madigan, and Wang 2015)</span> put meta-anlaysis on a concrete causal foundation by introducing a extended potential outcome framework. This section is joint work with Michael Sobel and David Madigan.</p>
+<h2 id="potential-outcomes">Potential Outcomes</h2>
+<p>Potentail Outcomes Framework [] defines causal effects as comparisons of outcomes under hypertheical counter-factual treatment assignment. For example, with binary treatment <span class="math inline"><em>Z</em> ∈ {0, 1}</span>, the causal effect of treatment <span class="math inline"><em>Z</em></span> on indidvidual <span class="math inline"><em>i</em></span> can be defined as <span class="math inline"><em>y</em><sub><em>i</em></sub>(1) − <em>y</em><sub><em>i</em></sub>(0)</span>. Typically, researchers are interested in estimating quantities such as the population averge treatment effect (PATE)</p>
+
+<p>the population averge treatment effect on the treated (PATT)</p>
+
+<p>The key assumption in causal inference is the ignorability assumption (or unconfoundedness assumption) <span class="citation">(Rosenbaum and Rubin 1983)</span>, which states that given a set of observed covariates, the treatment assignment <span class="math inline"><em>Z</em></span> is independent of the potential outcomes <span class="math inline">(<em>Y</em>(0), <em>Y</em>(1))</span></p>
+
+<p>In the case of randomized experiment, this assumption is trivially met without any covariates <span class="math inline"><em>X</em></span>. Under ignorability assumptoin,</p>
+
+<p>And thus causal effect can be identified from observations.</p>
+<h2 id="extended-potential-outcomes">Extended Potential Outcomes</h2>
+<p>In the case of a meta-analysis, consisting <span class="math inline"><em>S</em></span> studies and <span class="math inline"><em>Z</em></span> treatment variants, the potential outcomes <span class="math inline">$\bm Y$</span> for individual <span class="math inline"><em>i</em></span> can be defined as a matrix</p>
+
+<p>With this notation, we can interpret some commonly discussed meta-analytical estimates in a causal way. For example, assuming there are only two level of treatment (0 and 1) and the causal comparison is the difference, <em>study-specific</em> treatment effect for study <span class="math inline"><em>s</em></span> is <span class="math inline"><em>E</em>(<em>y</em>(<em>z</em>, <em>s</em>) − <em>y</em>(<em>z</em><sup>′</sup>, <em>s</em>))</span>. Note that this is different from <em>study-level</em> treatment effect <span class="math inline"><em>θ</em><sub><em>s</em></sub></span> in random effects models, which is <span class="math inline"><em>E</em>(<em>y</em>(<em>z</em>, <em>s</em>) − <em>y</em>(<em>z</em><sup>′</sup>, <em>s</em>) ∣ <em>S</em> = <em>s</em>)</span>. Below we will discuss conditions that will connect these two quantities.</p>
+<p>In the context of meta-analyses, unconfoundedness can be recast as unconfoundedness within each study, i.e.,</p>
+
+<p>However, this assumption is not sufficient for identifying causal effects in meta-analysis. One added layer for complexity of meta-analysis is the confounding of study selection. Consider an example of clinical trials. If some studies sample from mostly young patients while in some studies sample from mostly elderly patients, and the treatment is more effective on younger patients, then heterogeneities in treatment effects across studies would arise. Hierarchial models without adequately addressing this selection problems would result in misleading results.</p>
+<p>However, study selection is not the only factor contributing to heterogneities in treatment effects across studies. One lingering question is whether the same treatment <span class="math inline"><em>z</em></span> is implemented identically in all studies, or in another word, whether <span class="math inline">$Y_i(s_1, z)\disteq Y_i(s_2, z)$</span> for all pair of <span class="math inline"><em>s</em><sub>1</sub>, <em>s</em><sub>2</sub> ∈ {1, …, <em>S</em>}</span>, where <span class="math inline">$\disteq$</span> stands for equal in distribution. Consider an example of education intervention, in which interventions are carried out by teachers with various experience levels, then it is reasonable to question whether <span class="math inline">$Y_i(s_1, z)\disteq Y_i(s_2, x)$</span> holds.</p>
+<p>Two assumptions from <span class="citation">(Sobel, Madigan, and Wang 2015)</span> codify these two sources of heterogeneities.</p>
+A1. <em>Weak response consistency assumption for treatment <span class="math inline"><em>z</em></span></em>: For any <span class="math inline"><em>z</em> ∈ {1, …, <em>Z</em>}</span> and any pair <span class="math inline"><em>s</em><sub>1</sub>, <em>s</em><sub>2</sub> ∈ {1, …, <em>S</em>}</span>,
+
+A2. <em>Unconfounded study selection</em>:
+
+<p>.</p>
+<p>From a frequentist point of view, these two assumptions cannot be distinguished from one other. Thus <span class="citation">(Sobel, Madigan, and Wang 2015)</span> suggests that meta-analysts first assess the plausibilities of the two assumptions based on the characteristics of the studies, and typically assume one of these two to hold and then build models to see whether the heterogeneity could be accounted for by the other assumption. From a Bayesian point of view, we can use a very general model, and encode regularization through appropriate prior distributions to allow for reasonalbe separation of these two sources of heterogeneities. This will be the topic of the following sections.</p>
+<h1 id="meta-analysis-using-bayesian-non-parametrics">Meta-Analysis using Bayesian Non-parametrics</h1>
+<p>Traditionally, causal inference using potential outcomes focuses on two questions. Modeling of the treatment assignment process <span class="math inline"><em>p</em>(<em>z</em> ∣ <em>x</em>)</span>, also known as the propensity score, and modeling of the scientific process of how responses relate to treatment and covariates <span class="math inline"><em>p</em>(<em>y</em> ∣ <em>z</em>, <em>x</em>)</span>, also known as the response surface <span class="citation">(See Rubin 2005 for more details)</span>. A myriad of methods based on the either treatment assignment mechanism (e.g., propensity score matching), or response surface modeling (e.g., regression), or combination of these two (e.g., the doubly-robust method), has been proposed for causal inference of observational data.</p>
+<p>Recently, inspired by the advances in Bayesian non-parametic models <span class="citation">(Hjort et al. 2010)</span>, <span class="citation">(J. L. Hill 2011)</span> proposed a model that focuses on accurately estimating the response surface using flexible Bayesian Additive Regression Trees, or BART <span class="citation">(Chipman, George, and McCulloch 2010)</span>. Besides the well-known benefits of being robust to model misspecifications and being able to capture highly non-linear and interaction patterns, Bayesian non-parametric models provide natrual and coherent posterior intervals to convey inferential uncertainty.</p>
+<h2 id="gaussian-processes">Gaussian Processes</h2>
+<p>Gaussia Processes (GP) have become a popular tool for nonparametric regression. A random function <span class="math inline"><em>f</em> : 𝒳 → ℝ</span> is said to follow a GP process with kernel <span class="math inline"><em>k</em></span> if any finite-dimensional marginal of it is Gaussian distributed, i.e.</p>
+
+<p>where <span class="math inline">$\bm K_{\bm x, \bm x}$</span> is the Gram matrix of kernel <span class="math inline"><em>k</em></span>. The key component in a GP model is the kernel <span class="math inline"><em>k</em></span>, a semi-definite function defined on <span class="math inline">𝒳 × 𝒳</span> that encodes the structure. Judiciously choosing <span class="math inline"><em>K</em></span> is the most important part of fitting a GP model.</p>
+<p>A large part of its popularity is probably due to the fact it can be interpretated as a generalization of linear regression with Gaussian errors, the predominant model for parametric regression. In fact, according to Mercer’s Theorem <span class="citation">(C. Williams and Rasmussen 2006)</span>, kernel <span class="math inline"><em>k</em></span> can be decomposed into</p>
+
+<p>where <span class="math inline"><em>λ</em><sub><em>i</em></sub></span> and <span class="math inline"><em>ϕ</em><sub><em>i</em></sub></span> are respective eigenvalues and eigenfunctions of kernel <span class="math inline"><em>k</em></span> with respect to a measure <span class="math inline"><em>μ</em></span>, i.e.,</p>
+
+<p>Then GP can be considered as a basis expansion method that maps input <span class="math inline"><em>x</em></span> to an infinite dimensional space via the infinite series of functions <span class="math inline">{<em>ϕ</em><sub><em>i</em></sub>(<em>x</em>)}<sub><em>i</em> = 1</sub><sup>∞</sup></span>.</p>
+<h2 id="inference-for-standard-gp">Inference for Standard GP</h2>
+<p>Standard GP model for observation pairs <span class="math inline">$(y_i, \bm x_i)_{i=1}^N$</span> is</p>
+
+<p>For a given kernel <span class="math inline"><em>k</em></span>, the marginal distribution of <span class="math inline">$\bm y$</span> is</p>
+
+<p>where <span class="math inline">$K_{\bm x, \bm x}$</span> is the Gram matrix of kernel <span class="math inline"><em>k</em></span> whose entries are <span class="math inline"><em>k</em>(<em>x</em><sub><em>i</em></sub>, <em>x</em><sub><em>j</em></sub>)</span>. The predictive distribution at test points <span class="math inline">$\bm X^\star$</span> is</p>
+
+<p>For inference on hyperparameters, e.g., parameteres governing the kernels, a standard practice is to maximize log marginal likelihood</p>
+
+<p>and plug in the fitted value <span class="math inline">$\hat \theta$</span> into the predictive distribution of new points <span class="math inline">$\bm X^\star$</span>.</p>
+<h2 id="generative-models">Generative Models</h2>
+<h2 id="gaussian-processes-vector--and-matrix-valued-functions">Gaussian Processes Vector- and Matrix-Valued Functions</h2>
+<p>In the context of meta-analysis, we can natrually extend the function <span class="math inline"><em>f</em></span> to be a matrix-valued function, i.e., <span class="math inline">$\bm f:\mathcal{X}\rightarrow\mathbb{R}^{S\times Z}$</span>. The finite dimensional marginal of <span class="math inline"><em>f</em></span> should follow a high-dimensional equivalent of Gaussian distribution. First consider one dimensional marginal, <span class="math inline">$\bm f(x_0)\in\mathbb{R}^{S\times Z}$</span>, we can define its distribution as a matrix normal distribution</p>
+
+<p>where <span class="math inline"><em>M</em></span> is the mean matrix, <span class="math inline"><em>U</em></span> is the between-row covariance and <span class="math inline"><em>V</em></span> is the between-column covariance. Then the consistency assumption (A1) for study <span class="math inline"><em>s</em><sub>1</sub>, <em>s</em><sub>2</sub></span> and treatment <span class="math inline"><em>z</em></span> indicates <span class="math inline">$\bm f_{s_1, z}(x_0)\disteq \bm f_{s_2, z}(x_0)$</span>.</p>
+<p>Instead of working with random matrices, however, it is easier to work with random vectors by exploiting the connection between matrix normal distribution and multivariate (vector) normal distribution. In fact, it is well know that</p>
+
+<p>In GP literature, vector-valued functions are known as multi-task learning problems, where <span class="math inline"><em>U</em> ⊗ <em>V</em></span> represents between-task similarity and allows borrowing-strength among tasks <span class="citation">(Bonilla, Chai, and Williams 2008; Yu, Tresp, and Schwaighofer 2005)</span>. <span class="citation">(Alvarez, Rosasco, and Lawrence 2011)</span> gives comprehensive reviews of the typical kernels used for vector-valued functions.</p>
+<h2 id="from-seperable-kernels-to-higher-dimensional-feature-space">From Seperable Kernels to Higher Dimensional Feature Space</h2>
+<p>Further, we can convert vector-valued Gaussian Process to a scalar-valued Gaussian Process on a higher dimentional feature space with a tensor-product kernel, i.e.,</p>
+
+<h2 id="network-meta-analysis">Network Meta-Analysis</h2>
+<h1 id="models-descriptions">Models Descriptions</h1>
+<h1 id="inference">Inference</h1>
+<h1 id="simulations">Simulations</h1>
+<div id="references" class="references">
+<h1 id="real-data-star-data" class="unnumbered">Real Data (STAR data)</h1>
+<div id="ref-aitkin1999meta">
+<p>Aitkin, Murray. 1999. “Meta-Analysis by Random Effect Modelling in Generalized Linear Models.” <em>Statistics in Medicine</em> 18(17-18): 2343–51.</p>
+</div>
+<div id="ref-alvarez2011kernels">
+<p>Alvarez, Mauricio A, Lorenzo Rosasco, and Neil D Lawrence. 2011. “Kernels for Vector-Valued Functions: A Review.” <em>arXiv preprint arXiv:1106.6251</em>.</p>
+</div>
+<div id="ref-bonilla2008multi">
+<p>Bonilla, Edwin, Kian Ming Chai, and Christopher Williams. 2008. “Multi-Task Gaussian Process Prediction.”</p>
+</div>
+<div id="ref-chipman2010bart">
+<p>Chipman, Hugh A, Edward I George, and Robert E McCulloch. 2010. “BART: Bayesian Additive Regression Trees.” <em>The Annals of Applied Statistics</em>: 266–98.</p>
+</div>
+<div id="ref-cooper2009relative">
+<p>Cooper, Harris, and Erika A Patall. 2009. “The Relative Benefits of Meta-Analysis Conducted with Individual Participant Data Versus Aggregated Data.” <em>Psychological methods</em> 14(2): 165.</p>
+</div>
+<div id="ref-dersimonian1986meta">
+<p>DerSimonian, Rebecca, and Nan Laird. 1986. “Meta-Analysis in Clinical Trials.” <em>Controlled Clinical Trials</em> 7(3): 177–88.</p>
+</div>
+<div id="ref-gelman2006data">
+<p>Gelman, Andrew, and Jennifer Hill. 2006. <em>Data Analysis Using Regression and Multilevel/hierarchical Models</em>. Cambridge University Press.</p>
+</div>
+<div id="ref-higgins2001meta">
+<p>Higgins, Julian, Anne Whitehead, Rebecca M Turner, Rumana Z Omar, and Simon G Thompson. 2001. “Meta-Analysis of Continuous Outcome Data from Individual Patients.” <em>Statistics in Medicine</em> 20(15): 2219–41.</p>
+</div>
+<div id="ref-hill2011bayesian">
+<p>Hill, Jennifer L. 2011. “Bayesian Nonparametric Modeling for Causal Inference.” <em>Journal of Computational and Graphical Statistics</em> 20(1).</p>
+</div>
+<div id="ref-hjort2010bayesian">
+<p>Hjort, Nils Lid, CC Holmes, Peter Müller, and Stephen G Walker. 2010. “Bayesian Nonparametrics.” <em>AMC</em> 10: 12.</p>
+</div>
+<div id="ref-rosenbaum1983central">
+<p>Rosenbaum, Paul R, and Donald B Rubin. 1983. “The Central Role of the Propensity Score in Observational Studies for Causal Effects.” <em>Biometrika</em> 70(1): 41–55.</p>
+</div>
+<div id="ref-rubin2005causal">
+<p>Rubin, Donald B. 2005. “Causal Inference Using Potential Outcomes.” <em>Journal of the American Statistical Association</em> 100(469).</p>
+</div>
+<div id="ref-sobel2015">
+<p>Sobel, Michael E, David B Madigan, and Wei Wang. 2015. “Meta-Analysis: A Causal Framework, with Application to Randomized Studies of Vioxx.” <em>Technical Report, Department of Statistics, Columbia Univeristy</em>.</p>
+</div>
+<div id="ref-tudursmith2005investigating">
+<p>Tudur Smith, Catrin, Paula R Williamson, and Anthony G Marson. 2005. “Investigating Heterogeneity in an Individual Patient Data Meta-Analysis of Time to Event Outcomes.” <em>Statistics in medicine</em> 24(9): 1307–19.</p>
+</div>
+<div id="ref-williams2006gaussian">
+<p>Williams, CKI, and CE Rasmussen. 2006. <em>Gaussian Processes for Machine Learning</em>. Cambridge: MIT Press.</p>
+</div>
+<div id="ref-yu2005learning">
+<p>Yu, Kai, Volker Tresp, and Anton Schwaighofer. 2005. “Learning Gaussian Processes from Multiple Tasks.” In <em>Proceedings of the 22nd International Conference on Machine Learning</em>, ACM, 1012–19.</p>
+</div>
+</div>
+</body>
+</html>

@@ -4,7 +4,7 @@ author:
 - name: Wei Wang
   affiliation: Columbia University
   email: ww2243@columbia.edu
-date: Apr 21, 2015
+date: Spet 30, 2015
 abstract: 
     Meta-Analysis, the synthesis of evidence from multiple study sources, has
     become increasing popular in fields such as education, psychology and public
@@ -326,11 +326,11 @@ random vectors by exploiting the connection between matrix normal distribution
 and multivariate (vector) normal distribution. In fact, it is well know that
 
 \begin{equation*}
-\text{vec}{f(x_0)} \sim \mathcal{N}(\text{vec}{M}, U\kr V)
+\text{vec}{f(x_0)} \sim \mathcal{N}(\text{vec}{M}, U\otimes V)
 \end{equation*}
 
 In GP literature, vector-valued functions are known as multi-task learning
-problems, where $U\kr V$ represents between-task similarity and allows
+problems, where $U\otimes V$ represents between-task similarity and allows
 borrowing-strength among tasks
 [@yu2005learning; @bonilla2008multi]. [@alvarez2011kernels] gives comprehensive
 reviews of the typical kernels used for vector-valued functions.
@@ -344,7 +344,7 @@ Gaussian Process on a higher dimentional feature space with a tensor-product
 kernel, i.e.,
 
 \begin{equation*}
-\bm K_{X\times S\times T}=\bm K_{X} \kr \bm K_{S} \kr K_{T}
+\bm K_{X\times S\times T}=\bm K_{X} \otimes \bm K_{S} \otimes K_{T}
 \end{equation*}
 
 ## Network Meta-Analysis ##
