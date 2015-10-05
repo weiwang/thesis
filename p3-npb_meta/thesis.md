@@ -4,7 +4,7 @@ author:
 - name: Wei Wang
   affiliation: Columbia University
   email: ww2243@columbia.edu
-date: Spet 30, 2015
+date: Octorber, 2015
 abstract: 
     Meta-Analysis, the synthesis of evidence from multiple study sources, has
     become increasing popular in fields such as education, psychology and public
@@ -36,11 +36,11 @@ investigation. Originally hailed in medical and education research,
 meta-analyses gain traction in wider academic disciplines as the awareness for
 open data is increasing across all scientific communities.
 
-However, traditional meta-analyses mostly are conducted based on extracting and
+However, traditional meta-analyses are mostly conducted based on extracting and
 combining study-level effect summaries, since access to individual-paticipant
-level data are historically inhabitantly difficult to obtain. In this framework,
+level data tend to be inhabitantly difficult to obtain. In this framework,
 researchers extract effect size estimates $y_s$ and standard errors
-$\sigma_s^2$, where $s\in \{1,\ldots,S\}$ and $S$ is the number of studies. To
+$\sigma_s^2$, where study index $s\in \{1,\ldots,S\}$ and $S$ is the number of studies. To
 handle effect size heterogeneity, a random effect model is typically used
 [@dersimonian1986meta], in which all study effect sizes are random samples of a
 underlying population of effect sizes, i.e.
@@ -67,12 +67,12 @@ effects, the use of covariates and/or random effects models is often recommended
 be seen as Bayesian Hierarchical Models [@gelman2006data], based on the
 justification that conditioned on appropriate set of covariates, both
 individual-level and study-level, the residual heterogeneities are
-exchagneable. There are mature softwares for fitting various types of Bayesian
+exchangeable. There are mature softwares for fitting various types of Bayesian
 Hierarchical models, including Generalized Linear models and Proportional Hazard
 models. [cite lme4, coxme and stan]
 
 Despite its convenient form and ease of inference, traditional IPD meta-analysis
-based on parametric Hierarchical models suffer two problems. The first is the
+based on parametric Hierarchical models suffer from two problems. The first is the
 lack of formal causal framework. It is difficult to pinpoint the causal
 interpretation of the effect estimates from a traditional IPD hierarchical
 model. Consider the following example, education researchers try to determine
@@ -81,9 +81,9 @@ administered by different teachers. In this case, the heterogeneity might come
 from either the different teachers or the different populations of schools, or
 both. Is the effect estimate averaging over teachers? Schools? Or both? What can
 we say about the effect for a new teacher, or a new school? The second problem
-is the inflexible form of parametric models. Traditional parametric models
-require explicit modeling assumptions from the researchers, which makes the
-model sensitive and facilitate cheery-picking. Non-parametric modeling allows
+is the inflexible form of the parametric model. Traditional parametric model
+requires explicit modeling assumptions from the researchers, which makes the
+model sensitive and facilitate potential cheery-picking. Non-parametric modeling allows
 flexible functional form and requires little manual tuning from the researchers.
 
 # Potential Outcomes for Meta-Analysis#
@@ -146,7 +146,7 @@ y_i(S,1) & y_i(S,2) & \cdots & y_i(S,Z)
 \end{pmatrix}
 \end{equation*}
 
-With this notation, we can interpret some commonly discussed meta-analytical
+\noindent With this notation, we can interpret some commonly discussed meta-analytical
 estimates in a causal way. For example, assuming there are only two level of
 treatment (0 and 1) and the causal comparison is the difference,
 *study-specific* treatment effect for study $s$ is $E(y(z,s)-y(z^\prime,
@@ -164,7 +164,7 @@ unconfoundedness within each study, i.e.,
 However, this assumption is not sufficient for identifying causal effects in
 meta-analysis. One added layer for complexity of meta-analysis is the
 confounding of study selection. Consider an example of clinical trials. If some
-studies sample from mostly young patients while in some studies sample from
+studies sample from mostly young patients while some other studies sample from
 mostly elderly patients, and the treatment is more effective on younger
 patients, then heterogeneities in treatment effects across studies would
 arise. Hierarchial models without adequately addressing this selection problems
@@ -178,7 +178,7 @@ whether $Y_i(s_1, z)\disteq Y_i(s_2, z)$ for all pair of $s_1, s_2
 distribution. Consider an example of education intervention, in which
 interventions are carried out by teachers with various experience levels, then
 it is reasonable to question whether $Y_i(s_1, z)\disteq Y_i(s_2,
-x)$ holds.
+z)$ holds.
 
 Two assumptions from [@sobel2015] codify these two sources of heterogeneities.
 
@@ -232,7 +232,7 @@ natrual and coherent posterior intervals to convey inferential uncertainty.
 Gaussia Processes (GP) have become a popular tool for nonparametric
 regression. A random function $f:\mathcal{X}\rightarrow\mathbb{R}$ is said to
 follow a GP process with kernel $k$ if any finite-dimensional marginal of it is
-Gaussian distributed, i.e.
+Gaussianly distributed, i.e.
 
 \begin{equation*}
     f(\bm x) \sim \mathcal{N}(\bm\mu, \bm K_{\bm x, \bm x}), \forall\ \bm x \in
@@ -257,7 +257,7 @@ where $\lambda_i$ and $\phi_i$ are respective eigenvalues and eigenfunctions of
 kernel $k$ with respect to a measure $\mu$, i.e.,
 
 \begin{equation*}
-\int k_i(x, x^\prime)\phi_i(x) \,d\mu(x)=\lambda\phi_i(x^\prime),
+\int k(x, x^\prime)\phi_i(x) \,d\mu(x)=\lambda\phi_i(x^\prime),
 \end{equation*}
 
 Then GP can be considered as a basis expansion method that maps input $x$ to an
@@ -266,7 +266,7 @@ Then GP can be considered as a basis expansion method that maps input $x$ to an
 
 ## Inference for Standard GP ##
 
-Standard GP model for observation pairs $(y_i, \bm x_i)_{i=1}^N$ is
+Standard GP model for $N$ observation pairs $(y_i, \bm x_i)_{i=1}^N$ is
 
 \begin{align*}
     y_i\mid f &\sim \mathcal{N}(f(\bm x_i), \sigma^2) \\
@@ -311,9 +311,10 @@ equivalent of Gaussian distribution. First consider one dimensional marginal,
 $\bm f(x_0)\in\mathbb{R}^{S\times Z}$, we can define its distribution as a
 matrix normal distribution
 
-\begin{equation*}
+\begin{equation}
 \bm f(x_0) \sim \mathcal{MN}(M_{S\times Z}, U_{S\times S}, V_{Z\times Z})
-\end{equation*}
+\label{matrix_normal}
+\end{equation}
 
 where $M$ is the mean matrix, $U$ is the between-row covariance and $V$ is the
 between-column covariance. Then the consistency assumption (A1) for study $s_1,
@@ -326,18 +327,22 @@ random vectors by exploiting the connection between matrix normal distribution
 and multivariate (vector) normal distribution. In fact, it is well know that
 
 \begin{equation*}
-\text{vec}{f(x_0)} \sim \mathcal{N}(\text{vec}{M}, U\otimes V)
+\text{vec}{\bm f(x_0)} \sim \mathcal{N}(\text{vec}{M}, U\otimes V)
 \end{equation*}
 
-In GP literature, vector-valued functions are known as multi-task learning
-problems, where $U\otimes V$ represents between-task similarity and allows
-borrowing-strength among tasks
+In machine learning literature, vector-valued functions are known as multi-task
+learning problems, where $U\otimes V$ represents between-task similarity and
+allows borrowing-strength among tasks
 [@yu2005learning; @bonilla2008multi]. [@alvarez2011kernels] gives comprehensive
-reviews of the typical kernels used for vector-valued functions.
+reviews of the typical kernels used for vector-valued functions. In particular,
+in the context of meta-analysis involving mulitple treatment arms, between-task
+can be separated into two dimensions, between-study, denoted by $U$, and
+between-treatment, denoted by $V$. Eq. \ref{matrix_normal} specifies a structure
+where between-study and between-treatment similarities are assumed to be
+separable.
 
 
-
-## From Seperable Kernels to Higher Dimensional Feature Space ##
+## Modeling Between-study and Between-treatment Similarities##
 
 Further, we can convert vector-valued Gaussian Process to a scalar-valued
 Gaussian Process on a higher dimentional feature space with a tensor-product
