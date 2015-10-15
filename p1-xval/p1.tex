@@ -1,0 +1,389 @@
+\documentclass[11pt,article,oneside]{memoir}
+\usepackage[]{org-preamble-pdflatex}
+\usepackage{amsmath, amssymb, bm}
+\newcommand\disteq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny d}}}{=}}}
+
+
+
+\title{\bigskip \bigskip Insensitivity of Predictive Accuracy for Selecting among Multilevel
+Models}
+
+%\author{true}
+
+\author{\Large Wei Wang\vspace{0.05in} \newline\normalsize\emph{Columbia University} \newline\footnotesize \url{ww2243@columbia.edu}\vspace*{0.2in}\newline }
+
+%\author{Wei Wang (Columbia University)}
+
+\date{}
+
+\begin{document}  
+\setkeys{Gin}{width=1\textwidth} 	
+%\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Minion Pro} 
+%\setsansfont[Mapping=tex-text]{Minion Pro} 
+%\setmonofont[Mapping=tex-text,Scale=0.8]{Pragmata}
+\chapterstyle{article-4} 
+\pagestyle{kjh}
+
+\published{Octorber, 2015. Incomplete Draft. Please do not cite without permission.}
+
+\maketitle
+
+
+
+\begin{abstract}
+
+\noindent As a simple and compelling approach for estimating out-of-sample
+prediction error, cross-validation naturally lends itself to the task of
+model comparison. However, even with moderate sample size, it can be
+surprisingly difficult to compare multilevel models based on predictive
+accuracy. Using a hierarchical model fit to large survey data with a
+battery of questions, we demonstrate that even though cross-validation
+might give good estimates of pointwise out-of-sample prediction error,
+it is not always a sensitive instrument for model comparison.
+
+\end{abstract}
+
+
+Models selection is an integral part of any data analysis. In an ideal
+world, iteratively improving and comparing model fits of different
+specifications should be the routine of all statistical procedures,
+especailly when developments in methodology and computation facilitate
+evermore sophisticated and complex models. Often, the most important
+question is not that whether a more complicated model is computational
+tractable, but why this model is an improvement over the older and
+simpler ones. Multilevel models (also known as Hierarchical Models) are
+an example of modern statistical models, which specifically handles data
+with group structure, for example, a national survey data with
+geographic and demographic information or an educational intervention
+applied to different schools and neighborhoods.
+
+The gold standard of model comparison is out-of-sample prediction
+accuracy, i.e., in the hypothetical case of more observations coming in,
+which model gives the best prediction of new case of outcomes based on
+new cases of predictors. Cross-validation is a perhaps the most
+widely-used method for estimating out-of-sample prediction error and
+comparison of statistical models. By fitting the model on the training
+data set and then evaluating it on the hold-out testing set, the
+over-optimism of using data twice is avoided. Furthermore, attempts have
+been made to use cross-validated objective functions for statistical
+inference (Craven and Wahba 1978; Seeger 2008), thus integrating
+out-of-sample prediction error estimation and model selection into one
+step.
+
+In this chapter, I will discuss several challenges I encounter in using
+cross-validation predictive accuracy in evaluating and selecting among
+multilevel models, specifically in binary classification models. The
+first challenge is the lack of clear protocol for the cross-validation
+procedure: to truly test the model, the holdout set cannot be a simple
+random sample of the data but instead needs to have some multilevel
+structure itself, so that entire groups as well as individual
+observations are held out. Hierarchical cross-validation can be
+performed in the context of particular applications (Price, Nero, and
+Gelman 1996) but it is not clear how best to subsample structured data
+for cross-validation in a general way. The second challenge is that, in
+multilevel models, the observed loss function for data-level
+cross-validation can be so close to flat that the cross-validation
+estimates of prediction errors under candidate models can be swamped by
+random fluctuations.
+
+I focus on the second of these concerns, demonstrating the limitations
+of prediction error in the context of a set of multilevel models fit to
+a large cross-tabulated national survey. An innovative aspect of our
+analysis is that we evaluate separately on 71 different survey
+responses, taking each in turn as the outcome in a comparison of
+regression models. This allows us to construct a relatively large corpus
+of data out of a single survey.
+
+This chapter is a joint work with Andrew Gelman, and mostly based on
+(Wang and Gelman 2014).
+
+\section{Multilevel Models and Survey
+Research}\label{multilevel-models-and-survey-research}
+
+There are two types of survey researchers, as identified by the classic
+book ``Survey Erros and Survey Costs'' (Groves 2004), the
+\emph{describers}, who ``use surveys to descxribe characteristics of a
+fixed population'', and the \emph{modelers}, who ``seek to identify
+causes of phenomena constatly occuring in a society''. The latter group
+developed models to genertae less biased estimates, as a result of using
+more data and handling more inherent structure within the data.
+Multilevel models, an example of the \emph{modeler} approach, are
+effective in survey research, as partial pooling can yield accurate
+state-level estimates from national polls (Gelman and Hill 2007).
+Multilevel models have been successfully applied both to representative
+and nonrepresentative surveys to obtain accurate small-area estimation
+and prediction (Fay and Herriot 1979; Ghitza and Gelman 2013; Lax and
+Phillips 2009; Wang et al. 2014), and the practical application of such
+methods is currently being actively discussed in social science research
+(Buttice and Highton 2013; Lax and Phillips 2013). In the present paper,
+we conduct model selection procedures based on \(k\)-fold
+cross-validation and find that under this framework, the improvement of
+multilevel models over classical models is surprisingly small when
+measured on the scale of prediction error. Furthermore, we demonstrate
+that this lack of notable improvement is related to the sample size and
+data structure by repeating the analysis on simulated data sets that
+vary in terms of these two factors.
+
+Our results illustrate that under multilevel structure, it could be
+tricky to use cross-validation in model selection, as the size of the
+data and how balanced the structure is heavily affect the relative
+performance of the models.
+
+In the next section, I will present a fully Bayesian model comparison
+framework, a preparation for the real data analysis.
+
+\section{Model Assessment and Selection via
+Cross-Validation}\label{model-assessment-and-selection-via-cross-validation}
+
+\subsection{Predictive Loss}\label{predictive-loss}
+
+We start with a loss function \(l(\tilde y, a)\) corresponding to the
+inferential action \(a_M\) based on a model \(M\), in face of future
+observations \(\tilde y\). The available data, typically consisting of
+predictors \(x\) and outcomes \(y\), are labeled as \(D\). The
+corresponding predictive loss is then,
+
+\begin{equation}
+\label{eq:explossgeneral}
+PL(p^t, M, D)=E_{p^t}l(\tilde y,
+a_M)=\int l(\tilde y, a_M) p^t(\tilde y)d\tilde y
+\end{equation}
+
+\noindent where \(p^t(\cdot)\) is the true distribution from which the
+future observations \(\tilde y\) are generated.
+
+The predictive loss is affected by the form of the action \(a_M\), the
+loss function \(l\), and the data \(D\). For example, \(a_M\) could be
+the mean of the posterior predictive distribution and \(l\) the mean
+square error loss. However, it is often convenient and theoretically
+desirable to use the whole posterior predictive distribution as the
+inferential action and a logarithmic loss function. In addition, using
+the whole posterior predictive distribution has a Bayesian
+justification, as it reflects the full inferential uncertainty
+conditional on the model (Vehtari and Ojanen 2012). Substituting the
+choice of \(a_M\) and \(l\) into (\ref{eq:explossgeneral}) yields,
+
+\begin{align}
+  \begin{split}
+  \label{eq:logloss}
+  PL(p^t, M, D)&=E_{p^t}[-\log p(\tilde y|D, M)]\\ 
+  &=-\int p^t(\tilde y) \log p(\tilde y|D, M) d\tilde y
+  \end{split}
+  \end{align}
+
+\noindent This quantity is central to predictive model selection. The
+fundamental difficulty in estimating it is that the true distribution
+\(p^t(\cdot)\) is unknown.
+
+Another important quantity arises when we approximate the true
+distribution with the empirical distribution, which gives the training
+loss,
+
+\begin{align}
+  \begin{split}
+  \label{eq:trloss}
+  TL(M, D)&=-\int \log p(y|D, M) d\hat{F}(y)\\
+  &=-\,\frac{1}{N}\sum_{y\in D}\log p(y | D, M).
+  \end{split}
+\end{align}
+  
+The training loss uses the same data for both estimation and evaluation and so
+in general underestimates prediction error.
+
+## Prediction Error ##
+
+With (\ref{eq:logloss}), the model selection task is straightforward. Among the
+candidate models, the best model under this framework is the one that minimizes
+the predictive loss:
+
+\begin{equation}
+  \label{eq:minimizer}
+  - \min_{M} \int \!p^t(\tilde y) \log p(\tilde y|D, M) d\tilde y,
+  \end{equation}
+  
+which has a lower bound, $-\!\int\! p^t(\tilde y) \log p^t(\tilde y) d\tilde y$,
+which is the entropy of the true distribution. It is often more informative to
+look at the excess of the predictive loss over this lower bound, as shown in
+(\ref{eq:preerror}). We label this quantity as the prediction
+error. Conceptually, the prediction error indicates how far the posterior
+predictive distribution is from the oracle, and it is the Kullback-Leibler
+divergence between the posterior predictive distribution of the candidate model
+and the true generative model. As its form suggests, the prediction error is the
+difference between log posterior predictive density and log true predictive
+density, averaged over the true predictive distribution,
+
+\begin{align}
+\begin{split}
+  \label{eq:preerror}
+    &PE(p^t, M, D)= PL(p^t, M, D) - LB(p^t) \\  
+               &=-\int p^t(\tilde y) \log p(\tilde y|D, M) d\tilde y+\int
+               p^t(\tilde y) \log p^t(\tilde y) d\tilde y.
+               \end{split}
+\end{align}
+
+So to estimate the prediction error, we need to estimate the two terms
+in (\ref{eq:preerror}).
+
+\subsection{\texorpdfstring{\(k\)-fold Cross-Validation for Estimating
+Predictive
+Loss}{k-fold Cross-Validation for Estimating Predictive Loss}}\label{k-fold-cross-validation-for-estimating-predictive-loss}
+
+In the predictive framework, the central obstacle of estimating the
+predictive loss (\ref{eq:logloss}) is that the future observations are
+not available. One thread of research attempts to estimate and correct
+the bias introduced by reusing the sample and thus gives rise to various
+information criteria, whose validity hinges on a number of assumptions
+and simplifications. Another thread of research is to use hold-out data
+for testing, thus making training and testing data independent. This
+leads to a variety of resampling procedures, including leave-one-out
+cross-validation, \(k\)-fold cross-validation, Monte Carlo
+cross-validation, and bootstrapping. In practice, \(k\)-fold
+cross-validation is popular due to its computational convenience and
+stability (Kale, Kumar, and Vassilvitskii 2011). Formally, the
+\(k\)-fold cross-validation of the predictive loss is given by
+
+\begin{align}
+\begin{split}
+  \label{eq:xvalesti}
+  \widehat{PL}^{\text{CV}}(M, D) &=-\,\frac{1}{N}\sum_{k=1}^K\sum_{i\in
+    \text{test}_k}\log p(y_i|D^k, M)\\
+  &=-\,\frac{1}{N}\sum_{i=1}^N\log
+  p(y_i|D^{(\backslash i)}, M),
+\end{split}
+\end{align}
+
+\noindent where \(D^k\) represents the \(k\)\textsuperscript{th}
+training set, \(\text{test}_k\) represents the \(k\)\textsuperscript{th}
+testing set under the random partition and \(D^{(\backslash i)}\)
+denotes the training set that excludes the \(i\)\textsuperscript{th}
+observation. Because \(k\)-fold cross-validation does not use all the
+data, the prediction error estimates are biased, but in the cases where
+there are relatively few predictors, this bias is small (Burman 1989).
+
+The practical impediment of using cross-validation is the computational
+burden: with \(k\)-fold cross-validation, we need to fit the model \(k\)
+times. However, in many cases it is possible to perform the \(k\) steps
+in parallel.
+
+The problem remains of estimating the second term in
+(\ref{eq:preerror}), namely the lower bound of predictive loss. In this
+paper, we use the in-sample training loss \(TL(M_{\text{s}}, D)\) of the
+saturated model \(M_s\) as the surrogate for the lower bound. So the
+estimated prediction error is
+
+\begin{align}
+\begin{split}
+  \label{eq:esti_preerror}
+  &\widehat{PE}(M, D)=\widehat{PL}^{\text{CV}}(M,D)-TL(M_{\text{s}},D)\\
+  &= -\,\frac{1}{N}\sum_{i=1}^N\log p(y_i|D^{(\backslash i)},
+  M)+\frac{1}{N}\sum_{y\in D}\log p(y | D, M_{\text{s}}).
+\end{split}
+\end{align}
+
+\subsection{Cross-Validation of Structured Data}
+
+Standard cross-validation assumes that data are independent and with no
+distributional differences between the training and testing sets. For
+structured data, it is not always clear how best to perform this
+partition. (Burman, Chow, and Nolan 1994) discusses a modification of
+ordinary cross-validation procedure for stationary time series. In this
+paper, we focus on the cross-tabulated structure, which is the
+characteristic of survey data with discrete responses. In an unbalanced
+cross-tabulated data set, simple random sampling might result in
+undersampling of small cells. Thus, we adopt a stratified sampling
+approach to guarantee that each cell is partitioned into a training part
+and a testing part. Another possibility is to perform a cluster sampling
+and train the model on some cells and test the fitted model on others.
+This approach is related to transfer learning (Pan and Yang 2010). In
+the analysis of survey data, the focus is mostly on the existing cells
+rather than on hypothetical new cells, and so we only discuss
+cross-validation using stratified sampling on structured data.
+
+\hyperdef{}{references}{\label{references}}
+\section*{Bibliography}\label{bibliography}
+\addcontentsline{toc}{section}{Bibliography}
+
+\hyperdef{}{ref-burman1989comparative}{\label{ref-burman1989comparative}}
+Burman, Prabir. 1989. ``A comparative study of ordinary
+cross-validation, v-fold cross-validation and the repeated
+learning-testing methods.'' \emph{Biometrika} 76(3): 503--514.
+
+\hyperdef{}{ref-burman1994cross}{\label{ref-burman1994cross}}
+Burman, Prabir, Edmond Chow, and Deborah Nolan. 1994. ``A
+cross-validatory method for dependent data.'' \emph{Biometrika} 81(2):
+351--358.
+
+\hyperdef{}{ref-butticeux5f2013}{\label{ref-butticeux5f2013}}
+Buttice, Matthew K., and Benjamin Highton. 2013. ``How does multilevel
+regression and poststratification perform with conventional national
+surveys?'' \emph{Political Analysis} 21(4): 449--467.
+
+\hyperdef{}{ref-craven1978smoothing}{\label{ref-craven1978smoothing}}
+Craven, Peter, and Grace Wahba. 1978. ``Smoothing noisy data with spline
+functions.'' \emph{Numerische Mathematik} 31(4): 377--403.
+
+\hyperdef{}{ref-FayHerriot:1979}{\label{ref-FayHerriot:1979}}
+Fay, R. E., and R. A. Herriot. 1979. ``Estimates of income for small
+places: An application of james-stein procedures to census data.''
+\emph{Journal of the American Statistical Association} 74: 269--277.
+
+\hyperdef{}{ref-gelman2007data}{\label{ref-gelman2007data}}
+Gelman, Andrew, and Jennifer Hill. 2007. \emph{Data analysis using
+regression and multilevel/Hierarchical models}. Cambridge University
+Press.
+
+\hyperdef{}{ref-ghitzaux5f2013}{\label{ref-ghitzaux5f2013}}
+Ghitza, Yair, and Andrew Gelman. 2013. ``Deep interactions with MRP:
+Election turnout and voting patterns among small electoral subgroups.''
+\emph{American Journal of Political Science} 57(3): 762--776.
+
+\hyperdef{}{ref-groves2004survey}{\label{ref-groves2004survey}}
+Groves, Robert M. 2004. 536 \emph{Survey errors and survey costs}. John
+Wiley \& Sons.
+
+\hyperdef{}{ref-kale2011cross}{\label{ref-kale2011cross}}
+Kale, Satyen, Ravi Kumar, and Sergei Vassilvitskii. 2011.
+``Cross-validation and mean-square stability.'' In \emph{Innovations in
+computer science,} Tsinghua University Press, p. 487--495.
+
+\hyperdef{}{ref-laxux5f2009}{\label{ref-laxux5f2009}}
+Lax, Jeffrey R., and Justin H. Phillips. 2009. ``How should we estimate
+public opinion in the states?'' \emph{American Journal of Political
+Science} 53(1): 107--121.
+
+\hyperdef{}{ref-laxux5f2013}{\label{ref-laxux5f2013}}
+Lax, Jeffrey R., and Justin H. Phillips. 2013. ``How should we estimate
+sub-national opinion using MRP? Preliminary findings and
+recommendations.'' \emph{Presented at Midwest Political Science
+Association}.
+
+\hyperdef{}{ref-pan2010survey}{\label{ref-pan2010survey}}
+Pan, Sinno Jialin, and Qiang Yang. 2010. ``A survey on transfer
+learning.'' \emph{IEEE Transactions on Knowledge and Data Engineering}
+22(10): 1345--1359.
+
+\hyperdef{}{ref-PriceGelmanNero1996}{\label{ref-PriceGelmanNero1996}}
+Price, Phillip N., Anthony V. Nero, and Andrew Gelman. 1996. ``Bayesian
+prediction of mean indoor radon concentrations for minnesota counties.''
+\emph{Health Physics} 71: 922--936.
+
+\hyperdef{}{ref-seeger2008cross}{\label{ref-seeger2008cross}}
+Seeger, Matthias W. 2008. ``Cross-validation optimization for large
+scale structured classification kernel methods.'' \emph{Journal of
+Machine Learning Research} 9: 1147--1178.
+
+\hyperdef{}{ref-Vehtari2012a}{\label{ref-Vehtari2012a}}
+Vehtari, Aki, and Janne Ojanen. 2012. ``A survey of bayesian predictive
+methods for model assessment, selection and comparison.''
+\emph{Statistics Surveys} 6: 142--228.
+
+\hyperdef{}{ref-wang2014difficulty}{\label{ref-wang2014difficulty}}
+Wang, Wei, and Andrew Gelman. 2014. ``Difficulty of selecting among
+multilevel models using predictive accuracy.'' \emph{Statistics and Its
+Interface} 7: 1--8.
+
+\hyperdef{}{ref-wangux5f2014}{\label{ref-wangux5f2014}}
+Wang, Wei et al. 2014. ``Forecasting elections with non-representative
+polls.'' \emph{International Journal of Forecasting.}: Forthcoming.
+
+\end{document}
