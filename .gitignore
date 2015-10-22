@@ -4,6 +4,10 @@
 *.log
 *.nav
 *.out
+*.xml
+*.dvi
+*.bcf
+.DS_Store
 *.png
 *.snm
 *.toc
