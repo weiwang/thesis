@@ -1,55 +1,5 @@
-\documentclass[11pt,article,oneside]{memoir}
-\usepackage[]{org-preamble-pdflatex}
-\usepackage{amsmath, amssymb, bm}
-<<<<<<< HEAD
-\usepackage{graphicx}
-\graphicspath{{./figures/}}
-\usepackage{subfigure}
-=======
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
-\newcommand\disteq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny d}}}{=}}}
-
-
-
-\title{\bigskip \bigskip Insensitivity of Predictive Accuracy for Selecting among Multilevel
+\chapter{Insensitivity of Predictive Accuracy for Selecting among Multilevel
 Models}
-
-%\author{true}
-
-\author{\Large Wei Wang\vspace{0.05in} \newline\normalsize\emph{Columbia University} \newline\footnotesize \url{ww2243@columbia.edu}\vspace*{0.2in}\newline }
-
-%\author{Wei Wang (Columbia University)}
-
-\date{}
-
-\begin{document}  
-\setkeys{Gin}{width=1\textwidth} 	
-%\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Minion Pro} 
-%\setsansfont[Mapping=tex-text]{Minion Pro} 
-%\setmonofont[Mapping=tex-text,Scale=0.8]{Pragmata}
-\chapterstyle{article-4} 
-\pagestyle{kjh}
-
-\published{Octorber, 2015. Incomplete Draft. Please do not cite without permission.}
-
-\maketitle
-
-
-
-\begin{abstract}
-
-\noindent As a simple and compelling approach for estimating out-of-sample
-prediction error, cross-validation naturally lends itself to the task of
-model comparison. However, even with moderate sample size, it can be
-surprisingly difficult to compare multilevel models based on predictive
-accuracy. Using a hierarchical model fit to large survey data with a
-battery of questions, we demonstrate that even though cross-validation
-might give good estimates of pointwise out-of-sample prediction error,
-it is not always a sensitive instrument for model comparison.
-
-\end{abstract}
-
-
 Models selection is an integral part of any data analysis. In an ideal
 world, iteratively improving and comparing model fits of different
 specifications should be the routine of all statistical procedures,
@@ -143,11 +93,7 @@ Cross-Validation}\label{model-assessment-and-selection-via-cross-validation}
 
 \subsection{Predictive Loss}\label{predictive-loss}
 
-<<<<<<< HEAD
 I start with a loss function \(l(\tilde y, a)\) corresponding to the
-=======
-We start with a loss function \(l(\tilde y, a)\) corresponding to the
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
 inferential action \(a_M\) based on a model \(M\), in face of future
 observations \(\tilde y\). The available data, typically consisting of
 predictors \(x\) and outcomes \(y\), are labeled as \(D\). The
@@ -196,7 +142,6 @@ loss,
   &=-\,\frac{1}{N}\sum_{y\in D}\log p(y | D, M).
   \end{split}
 \end{align}
-<<<<<<< HEAD
 
 The training loss uses the same data for both estimation and evaluation
 and so in general underestimates prediction error.
@@ -206,23 +151,11 @@ and so in general underestimates prediction error.
 With (\ref{eq:logloss}), the model selection task is straightforward.
 Among the candidate models, the best model under this framework is the
 one that minimizes the predictive loss:
-=======
-  
-The training loss uses the same data for both estimation and evaluation and so
-in general underestimates prediction error.
-
-## Prediction Error ##
-
-With (\ref{eq:logloss}), the model selection task is straightforward. Among the
-candidate models, the best model under this framework is the one that minimizes
-the predictive loss:
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
 
 \begin{equation}
   \label{eq:minimizer}
   - \min_{M} \int \!p^t(\tilde y) \log p(\tilde y|D, M) d\tilde y,
   \end{equation}
-<<<<<<< HEAD
 
 which has a lower bound,
 \(-\!\int\! p^t(\tilde y) \log p^t(\tilde y) d\tilde y\), which is the
@@ -236,19 +169,6 @@ distribution of the candidate model and the true generative model. As
 its form suggests, the prediction error is the difference between log
 posterior predictive density and log true predictive density, averaged
 over the true predictive distribution,
-=======
-  
-which has a lower bound, $-\!\int\! p^t(\tilde y) \log p^t(\tilde y) d\tilde y$,
-which is the entropy of the true distribution. It is often more informative to
-look at the excess of the predictive loss over this lower bound, as shown in
-(\ref{eq:preerror}). We label this quantity as the prediction
-error. Conceptually, the prediction error indicates how far the posterior
-predictive distribution is from the oracle, and it is the Kullback-Leibler
-divergence between the posterior predictive distribution of the candidate model
-and the true generative model. As its form suggests, the prediction error is the
-difference between log posterior predictive density and log true predictive
-density, averaged over the true predictive distribution,
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
 
 \begin{align}
 \begin{split}
@@ -318,12 +238,8 @@ estimated prediction error is
 \end{split}
 \end{align}
 
-<<<<<<< HEAD
 \section{Cross-Validation of Structured
 Data}\label{cross-validation-of-structured-data}
-=======
-\subsection{Cross-Validation of Structured Data}
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
 
 Standard cross-validation assumes that data are independent and with no
 distributional differences between the training and testing sets. For
@@ -342,23 +258,21 @@ the analysis of survey data, the focus is mostly on the existing cells
 rather than on hypothetical new cells, and so we only discuss
 cross-validation using stratified sampling on structured data.
 
-<<<<<<< HEAD
 \section{Comparing Multilevel Models for Binary Survey
 Outcomes}\label{comparing-multilevel-models-for-binary-survey-outcomes}
 
 The 2006 Cooperative Congressional Election Survey, the example data set
 in this paper, is a national stratified sample of size 30,000 that
-includes a wide variety of response outcomes, \%(a sample of the
-questions is listed in Figure\textasciitilde{}\ref{fig:questions}) thus
-providing an ideal setting to evaluate cross-validation. Although
-various demographic predictors are available in this data set, we keep
-our model simple by using only two predictors, state and income. Under
-this setting, the multilevel model is the preferred model over no
-pooling (saturated model) or complete pooling (additive model). On one
-hand, the saturated model will trigger overfitting. On the other hand,
-income and state are known to have strong interactions when predicting
-electoral choice (Gelman et al. 2009), so the additive model must be
-substantively inadequate.
+includes a wide variety of response outcomes, thus providing an ideal
+setting to evaluate cross-validation. Although various demographic
+predictors are available in this data set, we keep our model simple by
+using only two predictors, state and income. Under this setting, the
+multilevel model is the preferred model over no pooling (saturated
+model) or complete pooling (additive model). On one hand, the saturated
+model will trigger overfitting. On the other hand, income and state are
+known to have strong interactions when predicting electoral choice
+(Gelman et al. 2009), so the additive model must be substantively
+inadequate.
 
 \subsection{Complete Pooling, No Pooling, and Partial Pooling
 Models}\label{complete-pooling-no-pooling-and-partial-pooling-models}
@@ -501,9 +415,9 @@ even from substantively important model improvements.
 \subsection{Prediction Errors for a Corpus of
 Outcomes}\label{prediction-errors-for-a-corpus-of-outcomes}
 
-\begin{figure*}
+\begin{figure*}[p!]
   \centering
-  \includegraphics[width=.85\textwidth]{alloutcomesx1.pdf}
+  \includegraphics{alloutcomesx1.pdf}
   \caption{\em Measure of fit (estimated prediction error) for all response outcomes
     in the 2006 Cooperative Congressional Election Survey. Outcomes are ordered by the lower bound
     (in-sample loss of the saturated model). The no pooling model
@@ -515,23 +429,21 @@ We begin by estimating the prediction errors of all outcomes in the
 survey. The results are shown in Figure\textasciitilde{}\ref{fig:figx1}.
 The \(x\)-axis is ordered by the in-sample training loss of the
 saturated model \(TL(M_{\text{s}},D)\), which we use as a surrogate for
-a lower bound of predictive loss. \% Heuristically, for outcomes that
-have \% smaller lower bound of predictive loss, the more we can get from
-modeling, \% i.e., less divided opinion and stronger demographic
-variations. For complete pooling and partial pooling, the prediction
-error stays stable across different outcomes, while the no pooling model
-has huge prediction error for outcomes with small lower bounds. This
-finding makes sense since these are the settings where overfitting is
-most severe (saturated models achieve the lowest in-sample training
-error). However, the difference in prediction error between complete
-pooling and partial pooling seems negligible. Partial pooling is giving
-essentially the same result as complete pooling, at least according to
-cross-validation on individual survey responses.
+a lower bound of predictive loss. For complete pooling and partial
+pooling, the prediction error stays stable across different outcomes,
+while the no pooling model has huge prediction error for outcomes with
+small lower bounds. This finding makes sense since these are the
+settings where overfitting is most severe (saturated models achieve the
+lowest in-sample training error). However, the difference in prediction
+error between complete pooling and partial pooling seems negligible.
+Partial pooling is giving essentially the same result as complete
+pooling, at least according to cross-validation on individual survey
+responses.
 
-\begin{figure*}
+\begin{figure*}[p!]
   \centering
-  \subfigure{\includegraphics[width=.4\textwidth]{esti_all_bglmer}}
-  \subfigure{\includegraphics[width=.4\textwidth]{esti_big_bglmer}}
+  \includegraphics[width=.5\textwidth]{esti_all_bglmer}
+  \includegraphics[width=.5\textwidth]{esti_big_bglmer}
   \caption{\em Left panel: Cell proportion estimates for three models of vote
     intention. Each line is a state. The
     partial pooling model pools so much that it is indistinguishable from
@@ -571,10 +483,9 @@ interactions that are being estimated, and the third factor is the level
 of imbalance in the hierarchical structure. Survey data classified by
 demographic and geographic predictors are typically highly unbalanced
 due to the long tails of sizes typical in taxonomic structures
-\citep{Mandelbrot:1955}. For example, the 2006 CCES includes 3,637
-respondents from California but only 131 from Arkansas. This unbalanced
-structure will affect the amount of pooling performed by a multilevel
-model.
+(Mandelbrot 1955). For example, the 2006 CCES includes 3,637 respondents
+from California but only 131 from Arkansas. This unbalanced structure
+will affect the amount of pooling performed by a multilevel model.
 
 In the following subsections, we conduct simulations that vary sample
 size and the structure of the cells to investigate how these factors
@@ -584,16 +495,16 @@ cross-validation.
 \subsection{How Sample Size Changes the
 Dynamics}\label{how-sample-size-changes-the-dynamics}
 
-\begin{figure}[p]
+\begin{figure}[p!]
   \centering
-  \includegraphics[width=.45\textwidth]{outcome234.pdf}
+  \includegraphics{outcome234.pdf}
   \caption{\em Estimated prediction error of all response outcomes for augmented
     data sets. From top to bottom, the data sets have 2, 3, and 4 times as many
     data points as the original data set. The outcomes are ordered by the
     in-sample predictive loss. As sample size grows, complete pooling
     gradually gets worse and no pooling gets better.}
   \label{fig:figx234}
-\end{figure}
+  \end{figure}
 
 We artificially augment the data set by combining the data set with
 itself. New data sets with sample size that are 2, 3 and 4 times as
@@ -609,9 +520,9 @@ model has almost the same prediction error as partial pooling model.
 This makes sense, since the problem of overfitting eventual goes away if
 we have sufficiently large sample size and fixed model structure.
 
-\begin{figure*}
+\begin{figure*}[p!]
   \centering
-  \includegraphics[width=.85\textwidth]{hourvote.pdf}
+  \includegraphics{hourvote.pdf}
   \caption{\em Prediction error of the three models as sample size grows. The
     outcome under consideration is partisan vote preference in the upcoming
     congressional election. By this criterion, partial pooling and complete
@@ -650,9 +561,9 @@ As in the previous analysis, we also look at the relative performance of
 the three models as sample size grows. The results are plotted in
 Figure\textasciitilde{}\ref{fig:hourvote_bal}.
 
-\begin{figure}[h]
+\begin{figure}[p!]
   \centering
-  \includegraphics[width=.45\textwidth]{alloutcomesxbal.pdf}
+  \includegraphics{alloutcomesxbal.pdf}
   \caption{\em Measure of fit (prediction error) for all outcomes, ordered by
     in-sample training loss. The data set is simulated from real data set, and
     has the same sample size in total as the real data set, but keeping all
@@ -664,9 +575,9 @@ Figure\textasciitilde{}\ref{fig:hourvote_bal}.
   \label{fig:figbal}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[p!]
   \centering
-  \includegraphics[width=.45\textwidth]{hourvote_bal.pdf}
+  \includegraphics{hourvote_bal.pdf}
   \caption{\em Prediction error of the three models as sample size grows under the
     simulated balanced data set. The outcome under consideration is the vote for
     the Republican candidate in the U.S House of Representatives. Partial
@@ -680,14 +591,12 @@ Cross-validation is an important tool used to evaluate a wide variety of
 statistical methods and has been widely used in model comparison when
 predictive power is of concern. Some theoretical treatments have pointed
 out situations where cross-validation might have problems. For example,
-\citet{shao1993linear} shows that, under the frequentist setting, using
+(Shao 1993) shows that, under the frequentist setting, using
 leave-one-out cross-validation for linear model variable selection is
-not consistent. \% For a \% good survey of cross-validation in
-frequentist setting, see \% \citet{arlot2010survey}. However, the
-simplicity and transparency of cross-validation gives it a
-near-universal appeal. In this paper, we investigate the sensitivity of
-cross-validation as a model comparison instrument in a cross-tabulated
-multilevel survey data set.
+not consistent. However, the simplicity and transparency of
+cross-validation gives it a near-universal appeal. In this paper, we
+investigate the sensitivity of cross-validation as a model comparison
+instrument in a cross-tabulated multilevel survey data set.
 
 We set up the model selection problem, considering three models for
 these structured data: the classical models of complete pooling and no
@@ -706,20 +615,17 @@ relative margins of different models in cross-validation based model
 selection. Caution should be exercised in applying prediction error for
 model selection with structured data.
 
-=======
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
+\newpage
+
 \hyperdef{}{references}{\label{references}}
 \section*{Bibliography}\label{bibliography}
 \addcontentsline{toc}{section}{Bibliography}
 
-<<<<<<< HEAD
 \hyperdef{}{ref-lme4}{\label{ref-lme4}}
 Bates, Douglas, Martin Maechler, and Ben Bolker. 2013. \emph{Lme4:
 Linear mixed-effects models using s4 classes}.
 \url{http://CRAN.R-project.org/package=lme4}.
 
-=======
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
 \hyperdef{}{ref-burman1989comparative}{\label{ref-burman1989comparative}}
 Burman, Prabir. 1989. ``A comparative study of ordinary
 cross-validation, v-fold cross-validation and the repeated
@@ -735,25 +641,19 @@ Buttice, Matthew K., and Benjamin Highton. 2013. ``How does multilevel
 regression and poststratification perform with conventional national
 surveys?'' \emph{Political Analysis} 21(4): 449--467.
 
-<<<<<<< HEAD
 \hyperdef{}{ref-chung2013nondegenerate}{\label{ref-chung2013nondegenerate}}
 Chung, Yeojin et al. 2013. ``A nondegenerate penalized likelihood
 estimator for variance parameters in multilevel models.''
 \emph{Psychometrika} 78(4): 685--709.
 
-=======
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
 \hyperdef{}{ref-craven1978smoothing}{\label{ref-craven1978smoothing}}
 Craven, Peter, and Grace Wahba. 1978. ``Smoothing noisy data with spline
 functions.'' \emph{Numerische Mathematik} 31(4): 377--403.
 
-<<<<<<< HEAD
 \hyperdef{}{ref-blme}{\label{ref-blme}}
 Dorie, Vincent. 2013. \emph{Blme: Bayesian linear mixed-effects models}.
 \url{http://CRAN.R-project.org/package=blme}.
 
-=======
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
 \hyperdef{}{ref-FayHerriot:1979}{\label{ref-FayHerriot:1979}}
 Fay, R. E., and R. A. Herriot. 1979. ``Estimates of income for small
 places: An application of james-stein procedures to census data.''
@@ -764,7 +664,6 @@ Gelman, Andrew, and Jennifer Hill. 2007. \emph{Data analysis using
 regression and multilevel/Hierarchical models}. Cambridge University
 Press.
 
-<<<<<<< HEAD
 \hyperdef{}{ref-mrp}{\label{ref-mrp}}
 Gelman, Andrew et al. 2012. \emph{Mrp: Multilevel regression and
 poststratification}. \url{http://CRAN.R-project.org/package=mrp}.
@@ -774,8 +673,6 @@ Gelman, Andrew et al. 2009. \emph{Red state, blue state, rich state,
 poor state: Why americans vote the way they do, second edition}.
 Princeton University Press.
 
-=======
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
 \hyperdef{}{ref-ghitzaux5f2013}{\label{ref-ghitzaux5f2013}}
 Ghitza, Yair, and Andrew Gelman. 2013. ``Deep interactions with MRP:
 Election turnout and voting patterns among small electoral subgroups.''
@@ -785,13 +682,10 @@ Election turnout and voting patterns among small electoral subgroups.''
 Groves, Robert M. 2004. 536 \emph{Survey errors and survey costs}. John
 Wiley \& Sons.
 
-<<<<<<< HEAD
 \hyperdef{}{ref-hjort2010bayesian}{\label{ref-hjort2010bayesian}}
 Hjort, Nils Lid. 2010. \emph{Bayesian nonparametrics}. Cambridge
 University Press.
 
-=======
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
 \hyperdef{}{ref-kale2011cross}{\label{ref-kale2011cross}}
 Kale, Satyen, Ravi Kumar, and Sergei Vassilvitskii. 2011.
 ``Cross-validation and mean-square stability.'' In \emph{Innovations in
@@ -808,6 +702,12 @@ sub-national opinion using MRP? Preliminary findings and
 recommendations.'' \emph{Presented at Midwest Political Science
 Association}.
 
+\hyperdef{}{ref-Mandelbrot:1955}{\label{ref-Mandelbrot:1955}}
+Mandelbrot, B. 1955. ``On the language of taxonomy: An outline of a
+`thermostatistical' theory of systems of categories with willis
+(natural) structure.'' In \emph{Information theory---Third london
+symposium}, ed. Colin Cherry., p. 135--145.
+
 \hyperdef{}{ref-pan2010survey}{\label{ref-pan2010survey}}
 Pan, Sinno Jialin, and Qiang Yang. 2010. ``A survey on transfer
 learning.'' \emph{IEEE Transactions on Knowledge and Data Engineering}
@@ -818,17 +718,19 @@ Price, Phillip N., Anthony V. Nero, and Andrew Gelman. 1996. ``Bayesian
 prediction of mean indoor radon concentrations for minnesota counties.''
 \emph{Health Physics} 71: 922--936.
 
-<<<<<<< HEAD
 \hyperdef{}{ref-ruppert2003semiparametric}{\label{ref-ruppert2003semiparametric}}
 Ruppert, David, Matt P Wand, and Raymond J Carroll. 2003.
 \emph{Semiparametric regression}. Cambridge University Press.
 
-=======
->>>>>>> a1c610315f89203fe8ac1f9dc4d99701c6f8d3f7
 \hyperdef{}{ref-seeger2008cross}{\label{ref-seeger2008cross}}
 Seeger, Matthias W. 2008. ``Cross-validation optimization for large
 scale structured classification kernel methods.'' \emph{Journal of
 Machine Learning Research} 9: 1147--1178.
+
+\hyperdef{}{ref-shao1993linear}{\label{ref-shao1993linear}}
+Shao, Jun. 1993. ``Linear model selection by cross-validation.''
+\emph{Journal of the American statistical Association} 88(422):
+486--494.
 
 \hyperdef{}{ref-Vehtari2012a}{\label{ref-Vehtari2012a}}
 Vehtari, Aki, and Janne Ojanen. 2012. ``A survey of bayesian predictive
@@ -840,8 +742,6 @@ Wang, Wei, and Andrew Gelman. 2014. ``Difficulty of selecting among
 multilevel models using predictive accuracy.'' \emph{Statistics and Its
 Interface} 7: 1--8.
 
-\hyperdef{}{ref-wangux5f2014}{\label{ref-wangux5f2014}}
+\hyperdef{}{ref-wang2014forecasting}{\label{ref-wang2014forecasting}}
 Wang, Wei et al. 2014. ``Forecasting elections with non-representative
-polls.'' \emph{International Journal of Forecasting.}: Forthcoming.
-
-\end{document}
+polls.'' \emph{International Journal of Forecasting}.
