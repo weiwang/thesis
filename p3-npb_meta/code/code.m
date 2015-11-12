@@ -78,6 +78,7 @@ gp=gp_optim(gp,xn,yn,'opt',opt);
 % display exp(w) and labels
 disp(s), disp(exp(w))
 
+%% prepare xnew such as it is a matrix for all possible combinations of X
 trt = unique(xn(:,1));
 schoolid = unique(xn(:,2));
 gender = unique(xn(:,3));
@@ -85,7 +86,7 @@ eth = unique(xn(:,4));
 lunch = unique(xn(:,5));
 [a, b, c, d ,e] = ndgrid(trt, schoolid, gender, eth, lunch)
 xnew = [a(:) b(:) c(:) d(:) e(:)]
-sid = uniqe(xn(:, [2, 6]))
+sid = unique(xn(:, [2, 6]), 'rows')
 [~,ii] = ismember(xnew(:,2),sid(:,1));
 xnew = [xnew, sid(ii,2)];
 
@@ -95,3 +96,4 @@ mean_math = denormdata(Ef, ymean, ystd)
 std_math = sqrt(Varf) * ystd
 inf = [mean_math, std_math, grid_x]
 inf = dataset({inf 'mean', 'std', 'trt', 'schoolid', 'gen', 'eth', 'lunch', 'lunch_rate'})
+

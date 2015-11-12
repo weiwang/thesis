@@ -1,5 +1,6 @@
 \chapter{Hierarchical Modeling of Non-Representative Polls}
 
+
 In this chapter, I will discuss an application of hierarchical modeling
 to non-representative survey sampling. As it is mentioned in the last
 chapter, there is a dichotomy in modern survey research, the camp of
@@ -13,8 +14,8 @@ result of its inherent bias. I will show that, using an example of a
 highly-biased poll on US presidential election conducted on Xbox gaming
 platform, that hierarchical sampling can be used to remedy the bias and
 help extract useful information from non-representative polls. This is a
-joint work with David Rothschild, Sharad Goel, and Andrew Gelman, and
-has been published in (Wang et al. 2014).
+joint work with David Rothschild, Sharad Goel, and Andrew Gelman, and is
+published in (Wang et al. 2014).
 
 \section{A Brief History of Representative Sampling vs
 Non-representative
@@ -113,32 +114,33 @@ Despite the large sample size, the pool of Xbox respondents is far from
 representative of the voting population.
 Figure\textasciitilde{}\ref{fig:demo_comp} compares the demographic
 composition of the Xbox participants to that of the general electorate,
-as estimated via the 2012 national exit poll. \footnote{For ease of
-interpretation, in Figure~\ref{fig:demo_comp} states are grouped into 4 categories:
-(1) battleground states (Colorado, Florida, Iowa, New Hampshire, Ohio, and
-Virginia), the five states with the highest amounts of TV spending plus New
-Hampshire, which had the highest per-capita spending; (2) quasi-battleground
-states (Michigan, Minnesota, North Carolina, Nevada, New Mexico, Pennsylvania,
-and Wisconsin), which round out the states where the campaigns and their
-affiliates made major TV buys; (3) solid Obama states (California, Connecticut,
-District of Columbia, Delaware, Hawaii, Illinois, Maine, Maryland,
-Massachusetts, New Jersey, New York, Oregon, Rhode Island, Vermont, and
-Washington); and (4) solid Romney states (Alabama, Alaska, Arizona, Arkansas,
-Georgia, Idaho, Indiana, Kansas, Kentucky, Louisiana, Mississippi, Missouri,
-Montana, Nebraska, North Dakota, Oklahoma, South Carolina, South Dakota,
-Tennessee, Texas, Utah, West Virginia, and Wyoming).} The most striking
-differences are for age and sex. As one might expect, young men dominate
-the Xbox population: 18-to-29-year-olds comprise 65\% of the Xbox
-dataset, compared to 19\% in the exit poll; and men make up 93\% of the
-Xbox sample but only 47\% of the electorate. Political scientists have
-long observed that both age and sex are strongly correlated with voting
-preferences (Kaufmann and Petrocik 1999), and indeed these discrepancies
-are apparent in the unadjusted time-series of Xbox voter intent shown in
-Figure \ref{fig:raw_responses}. In contrast to estimates based on
-traditional, representative polls (indicated by the dotted blue line in
-Figure \ref{fig:raw_responses}), the uncorrected Xbox sample suggests a
-landslide victory for Mitt Romney, reminiscent of the infamous
-\emph{Literary Digest} error.
+as estimated via the 2012 national exit poll. For ease of
+interpretation, in Figure\textasciitilde{}\ref{fig:demo_comp} states are
+grouped into 4 categories: (1) battleground states (Colorado, Florida,
+Iowa, New Hampshire, Ohio, and Virginia), the five states with the
+highest amounts of TV spending plus New Hampshire, which had the highest
+per-capita spending; (2) quasi-battleground states (Michigan, Minnesota,
+North Carolina, Nevada, New Mexico, Pennsylvania, and Wisconsin), which
+round out the states where the campaigns and their affiliates made major
+TV buys; (3) solid Obama states (California, Connecticut, District of
+Columbia, Delaware, Hawaii, Illinois, Maine, Maryland, Massachusetts,
+New Jersey, New York, Oregon, Rhode Island, Vermont, and Washington);
+and (4) solid Romney states (Alabama, Alaska, Arizona, Arkansas,
+Georgia, Idaho, Indiana, Kansas, Kentucky, Louisiana, Mississippi,
+Missouri, Montana, Nebraska, North Dakota, Oklahoma, South Carolina,
+South Dakota, Tennessee, Texas, Utah, West Virginia, and Wyoming). The
+most striking differences are for age and sex. As one might expect,
+young men dominate the Xbox population: 18-to-29-year-olds comprise 65\%
+of the Xbox dataset, compared to 19\% in the exit poll; and men make up
+93\% of the Xbox sample but only 47\% of the electorate. Political
+scientists have long observed that both age and sex are strongly
+correlated with voting preferences (Kaufmann and Petrocik 1999), and
+indeed these discrepancies are apparent in the unadjusted time-series of
+Xbox voter intent shown in Figure \ref{fig:raw_responses}. In contrast
+to estimates based on traditional, representative polls (indicated by
+the dotted blue line in Figure \ref{fig:raw_responses}), the uncorrected
+Xbox sample suggests a landslide victory for Mitt Romney, reminiscent of
+the infamous \emph{Literary Digest} error.
 
 \section{Estimating voter intent with multilevel regression and
 poststratification}\label{estimating-voter-intent-with-multilevel-regression-and-poststratification}
@@ -204,18 +206,17 @@ national-level estimates. Specifically, I generate the cells by
 considering all possible combinations of sex (2 categories), race (4
 categories), age (4 categories), education (4 categories), state (51
 categories), party ID (3 categories), ideology (3 categories) and 2008
-vote (3 categories), which partition the data into 176,256
-cells.\footnote{All
+vote (3 categories), which partition the data into 176,256 cells. \{All
 demographic variables are collected prior to respondents' first poll,
-alleviating concerns that respondents may adjust their demographic responses to
-be inline with their voter intention (e.g., a new Obama supporter switching his
-or her party ID from Republican to Democrat).} I fit two, nested
-multilevel logistic regressions to estimate candidate support in each
-cell. The first of the two models predicts whether a respondent supports
-a major-party candidate (i.e., Obama or Romney), and the second predicts
-support for Obama given that the respondent supports a major-party
-candidate. Following the notation of (Gelman and Hill 2007), the first
-model is given by
+alleviating concerns that respondents may adjust their demographic
+responses to be inline with their voter intention (e.g., a new Obama
+supporter switching his or her party ID from Republican to Democrat). I
+fit two, nested multilevel logistic regressions to estimate candidate
+support in each cell. The first of the two models predicts whether a
+respondent supports a major-party candidate (i.e., Obama or Romney), and
+the second predicts support for Obama given that the respondent supports
+a major-party candidate. Following the notation of (Gelman and Hill
+2007), the first model is given by
 
 \begin{align}\label{eqn:m1}
   \text{Pr}(Y_i \in \, &\{\text{Obama, Romney}\})=\nonumber\\
@@ -322,7 +323,7 @@ dotted horizontal line). Voter intent in the weeks prior to the election
 does not directly equate to an estimate of vote share on election
 day---a point I return to in Section\textasciitilde{}\ref{sec:forecast}.
 As such, it is difficult to evaluate the accuracy of the full
-time-series of estimates. Nonetheless, I note that the estimates are not
+time-series of estimates. Nonetheless, note that the estimates are not
 only intuitively reasonable, but that they are also inline with
 prevailing estimates based on traditional, representative polls. In
 particular, the estimates roughly track---and are even arguably better
@@ -431,9 +432,9 @@ behavior of those same groups as estimated by the 2012 national exit
 poll. As seen in Figure\textasciitilde{}\ref{fig:marginal_comp}, the
 Xbox estimates are remarkably accurate, with a median absolute
 difference of 1.5 percentage points between the Xbox and the exit poll
-numbers.\footnote{Respondents' 2008 vote was not asked on
-the 2012 exit poll, so I exclude that comparison from
-Figure~\ref{fig:marginal_comp}.}
+numbers. Note that Respondents' 2008 vote was not asked on the 2012 exit
+poll, so I exclude that comparison from
+Figure\textasciitilde{}\ref{fig:marginal_comp}.
 
 Not only do the Xbox data facilitate accurate estimation of voter intent
 across these single-dimensional demographic categories, but they also do
@@ -441,13 +442,13 @@ surprisingly well at estimating two-way interactions (e.g., candidate
 support among 18--29 year-old Hispanics, and liberal college graduates).
 Figure\textasciitilde{}\ref{fig:two_way_comp} shows this result,
 plotting the Xbox estimates against those derived from the exit polling
-data for each of the 149 two-dimensional demographic
-subgroups.\footnote{State contestedness is excluded
-from the two-way interaction groups since the 2012 state exit polls are not yet
-available, and the 2012 national exit poll does not have enough data to reliably
-estimate state interactions; 2008 vote is also excluded, as it was not asked in
-the 2012 exit poll. The ``other'' race category was also dropped as it was not
-consistently defined across the Xbox and exit poll datasets.} Most
+data for each of the 149 two-dimensional demographic subgroups. Note
+that state contestedness is excluded from the two-way interaction groups
+since the 2012 state exit polls are not yet available, and the 2012
+national exit poll does not have enough data to reliably estimate state
+interactions; 2008 vote is also excluded, as it was not asked in the
+2012 exit poll. The ``other'' race category was also dropped as it was
+not consistently defined across the Xbox and exit poll datasets. Most
 points lie close to the diagonal, indicating that the Xbox and exit poll
 estimates are in agreement. Specifically, for women who are 65 and
 older---a group whose preferences one might a priori believe are hard to
@@ -509,15 +510,15 @@ ultimate outcomes in those elections. Specifically, I collected
 historical data from three previous U.S. presidential elections, in
 2000, 2004, and 2008. For each year, I obtained top-line (i.e., not
 individual-level) national and state estimates of voter intent from all
-available polls conducted in those elections.\footnote{I
-collected the polling data from \url{Pollster.com} and
-\url{RealClearPolitics.com}.} From this collection of polling data, I
-then constructed daily estimates of voter intent by taking a moving
-average of the poll numbers, in a similar manner to the major poll
-aggregators. Note that I rely on traditional, representative polls to
-reconstruct historical voter intent; in principle, however, I could have
-started with non-representative polls if such data were available in
-previous election cycles.
+available polls conducted in those elections. The polling data are
+obtatined from \url{Pollster.com} and \url{RealClearPolitics.com}. From
+this collection of polling data, I then constructed daily estimates of
+voter intent by taking a moving average of the poll numbers, in a
+similar manner to the major poll aggregators. Note that I rely on
+traditional, representative polls to reconstruct historical voter
+intent; in principle, however, I could have started with
+non-representative polls if such data were available in previous
+election cycles.
 
 I next infer a mapping from voter intent to election outcomes by
 regressing election day vote share on the historical time-series of
@@ -556,26 +557,24 @@ Similarly, the state model is given by
 \end{align*}
 
 where \(y_{s,e}^{\text{ST}}\) is the election day state vote share of
-the state's incumbent party
-candidate\footnote{State incumbent parties are defined as the
-  state-by-state winners from the previous election, which is more meaningful in this context than simply using the national incumbent.}
-at day \(t\), \(x_{s,t,e}^{\text{ST}}\) is the state voter intent at day
-\(t\), and \(\epsilon\) is the error term. The outcome
-\(y_{s,e}^{\text{ST}}\) is offset by the national projected vote share
-on that day as fit with the national calibration model, and
-\(x_{s,t,e}^{\text{ST}}\) is offset by that day's national voter intent.
-Furthermore, I impose two restrictions on the magnitude and correlation
-structure of the error term \(\varepsilon(s,t,e)\). First, since the
-uncertainty naturally decreases as the election gets closer (as \(t\)
-becomes smaller), I apply the heteroscedastic structure
-\(\text{Var}(\varepsilon(s,t,e))=(t+a)^2\), where \(a\) is a constant to
-be estimated from the data. Second, the state-specific movements within
-each election year are allowed to be correlated. For simplicity, and as
-in (Chen, Ingersoll, and Kaplan 2008), I assume these correlations are
-uniform (i.e., all pairwise correlations are the same), which creates
-one more parameter to be estimated from the data. I fit the full
-calibration model with the \texttt{gls()} function in the \texttt{R}
-package \texttt{nlme} (Pinheiro et al. 2012).
+the state's incumbent party candidate at day \(t\),
+\(x_{s,t,e}^{\text{ST}}\) is the state voter intent at day \(t\), and
+\(\epsilon\) is the error term. The outcome \(y_{s,e}^{\text{ST}}\) is
+offset by the national projected vote share on that day as fit with the
+national calibration model, and \(x_{s,t,e}^{\text{ST}}\) is offset by
+that day's national voter intent. Furthermore, I impose two restrictions
+on the magnitude and correlation structure of the error term
+\(\varepsilon(s,t,e)\). First, since the uncertainty naturally decreases
+as the election gets closer (as \(t\) becomes smaller), I apply the
+heteroscedastic structure \(\text{Var}(\varepsilon(s,t,e))=(t+a)^2\),
+where \(a\) is a constant to be estimated from the data. Second, the
+state-specific movements within each election year are allowed to be
+correlated. For simplicity, and as in (Chen, Ingersoll, and Kaplan
+2008), I assume these correlations are uniform (i.e., all pairwise
+correlations are the same), which creates one more parameter to be
+estimated from the data. I fit the full calibration model with the
+\texttt{gls()} function in the \texttt{R} package \texttt{nlme}
+(Pinheiro et al. 2012).
 
 In summary, the procedure for generating election day forecasts proceeds
 in three steps:

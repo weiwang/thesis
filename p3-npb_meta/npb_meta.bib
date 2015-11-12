@@ -6,11 +6,11 @@
   year={1997},
   publisher={JSTOR}
 }
-@article{sobel2015,
+@article{sobel2016,
   title={Meta-Analysis: a causal framework, with application to randomized studies of Vioxx.},
   author={Sobel, Michael E and Madigan, David B and Wang, Wei},
-  journal={Technical Report, Department of Statistics, Columbia Univeristy},
-  year=2015}
+  journal={Psychometrika},
+  year=2016}
 
 @book{bernardo1994bayesian,
   title={Bayesian Theory},
@@ -58,7 +58,7 @@
 @article{rubin1977assignment,
   title={Assignment to Treatment Group on the Basis of a Covariate},
   author={Rubin, Donald B},
-  journal={Journal of Educational and Behavioral statistics},
+  journal={Journal of Educational and Behavioral Statistics},
   volume={2},
   number={1},
   pages={1--26},
@@ -152,7 +152,7 @@
 @article{imbens2004nonparametric,
   title={Nonparametric estimation of average treatment effects under exogeneity: A review},
   author={Imbens, Guido W},
-  journal={Review of Economics and statistics},
+  journal={Review of Economics and Statistics},
   volume={86},
   number={1},
   pages={4--29},
@@ -192,7 +192,7 @@
 @article{tudursmith2005investigating,
   title={Investigating heterogeneity in an individual patient data meta-analysis of time to event outcomes},
   author={Tudur Smith, Catrin and Williamson, Paula R and Marson, Anthony G},
-  journal={Statistics in medicine},
+  journal={Statistics in Medicine},
   volume=24,
   number=9,
   pages={1307--1319},
@@ -210,7 +210,7 @@
 @article{cooper2009relative,
   title={The relative benefits of meta-analysis conducted with individual participant data versus aggregated data.},
   author={Cooper, Harris and Patall, Erika A},
-  journal={Psychological methods},
+  journal={Psychological Methods},
   volume={14},
   number={2},
   pages={165},
@@ -252,17 +252,24 @@
   year={2010},
   publisher={JSTOR}
 }
-@article{bonilla2008multi,
+
+@inproceedings{bonilla2007multi,
   title={Multi-task Gaussian process prediction},
-  author={Bonilla, Edwin and Chai, Kian Ming and Williams, Christopher},
-  year={2008}
+  author={Bonilla, Edwin V and Chai, Kian M and Williams, Christopher},
+  booktitle={Advances in neural information processing systems},
+  pages={153--160},
+  year={2007}
 }
 
-@article{alvarez2011kernels,
-  title={Kernels for vector-valued functions: A review},
-  author={Alvarez, Mauricio A and Rosasco, Lorenzo and Lawrence, Neil D},
-  journal={arXiv preprint arXiv:1106.6251},
-  year={2011}
+@article{alvarez2012kernels,
+  title={Kernels for Vector-Valued Functions: A Review},
+  author={{\'A}lvarez, Mauricio A and Rosasco, Lorenzo and Lawrence, Neil D},
+  journal={Foundations and Trends{\textregistered} in Machine Learning},
+  volume={4},
+  number={3},
+  pages={195--266},
+  year={2012},
+  publisher={Now Publishers Inc}
 }
 
 @inproceedings{wilson2014fast,
@@ -273,10 +280,14 @@
   year={2014}
 }
 
-@article{gilboa2013scaling,
+@article{gilboa2015scaling,
   title={Scaling multidimensional inference for structured Gaussian processes},
-  author={Gilboa, Elad and Saat{\c{c}}i, Yunus and Cunningham, J},
-  year={2013},
+  author={Gilboa, Elad and Saat{\c{c}}i, Yunus and Cunningham, John P},
+  journal={Pattern Analysis and Machine Intelligence, IEEE Transactions on},
+  volume={37},
+  number={2},
+  pages={424--436},
+  year={2015},
   publisher={IEEE}
 }
 
@@ -326,7 +337,7 @@
   publisher={IEEE}
 }
 @inproceedings{williams2001using,
-  title={Using the Nystr{\"o}m method to speed up kernel machines},
+  title={Using the Nystrom method to speed up kernel machines},
   author={Williams, Christopher and Seeger, Matthias},
   booktitle={Proceedings of the 14th Annual Conference on Neural Information Processing Systems},
   number={EPFL-CONF-161322},
@@ -336,7 +347,7 @@
 @article{banerjee2008gaussian,
   title={Gaussian predictive process models for large spatial data sets},
   author={Banerjee, Sudipto and Gelfand, Alan E and Finley, Andrew O and Sang, Huiyan},
-  journal={Journal of the Royal Statistical Society: Series B (Statistical Methodology)},
+  journal={Journal of the Royal Statistical Society: Series B},
   volume={70},
   number={4},
   pages={825--848},
@@ -352,4 +363,60 @@
   pages={1175--1179},
   year={2013},
   publisher={JMLR. org}
+}
+@article{hanushek1999evidence,
+  title={The evidence on class size},
+  author={Hanushek, Eric A and Mayer, Susan E and Peterson, Paul},
+  journal={Earning and Learning: How Schools Matter},
+  pages={131--168},
+  year={1999},
+  publisher={Brookings Institution Press Washington, DC}
+}
+@article{word1990state,
+  title={The State of Tennessee's Student/Teacher Achievement Ratio (STAR) Project: Technical Report (1985-1990).},
+  author={Word, Elizabeth R and others},
+  year={1990},
+  publisher={ERIC}
+}
+@book{cooper2009handbook,
+  title={The handbook of research synthesis and meta-analysis},
+  author={Cooper, Harris and Hedges, Larry V and Valentine, Jeffrey C},
+  year={2009},
+  publisher={Russell Sage Foundation}
+}
+  @Article{lme4,
+    title = {Fitting Linear Mixed-Effects Models Using {lme4}},
+    author = {Douglas Bates and Martin M{\"a}chler and Ben Bolker and
+      Steve Walker},
+    journal = {Journal of Statistical Software},
+    year = {2015},
+    volume = {67},
+    number = {1},
+    pages = {1--48},
+    doi = {10.18637/jss.v067.i01},
+  }
+
+@article{therneau2012coxme,
+  title={coxme: Mixed effects Cox models},
+  author={Therneau, Terry},
+  journal={R package version},
+  volume={2},
+  number={3},
+  year={2012}
+}
+
+@misc{stan-software:2015,
+  author = ,
+  year = {2015},
+  title = {Stan: A C++ Library for Probability and Sampling,
+           Version 2.8.0},
+  url = {http://mc-stan.org/}
+}
+
+@article{rubin2011causal,
+  title={Causal inference using potential outcomes},
+  author={Rubin, Donald B},
+  journal={Journal of the American Statistical Association},
+  year={2011},
+  publisher={Taylor \& Francis}
 }

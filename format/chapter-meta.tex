@@ -1,1 +1,717 @@
-\chapter{Causal Inference of Meta-analysis via Gaussian Processess}
+\chapter{Causal Inference of Meta-Analysis via Gaussian Processess}
+
+Meta-Analysis, the synthesis of evidence from multiple study sources,
+has become increasing popular in fields such as education, psychology
+and public health (Cooper, Hedges, and Valentine 2009). The major
+obstacle for meta-analysis is the interpretation and proper handling of
+study-by-study heterogeneity, e.g., the estimated treatment effect in
+study 1 is different from in study 2. Traditional approaches tend to
+focus on developing novel ways of weighting different estimates based on
+certain measure of study-level uncertainty and/or quality. (Sobel,
+Madigan, and Wang 2016), however, approaches this problem from a formal
+causal inference perspective, proposing an extended potential outcome
+framework for meta-analysis. Although it is not a panacea for explaining
+and accounting for heterogeneities, this approach indeed clarifies the
+originations of heterogeneities and help researchers to think more
+clearly on underlying assumptions that are often overlooked. In this
+chapter, I review briefly the extended potential outcome framework
+discussed in (Sobel, Madigan, and Wang 2016). However, (Sobel, Madigan,
+and Wang 2016) use simple linear models for analysis. In remaining part
+of this thesis, I develop a non-parametric model that explicitly handles
+heterogeneities across studies based on Gaussian Processes (GP). As it
+is well known (Williams and Rasmussen 2006), GP allows for flexible
+modeling of response functions and admits fully probabilistic inference.
+Finally, a real educational intervention data set is analyzed with this
+model to illustrate. This chapter is joint work with Michael Sobel and
+David Madigan, and part of it is published in (Sobel, Madigan, and Wang
+2016).
+
+\section{Meta-Analysis}\label{meta-analysis}
+
+Meta-analyses combine data from distinct but related studies for higher
+resolution inference and more nuanced understanding of the effect under
+investigation. Originally hailed in medical and education research,
+meta-analyses are gaining traction as the awareness for open data is
+increasing across all scientific communities.
+
+However, traditional meta-analyses are mostly conducted based on
+extracting and combining study-level effect summaries, since access to
+individual-participant level data tend to be inherently difficult to
+obtain. In this framework, researchers extract effect size estimates
+\(y_s\) and standard errors \(\sigma_s^2\), where study index
+\(s\in \{1,\ldots,S\}\) and \(S\) is the total number of studies. To
+handle effect size heterogeneity, typically a random effect model is
+used (DerSimonian and Laird 1986), in which all study effect sizes are
+assumed to be a random sample of a underlying hyper-population of effect
+sizes, i.e.
+
+\begin{align*}
+    y_s&=\mu_s + \sigma_s^2\\
+    \mu_s &\sim \mathcal{N}(\mu_0, \tau^2)
+\end{align*}
+
+\noindent Admittedly, meta-analysis based on study-level summary is
+still effective when the effects are homogeneous and different studies
+sample from similar populations; nevertheless, they are prone to
+well-known statistical fallacies, such as ecological bias, when the
+underlying populations and effects are heterogeneous, as it is often the
+case in real data.
+
+\subsection{Individual-Participant
+Meta-Analyses}\label{individual-participant-meta-analyses}
+
+Individual-Participant Data (IPD) Meta-Analyses are becoming more and
+more common, thanks to the increasing availability of original data
+(Higgins et al. 2001). It has been argued that IPD data increases the
+power of analysis (Cooper and Patall 2009) and more robust to
+heterogeneous effects sizes and populations. To account for between
+study heterogeneity in treatment effects, the use of covariates and/or
+random effects models is often recommended (Aitkin 1999; Tudur Smith,
+Williamson, and Marson 2005). The random effects models can be seen as
+Bayesian hierarchical models (Gelman and Hill 2006), based on the
+justification that conditioned on an appropriate set of covariates, both
+individual-level and study-level, the residual heterogeneities are
+exchangeable. There are mature softwares for fitting various types of
+Bayesian hierarchical models, including Generalized Linear Models and
+Proportional Hazard Models (Bates et al. 2015; ``Stan: A c++ library for
+probability and sampling, version 2.8.0'' 2015; Therneau 2012).
+
+Despite its convenient form and ease of inference, traditional IPD
+meta-analysis based on parametric hierarchical models suffer from two
+problems. The first is the lack of formal causal framework. It is
+difficult to pinpoint the causal interpretation of the effect estimates
+from a traditional IPD hierarchical model. Consider the following
+example, education researchers try to determine the effect of a new
+intervention program, applied to different classroom and administered by
+different teachers. In this case, the heterogeneity might come from
+either the different teachers or the different populations of schools,
+or both. It is often unclear whether the effect estimate based on
+traditional methods are averages over the teachers, or over the schools,
+or both. The second problem is the inflexible form of the parametric
+model. Traditional parametric model requires explicit modeling
+assumptions from the researchers, which makes the model sensitive to
+model specifications and facilitate potential cheery-picking.
+Non-parametric modeling allows flexible functional form and requires
+little manual tuning from the researchers.
+
+\section{A Potential Outcome Framework for
+Meta-Analysis}\label{a-potential-outcome-framework-for-meta-analysis}
+
+(Sobel, Madigan, and Wang 2016) put meta-analysis on a concrete causal
+foundation by introducing an extended potential outcome framework. I
+will discuss the key ideas in this framework.
+
+\subsection{Potential Outcomes}\label{potential-outcomes}
+
+Potential Outcomes Framework (Rubin 2011) defines causal effects as
+comparisons of outcomes under hypothetical counter-factual treatment
+assignment. For example, with binary treatment \(Z\in \{0,1\}\), the
+causal effect of treatment \(Z\) on individual \(i\) can be defined as
+\(y_i(1)-y_i(0)\). Typically, researchers are interested in estimating
+quantities such as the population average treatment effect (PATE)
+
+\begin{equation*} E(Y(1)-Y(0)), \end{equation*}
+
+\noindent and the population average treatment effect on the treated
+(PATT)
+
+\begin{equation*}
+    E(Y(1)-Y(0)\mid Z=1)
+\end{equation*}
+
+\noindent The key assumption in causal inference is the ignorability
+assumption (or unconfoundedness assumption) (Rosenbaum and Rubin 1983),
+which states that given a set of observed covariates, the treatment
+assignment \(Z\) is independent of the potential outcomes
+\((Y(0), Y(1))\)
+
+\begin{equation*}
+    Y(0),Y(1) \perp Z \mid X
+\end{equation*}
+
+\noindent In the case of randomized experiment, this assumption is
+trivially met without any covariates \(X\). Under ignorability
+assumption,
+
+\begin{align*}
+     &E(Y|X, z=1)-E(Y|X, z=0)\\
+    =&E(Y(1)|X, z=1)-E(Y(0)|X, z=0)\\
+    =&E(Y(1)|X)-E(Y(0)|X)\\
+    =&E(Y(1)-Y(0)|X)
+\end{align*}
+
+\noindent and thus causal effect can be identified from observations.
+
+\subsection{Extended Potential
+Outcomes}\label{extended-potential-outcomes}
+
+In the case of meta-analysis, consisting \(S\) studies and \(Z\)
+treatment arms, the potential outcomes \(\bm Y\) for individual \(i\)
+can be defined as a matrix
+
+\begin{equation*}
+\bm Y_i=
+\begin{pmatrix}
+y_i(1,1) & y_i(1,2) & \cdots & y_i(1,Z)\\
+y_i(2,1) & y_i(2,2) & \cdots & y_i(2,Z)\\
+\vdots & \vdots & \ddots & \vdots\\
+y_i(S,1) & y_i(S,2) & \cdots & y_i(S,Z)
+\end{pmatrix}
+\end{equation*}
+
+\noindent With this notation, some commonly discussed meta-analytical
+estimates can be interpreted in a causal way. For example, assuming
+there are only two level of treatment (0 and 1) and the causal
+comparison is the difference, \emph{study-specific} treatment effect for
+study \(s\) is \(E(y(z,s)-y(z^\prime, s))\). Note that this is different
+from \emph{study-level} treatment effect \(\theta_s\) in random effects
+models, which is \(E(y(z,s)-y(z^\prime, s)\mid S=s)\). Below I will
+discuss conditions that will connect these two quantities.
+
+In the context of meta-analyses, unconfoundedness can be recast as
+unconfoundedness within each study, i.e.,
+
+\begin{equation*}
+    Y(0, s),Y(1, s) \perp Z \mid X, S=s
+\end{equation*}
+
+However, this assumption is not sufficient for identifying causal
+effects in meta-analysis. One added layer for complexity of
+meta-analysis is the confounding of study selection. Consider an example
+of clinical trials. If some studies sample from mostly young patients
+while some other studies sample from mostly elderly patients, and the
+treatment is more effective on younger patients, then heterogeneities in
+treatment effects across studies would arise. Hierarchal models without
+adequately addressing this selection problems would result in misleading
+results.
+
+However, study selection is not the only factor contributing to
+heterogeneities in treatment effects across studies. One lingering
+question is whether the same treatment \(z\) is implemented identically
+in all studies, or in another word, whether
+\(Y_i(s_1, z)\disteq Y_i(s_2, z)\) for all pair of
+\(s_1, s_2 \in \{1,\dots, S\}\), where \(\disteq\) stands for equal in
+distribution. Consider an example of education intervention, in which
+interventions are carried out by teachers with various experience
+levels, then it is reasonable to question whether
+\(Y_i(s_1, z)\disteq Y_i(s_2, z)\) holds.
+
+Two assumptions from (Sobel, Madigan, and Wang 2016) codify these two
+sources of heterogeneities.
+
+A1. \emph{Weak response consistency assumption for treatment \(z\)}: For
+any \(z\in\{1,\dots,Z\}\) and any pair \(s_1, s_2\in\{1,\ldots,S\}\),
+
+\begin{equation*}
+Y_i(s_1, z)\disteq Y_i(s_2, z)
+\end{equation*}
+
+A2. \emph{Unconfounded study selection}:
+
+\begin{equation*}\bm Y=
+\begin{pmatrix}
+y(1,1) & y(1,2) & \cdots & y(1,Z)\\
+y(2,1) & y(2,2) & \cdots & y(2,Z)\\
+\vdots & \vdots & \ddots & \vdots\\
+y(S,1) & y(S,2) & \cdots & y(S,Z)
+\end{pmatrix}
+ \perp S \mid X\end{equation*}
+
+.
+
+From a modeling perspective, these two assumptions cannot be
+distinguished from one other. Thus (Sobel, Madigan, and Wang 2016)
+suggests that researchers first assess the plausibility of the two
+assumptions based on the characteristics of the studies, and typically
+assume one of these two to hold and then build models to see whether the
+heterogeneity could be accounted for by the other assumption. From a
+Bayesian point of view, I can use a very general model, and encode
+regularization through appropriate prior distributions to allow for
+reasonable separation of these two sources of heterogeneities. This will
+be the topic of the following sections.
+
+\section{Meta-Analysis using Bayesian
+Non-parametrics}\label{meta-analysis-using-bayesian-non-parametrics}
+
+Traditionally, causal inference using potential outcomes focuses on two
+questions. Modeling of the treatment assignment process \(p(z\mid x)\),
+also known as the propensity score, and modeling of the scientific
+process of how responses relate to treatment and covariates
+\(p(y\mid z, x)\), also known as the response surface (Rubin 2005). A
+myriad of methods based on the either treatment assignment mechanism
+(e.g., propensity score matching), or response surface modeling (e.g.,
+regression), or combination of these two (e.g., the doubly-robust
+method), has been proposed for causal inference of observational data.
+
+Recently, following the advances in Bayesian non-parametric models ,
+(Hill 2011) proposed a model that focuses on accurately estimating the
+response surface using flexible Bayesian Additive Regression Trees, or
+BART (Chipman, George, and McCulloch 2010). Besides the well-known
+benefits of being robust to model misspecifications and being able to
+capture highly non-linear and interaction patterns, Bayesian
+non-parametric models provide natural and coherent posterior intervals
+to convey inferential uncertainty.
+
+\subsection{Gaussian Processes}\label{gaussian-processes}
+
+Gaussian Processes (GP) have become a popular tool for nonparametric
+regression. A random function \(f:\mathcal{X}\rightarrow\mathbb{R}\) is
+said to follow a GP process with kernel \(k\) if any finite-dimensional
+marginal of it is Gaussianly distributed, i.e.
+
+\begin{equation*}
+    f(\bm x) \sim \mathcal{N}(\bm\mu, \bm K_{\bm x, \bm x}), \forall\ \bm x \in
+    \mathbb{R}^{d} \text{ and } d
+\end{equation*}
+
+where \(\bm K_{\bm x, \bm x}\) is the Gram matrix of kernel \(k\). The
+key component in a GP model is the kernel \(k\), a semi-definite
+function defined on \(\mathcal{X}\times\mathcal{X}\) that encodes the
+structure. Judiciously choosing \(K\) is the most important part of
+fitting a GP model.
+
+A large part of its popularity is probably due to the fact it can be
+interpreted as a generalization of linear regression with Gaussian
+errors, the predominant model for parametric regression. In fact,
+according to Mercer's Theorem (Williams and Rasmussen 2006), kernel
+\(k\) can be decomposed into
+
+\begin{equation*}
+k(x, x^\prime)=\sum_{i=1}^\infty\lambda_i\phi_i(x)\phi^\intercal_i(x^\prime)
+\end{equation*}
+
+\noindent where \(\lambda_i\) and \(\phi_i\) are respective eigenvalues
+and eigenfunctions of kernel \(k\) with respect to a measure \(\mu\),
+i.e.,
+
+\begin{equation*}
+\int k(x, x^\prime)\phi_i(x) \,d\mu(x)=\lambda\phi_i(x^\prime),
+\end{equation*}
+
+\noindent Then GP can be considered as a basis expansion method that
+maps input \(x\) to an infinite dimensional space via the infinite
+series of functions \(\{\phi_i(x)\}_{i=1}^\infty\).
+
+\subsection{Inference for Standard GP}\label{inference-for-standard-gp}
+
+Standard GP model for \(N\) observation pairs \((y_i, \bm x_i)_{i=1}^N\)
+is
+
+\begin{align*}
+    y_i\mid f &\sim \mathcal{N}(f(\bm x_i), \sigma^2) \\
+    f &\sim GP(0, k)
+\end{align*}
+
+For a given kernel \(k\), the marginal distribution of \(\bm y\) is
+
+\begin{equation*}
+\bm y \sim \mathcal{N}(0, K_{\bm x, \bm x}+\sigma^2I_N)
+\end{equation*}
+
+\noindent where \(K_{\bm x, \bm x}\) is the Gram matrix of kernel \(k\)
+whose entries are \(k(x_i, x_j)\). The predictive distribution at new
+points \(\bm X^\star\) is
+
+\begin{align*}
+\bm y^\star \mid \bm X^\star, \bm y, \bm X \sim \mathcal{N}(&K_{\bm X^\star, \bm X}(K_{\bm X,
+\bm X}+\sigma^2I_N)^{-1}\bm y, \\
+& K_{\bm X^\star, \bm X^\star}-K_{\bm X^\star, \bm X}(K_{\bm X, \bm X}+\sigma^2I_N)^{-1}K_{\bm X^\star, \bm X}^\intercal)
+\end{align*}
+
+\noindent For inference on hyperparameters, e.g., parameters governing
+the kernels, a standard practice is to maximize log marginal likelihood
+
+\begin{align*}
+\log p(\bm y \mid \bm X, \theta)&=\log \int p(\bm y \mid f, \bm X, \theta) p(f)\, df \\
+    & \propto
+    -\big[\bm y^\intercal(K_{\bm X, \bm X}(\theta)+\sigma^2I_N)^{-1} \bm y + \log\text{det}(K_{\bm X, \bm X}(\theta)+\sigma^2I_N)\big]
+\end{align*}
+
+\noindent and plug in the MAP (maximum a posteriori) \(\hat \theta\)
+into the predictive distribution of new points \(\bm X^\star\).
+
+As it is well known, despite the simplicity of the procedure for GP
+inference, the main difficulty lies in the matrix inversions required
+for both estimating hyperparameters and predicting at new points, which
+involves \(\mathcal{O}(N^3)\) time complexity with \(N\) being the
+number of observations. Data sets that have more than several thousands
+observations are already prohibitively expensive for computation. In
+those cases, a number of approximation methods such as low-rank
+approximations of the Gram kernel matrix, known as Nystr\{"o\}m method
+(Williams and Seeger 2001), and judicious selections of subset of
+observations (Banerjee et al. 2008) are often recommended.
+
+\subsection{GP with Hierarchical
+Structure}\label{gp-with-hierarchical-structure}
+
+GP can be extended to handle group structure. A common approach from
+machine learning perspective is to pose this question as a multi-task
+learning problem (Bonilla, Chai, and Williams 2007; Yu, Tresp, and
+Schwaighofer 2005), in which the objective function's values are
+vectors, or even matrices. In fact, in the case of the potential outcome
+framework of meta-analysis outlined above, the outcomes are
+study-by-treatment matrices. In this setting, the curse of
+dimensionalities become even more acute, as the sample size effectively
+multiples by the number of outcomes under investigation. One remedy is
+to place restriction on the structure of kernels. For example, assuming
+the kernel is separable, the finite dimensional marginals of the
+vector-valued random function \(\bm f\) is a matrix normal distributed
+
+\begin{equation*}
+\text{vec}{\bm f(\bm x)} \sim \mathcal{N}(\bm \mu, \bm K_{\bm x, \bm x} \otimes \bm U_{\text{task}})
+\end{equation*}
+
+\noindent Assuming separability can significantly reduce the
+dimensionality of the problem, and properties of Kronecker product can
+be used to make the inference efficient (Gilboa, Saatçi, and Cunningham
+2015). However, this approach works best for the case of ``complete
+design'', meaning every combination of predictors values have been
+observed. This assumption is reasonable for areas such as computer
+experiments and robotics, where experiments can be artificially planned
+at pre-specified values of X's; but it is virtually impossible in fields
+such as education and public health, where researchers' control over
+data collection is very limited.
+
+\subsubsection{Incorporating Group Structure into
+Kernels}\label{incorporating-group-structure-into-kernels}
+
+However, it is relatively straightforward to directly code the group
+structure into kernels. Take the most popular kernel, square
+exponential, for example, discrete group indicator terms can be added by
+using delta metrics, i.e., 0 if two observations are from the same
+group, and 1 otherwise. Further, it is often important to add
+group-level predictors in hierarchical models (Gelman and Hill 2006), as
+it can account for the variations that cannot be explained by
+categorical group membership.
+
+\begin{equation*}
+\kappa(x_i, x_j)=\sigma^2\exp{-\frac{1}{2}\sum_{k=1}^d \frac{(x_{ik}-x_{jk})^2}{l_k^2}}
+\end{equation*}
+
+\noindent In square exponential kernels, the length scale \(l_k\)
+governs the correlation scale in input dimension \(k\) and the magnitude
+\(\sigma^2\) controls the overall variability of the process. Thus the
+magnitudes of the length scale \(l_k\) can be used for feature
+selection; the larger the length scale, the more important the
+corresponding feature.
+
+\subsection{Network Meta-Analysis}\label{network-meta-analysis}
+
+The compact form of Kronecker product assumes a block-design structure,
+i.e., the same set of \(x\)'s are observed for every combination of
+study and treatment. In reality, of course, this is not the case; causal
+inference, in particular, is about filling those holes, i.e., potential
+outcomes, in hypothetical combination of study and treatment. In fact,
+researchers only observe a small fraction of the array of matrices
+\(\{\bm y_i\}_{i=1}^\infty\), namely \(\frac{1}{ST}\) of all potential
+outcomes. However, this framework is general enough to handle a lot of
+particular problems.
+
+Network Meta-analysis (Lumley 2002) deal with treatment pair comparisons
+that depend on indirect evidence. For example, if treatment A and
+treatment B are not assigned in any of the studies at the same time, and
+thus researchers have to resort to indirect comparisons, e.g., treatment
+C co-occurs with treatment A and treatment B in some of the studies.
+Since traditional analysis tend to handles one comparison at a time,
+violations of natural constraints are frequent, e.g., AB+BC\(\neq\)BC.
+More sophisticated models are proposed to handle this so-called
+``inconsistency'' (Higgins et al. 2012), which makes the models
+unnecessarily complex and is detrimental to intuitive understanding. The
+framework outlined in this chapter, however, naturally deal with network
+meta-analysis, since it considers all possible treatment at the same
+time and thus have those constraints built in organically.
+
+\section{Real Data Example}\label{real-data-example}
+
+The demonstrative example I use is the STAR (Student-Teacher Achievement
+Ratio) project. It was approved by Tennessee state legislature and began
+in 1985 to study the effect of early grades class size on student
+achievement in Tennessee. The study is a state-wide randomized
+experiment applied to over 7,000 pupils from 79 schools and last for 4
+years. Each student was randomly assigned to one of three class types,
+class of 13 to 15 students, class of 22 to 25 students, and class of 22
+to 25 students with a paid teaching aid. Outcomes of end-of-year test
+scores were used to assess the performance of those students in areas of
+math, reading and study skills. Classroom teachers were also randomly
+assigned to the classes they would teach. The interventions were
+initiated as the students entered school in kindergarten and continued
+through third grade, based on the common belief that early intervention
+has persistent effects well into later lives of the students. Due to its
+size and ambition, STAR is perhaps the most important education study in
+history. Numerous studies have been devoted to analyzing the STAR data,
+on both immediate effects, e.g., test scores at the end of the year of
+intervention (krueger1997experimental; Hanushek, Mayer, and Peterson
+1999; Word and others 1990), and persistent effects, e.g., test scores
+several years after the intervention or even earning as an adult (Chetty
+et al. 2010).
+
+The public access data set is collected from Project STAR Web site at
+\url{http://www.heros-inc.org/star.htm}, with information on the student
+demographics, test scores, treatment assignments over the intervention
+years, information of the teachers, and school situations et al. Due to
+its richness, STAR project data can be investigated in many different
+facets. For the sake of simplicity, I look at just one outcome, scaled
+math test score, in one intervention year, the 1st grade. Thus I can
+focus on the meta-analytic part of the data, without being distracted by
+the longitudinal aspect of the data, which is a nuisance for the
+discussion. To be precise, I only study the students who participated
+STAR project in their first grades and use their scaled math score at
+the end of the first year as outcomes. Further, as mentioned previously,
+data sets with thousands of observations pose prohibitive computational
+burden on GP. So I select a subset of the data set, including only 8
+biggest schools for the first grade. The sample size of this restricted
+data set is about 1,000.
+
+Characteristics such as student gender, ethnicity, receiving free lunch
+or not are included in the data set; furthermore, I can determine the
+general neighborhood economic situations by calculating the proportion
+of students receiving free lunch, a school-level predictor. As for types
+of treatment, as I mentioned, there are three types of treatment,
+small-size classroom, regular-size classroom and regular with a paid
+teaching aid. Instead of combining regular and regular with an aid, an
+approach adopted by most of previous literature, I treat them as
+separate interventions. All of the above predictors are fed into a
+square exponential kernel, with a delta metric for discrete predictors
+including type of treatment and school ID. Computations are conducted
+via an MATLAB toolbox \texttt{GPStuff} (Vanhatalo et al. 2013).
+
+While traditional parametric inference focuses on interpretation of some
+model coefficient estimates, whose validity greatly hinges on the
+validity of the model specifications, non-parametric inference attempts
+to construct the response surfaces and yields much more faithful
+uncertainty estimates when extrapolating. The results of inference are
+presented as a series of figures below. In each of the figures,
+predictive estimates for a student in a certain demographic subgroup,
+e.g., a minority female pupil receiving free lunch, were she in each of
+the 8 schools, are presented side-by-side under three different
+treatments. The schools are arranged in order of proportions of students
+receiving free lunch, a proxy of neighborhood economic situation, from
+most affluent to the left to the most deprived to the right. Figure 1
+denotes a minority pupil with free lunch, figure 2 a minority pupil with
+paid lunch, figure 3 a white pupil with free lunch and figure 4 a white
+pupil with paid lunch.
+
+\begin{sidewaysfigure}[p!]
+  \includegraphics[width=\textwidth]{"f1"}
+  \caption{Above: Counterfactual scaled math scores with one standard deviation if a minority female pupil receiving free lunch were assigned to 8 different schools and 3 different treatments. Below: Counterfactual scaled math scores with one standard deviation if a minority male pupil receiving free lunch were assigned to 8 different schools and 3 different treatments. Schools are ordered from left to right by the proportions of student receiving free lunch.}
+  \label{fig:f1}
+  \end{sidewaysfigure}
+
+\begin{sidewaysfigure}[p!]
+\includegraphics[width=\textwidth]{"f2"}
+  \caption{Above: Counterfactual scaled math scores with one standard deviation if a minority female pupil not receiving free lunch were assigned to 8 different schools and 3 different treatments. Below: Counterfactual scaled math scores with one standard deviation if a minority male pupil not receiving free lunch were assigned to 8 different schools and 3 different treatments. Schools are ordered from left to right by the proportions of student receiving free lunch.}
+  \label{fig:f2}
+\end{sidewaysfigure}
+
+\begin{sidewaysfigure}[p!]
+  \includegraphics[width=\textwidth]{"f3"}
+    \caption{Above: Counterfactual scaled math scores with one standard deviation if a white female pupil receiving free lunch were assigned to 8 different schools and 3 different treatments. Below: Counterfactual scaled math scores with one standard deviation if a white male pupil receiving free lunch were assigned to 8 different schools and 3 different treatments. Schools are ordered from left to right by the proportions of student receiving free lunch.}
+
+  \label{fig:p3}
+\end{sidewaysfigure}
+
+\begin{sidewaysfigure}[p!]
+\includegraphics[width=\textwidth]{"f4"}
+    \caption{Above: Counterfactual scaled math scores with one standard deviation if a white female pupil not receiving free lunch were assigned to 8 different schools and 3 different treatments. Below: Counterfactual scaled math scores with one standard deviation if a white male pupil not receiving free lunch were assigned to 8 different schools and 3 different treatments. Schools are ordered from left to right by the proportions of student receiving free lunch.}
+
+  \label{fig:p4}
+\end{sidewaysfigure}
+
+There are several interesting points worth noting from the figures.
+First, in general, attending smaller class translates to a modest
+increase in scaled math test score for the first year pupils, and in
+particular, the effects are more pronounced in schools with higher level
+of poverty, even after adjusting for proportions of students receiving
+free lunch. The heterogeneity of the small class sizes on educational
+outcomes have been noted with traditional parametric analysis (Krueger
+1997), but most often by adding parametric interaction terms that
+requires very specific assumptions; without specifying parametric form,
+GP could uncover patterns of heterogeneities. Second, note that
+uncertainty is small whenever more observations are available. For
+example, in figure 1, which corresponds to poor minority pupils that are
+present in schools to the right side of the figures, those schools to
+the right indeed carry much shorter error bar as compared to more
+affluent schools to the left. Meanwhile, estimates in figure 4 go in the
+opposite direction: schools to the left have much shorter error bars,
+since white, non-poor pupils are more present in those schools. Although
+GP is just doing what it is supposed to do, it is reassuring to know
+that fidelity is being preserved for uncertainty estimates. Third, a
+sizable amount of variation can be observed for a pupil receiving the
+same treatment under different schools. This suggests a departure from
+Weak Response Consistency Assumption (A1). This is not surprising,
+because other than the same class size, different schools definitely
+offer education at different qualities. Take Figure 1 for example, which
+focuses on a minority and economically disadvantaged pupil. School 9
+tends to do consistently very well across all three treatments, but
+school 19 is the school that would benefit the most by adopting a small
+class size.
+
+\section{Discussion}\label{discussion}
+
+In this chapter, I discuss an extended potential outcome framework built
+for meta-analysis. Comparing with the classic potential outcome
+framework, a plethora of counterfactuals with certain structures need to
+be created to handle meta-analysis. I then introduce a GP based approach
+to tackle this problem. The advantages of GP, and in general any
+non-parametric methods, is well-known. In particular, the fidelity of
+inferential uncertainty is a very desirable property. The central
+question to the extended potential outcome framework is how to
+incorporate the group structure. I discuss different ways of building
+group structure into Gaussian Processes. The most intuitive and
+computationally straight-forward approach is used to re-analyze an
+influential educational intervention program, the STAR project on class
+size and test scores. Lucid and straight-forward visualization can be
+used to display the inferential results, and reveal patterns that are
+otherwise hidden in tables of coefficients estimates often seen in
+traditional parametric analysis.
+
+GP is a much sought-after field of research recently and reasonably so.
+Applying it to casual inference, and in particularly causal inference
+with group structure, can surely yield elucidating insights. The scope
+of this chapter is quite limited, and I hope it demonstrates the
+potential of non-parametric methods in causal inference.
+
+\newpage
+
+\hyperdef{}{references}{\label{references}}
+\section*{Bibliography}\label{bibliography}
+\addcontentsline{toc}{section}{Bibliography}
+
+\hyperdef{}{ref-aitkin1999meta}{\label{ref-aitkin1999meta}}
+Aitkin, Murray. 1999. ``Meta-analysis by random effect modelling in
+generalized linear models.'' \emph{Statistics in Medicine} 18(17-18):
+2343--2351.
+
+\hyperdef{}{ref-banerjee2008gaussian}{\label{ref-banerjee2008gaussian}}
+Banerjee, Sudipto et al. 2008. ``Gaussian predictive process models for
+large spatial data sets.'' \emph{Journal of the Royal Statistical
+Society: Series B} 70(4): 825--848.
+
+\hyperdef{}{ref-lme4}{\label{ref-lme4}}
+Bates, Douglas et al. 2015. ``Fitting linear mixed-effects models using
+lme4.'' \emph{Journal of Statistical Software} 67(1): 1--48.
+
+\hyperdef{}{ref-bonilla2007multi}{\label{ref-bonilla2007multi}}
+Bonilla, Edwin V, Kian M Chai, and Christopher Williams. 2007.
+``Multi-task gaussian process prediction.'' In \emph{Advances in neural
+information processing systems}, p. 153--160.
+
+\hyperdef{}{ref-chetty2010does}{\label{ref-chetty2010does}}
+Chetty, Raj et al. 2010. \emph{How does your kindergarten classroom
+affect your earnings? Evidence from project sTAR}. National Bureau of
+Economic Research.
+
+\hyperdef{}{ref-chipman2010bart}{\label{ref-chipman2010bart}}
+Chipman, Hugh A, Edward I George, and Robert E McCulloch. 2010. ``BART:
+Bayesian additive regression trees.'' \emph{The Annals of Applied
+Statistics}: 266--298.
+
+\hyperdef{}{ref-cooper2009relative}{\label{ref-cooper2009relative}}
+Cooper, Harris, and Erika A Patall. 2009. ``The relative benefits of
+meta-analysis conducted with individual participant data versus
+aggregated data.'' \emph{Psychological Methods} 14(2): 165.
+
+\hyperdef{}{ref-cooper2009handbook}{\label{ref-cooper2009handbook}}
+Cooper, Harris, Larry V Hedges, and Jeffrey C Valentine. 2009. \emph{The
+handbook of research synthesis and meta-analysis}. Russell Sage
+Foundation.
+
+\hyperdef{}{ref-dersimonian1986meta}{\label{ref-dersimonian1986meta}}
+DerSimonian, Rebecca, and Nan Laird. 1986. ``Meta-analysis in clinical
+trials.'' \emph{Controlled Clinical Trials} 7(3): 177--188.
+
+\hyperdef{}{ref-gelman2006data}{\label{ref-gelman2006data}}
+Gelman, Andrew, and Jennifer Hill. 2006. \emph{Data analysis using
+regression and multilevel/hierarchical models}. Cambridge University
+Press.
+
+\hyperdef{}{ref-gilboa2015scaling}{\label{ref-gilboa2015scaling}}
+Gilboa, Elad, Yunus Saatçi, and John P Cunningham. 2015. ``Scaling
+multidimensional inference for structured gaussian processes.''
+\emph{Pattern Analysis and Machine Intelligence, IEEE Transactions on}
+37(2): 424--436.
+
+\hyperdef{}{ref-hanushek1999evidence}{\label{ref-hanushek1999evidence}}
+Hanushek, Eric A, Susan E Mayer, and Paul Peterson. 1999. ``The evidence
+on class size.'' \emph{Earning and Learning: How Schools Matter}:
+131--168.
+
+\hyperdef{}{ref-higgins2012consistency}{\label{ref-higgins2012consistency}}
+Higgins, JPT et al. 2012. ``Consistency and inconsistency in network
+meta-analysis: Concepts and models for multi-arm studies.''
+\emph{Research Synthesis Methods} 3(2): 98--110.
+
+\hyperdef{}{ref-higgins2001meta}{\label{ref-higgins2001meta}}
+Higgins, Julian et al. 2001. ``Meta-analysis of continuous outcome data
+from individual patients.'' \emph{Statistics in Medicine} 20(15):
+2219--2241.
+
+\hyperdef{}{ref-hill2011bayesian}{\label{ref-hill2011bayesian}}
+Hill, Jennifer L. 2011. ``Bayesian nonparametric modeling for causal
+inference.'' \emph{Journal of Computational and Graphical Statistics}
+20(1).
+
+\hyperdef{}{ref-krueger1997experimental}{\label{ref-krueger1997experimental}}
+Krueger, Alan B. 1997. \emph{Experimental estimates of education
+production functions}. National Bureau of Economic Research.
+
+\hyperdef{}{ref-lumley2002network}{\label{ref-lumley2002network}}
+Lumley, Thomas. 2002. ``Network meta-analysis for indirect treatment
+comparisons.'' \emph{Statistics in Medicine} 21(16): 2313--2324.
+
+\hyperdef{}{ref-rosenbaum1983central}{\label{ref-rosenbaum1983central}}
+Rosenbaum, Paul R, and Donald B Rubin. 1983. ``The central role of the
+propensity score in observational studies for causal effects.''
+\emph{Biometrika} 70(1): 41--55.
+
+\hyperdef{}{ref-rubin2011causal}{\label{ref-rubin2011causal}}
+Rubin, Donald B. 2011. ``Causal inference using potential outcomes.''
+\emph{Journal of the American Statistical Association}.
+
+\hyperdef{}{ref-rubin2005causal}{\label{ref-rubin2005causal}}
+Rubin, Donald B. 2005. ``Causal inference using potential outcomes.''
+\emph{Journal of the American Statistical Association} 100(469).
+
+\hyperdef{}{ref-sobel2016}{\label{ref-sobel2016}}
+Sobel, Michael E, David B Madigan, and Wei Wang. 2016. ``Meta-analysis:
+A causal framework, with application to randomized studies of vioxx.''
+\emph{Psychometrika}.
+
+\hyperdef{}{ref-stan-software:2015}{\label{ref-stan-software:2015}}
+``Stan: A c++ library for probability and sampling, version 2.8.0.''
+2015. \url{http://mc-stan.org/}.
+
+\hyperdef{}{ref-therneau2012coxme}{\label{ref-therneau2012coxme}}
+Therneau, Terry. 2012. ``Coxme: Mixed effects cox models.'' \emph{R
+package version} 2(3).
+
+\hyperdef{}{ref-tudursmith2005investigating}{\label{ref-tudursmith2005investigating}}
+Tudur Smith, Catrin, Paula R Williamson, and Anthony G Marson. 2005.
+``Investigating heterogeneity in an individual patient data
+meta-analysis of time to event outcomes.'' \emph{Statistics in Medicine}
+24(9): 1307--1319.
+
+\hyperdef{}{ref-vanhatalo2013gpstuff}{\label{ref-vanhatalo2013gpstuff}}
+Vanhatalo, Jarno et al. 2013. ``GPstuff: Bayesian modeling with gaussian
+processes.'' \emph{The Journal of Machine Learning Research} 14(1):
+1175--1179.
+
+\hyperdef{}{ref-williams2001using}{\label{ref-williams2001using}}
+Williams, Christopher, and Matthias Seeger. 2001. ``Using the nystrom
+method to speed up kernel machines.'' In \emph{Proceedings of the 14th
+annual conference on neural information processing systems}, p.
+682--688.
+
+\hyperdef{}{ref-williams2006gaussian}{\label{ref-williams2006gaussian}}
+Williams, CKI, and CE Rasmussen. 2006. \emph{Gaussian processes for
+machine learning}. Cambridge: MIT Press.
+
+\hyperdef{}{ref-word1990state}{\label{ref-word1990state}}
+Word, Elizabeth R, and others. 1990. ``The state of tennessee's
+student/Teacher achievement ratio (sTAR) project: Technical report
+(1985-1990).''
+
+\hyperdef{}{ref-yu2005learning}{\label{ref-yu2005learning}}
+Yu, Kai, Volker Tresp, and Anton Schwaighofer. 2005. ``Learning gaussian
+processes from multiple tasks.'' In \emph{Proceedings of the 22nd
+international conference on machine learning}, ACM, p. 1012--1019.

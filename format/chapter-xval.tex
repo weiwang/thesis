@@ -1,5 +1,7 @@
 \chapter{Insensitivity of Predictive Accuracy for Selecting among Multilevel
 Models}
+
+
 Models selection is an integral part of any data analysis. In an ideal
 world, iteratively improving and comparing model fits of different
 specifications should be the routine of all statistical procedures,
@@ -44,13 +46,13 @@ random fluctuations.
 
 I focus on the second of these concerns, demonstrating the limitations
 of prediction error in the context of a set of multilevel models fit to
-a large cross-tabulated national survey. An innovative aspect of our
-analysis is that we evaluate separately on 71 different survey
-responses, taking each in turn as the outcome in a comparison of
-regression models. This allows us to construct a relatively large corpus
-of data out of a single survey.
+a large cross-tabulated national survey. An innovative aspect of this
+analysis is that I evaluate separately on 71 different survey responses,
+taking each in turn as the outcome in a comparison of regression models.
+This allows us to construct a relatively large corpus of data out of a
+single survey.
 
-This chapter is a joint work with Andrew Gelman, and mostly based on
+This chapter is a joint work with Andrew Gelman, and is published in
 (Wang and Gelman 2014).
 
 \section{Multilevel Models and Survey
@@ -71,16 +73,16 @@ and nonrepresentative surveys to obtain accurate small-area estimation
 and prediction (Fay and Herriot 1979; Ghitza and Gelman 2013; Lax and
 Phillips 2009; Wang et al. 2014), and the practical application of such
 methods is currently being actively discussed in social science research
-(Buttice and Highton 2013; Lax and Phillips 2013). In the present paper,
-we conduct model selection procedures based on \(k\)-fold
-cross-validation and find that under this framework, the improvement of
-multilevel models over classical models is surprisingly small when
-measured on the scale of prediction error. Furthermore, we demonstrate
-that this lack of notable improvement is related to the sample size and
-data structure by repeating the analysis on simulated data sets that
-vary in terms of these two factors.
+(Buttice and Highton 2013; Lax and Phillips 2013). In this chapter, I
+conduct model selection procedures based on \(k\)-fold cross-validation
+and find that under this framework, the improvement of multilevel models
+over classical models is surprisingly small when measured on the scale
+of prediction error. Furthermore, I demonstrate that this lack of
+notable improvement is related to the sample size and data structure by
+repeating the analysis on simulated data sets that vary in terms of
+these two factors.
 
-Our results illustrate that under multilevel structure, it could be
+The results illustrate that under multilevel structure, it could be
 tricky to use cross-validation in model selection, as the size of the
 data and how balanced the structure is heavily affect the relative
 performance of the models.
@@ -131,7 +133,7 @@ choice of \(a_M\) and \(l\) into (\ref{eq:explossgeneral}) yields,
 fundamental difficulty in estimating it is that the true distribution
 \(p^t(\cdot)\) is unknown.
 
-Another important quantity arises when we approximate the true
+Another important quantity arises when I approximate the true
 distribution with the empirical distribution, which gives the training
 loss,
 
@@ -179,8 +181,8 @@ over the true predictive distribution,
                \end{split}
 \end{align}
 
-So to estimate the prediction error, we need to estimate the two terms
-in (\ref{eq:preerror}).
+So to estimate the prediction error, I need to estimate the two terms in
+(\ref{eq:preerror}).
 
 \subsection{\texorpdfstring{\(k\)-fold Cross-Validation for Estimating
 Predictive
@@ -219,14 +221,14 @@ data, the prediction error estimates are biased, but in the cases where
 there are relatively few predictors, this bias is small (Burman 1989).
 
 The practical impediment of using cross-validation is the computational
-burden: with \(k\)-fold cross-validation, we need to fit the model \(k\)
+burden: with \(k\)-fold cross-validation, I need to fit the model \(k\)
 times. However, in many cases it is possible to perform the \(k\) steps
 in parallel.
 
 The problem remains of estimating the second term in
 (\ref{eq:preerror}), namely the lower bound of predictive loss. In this
-paper, we use the in-sample training loss \(TL(M_{\text{s}}, D)\) of the
-saturated model \(M_s\) as the surrogate for the lower bound. So the
+chapter, I use the in-sample training loss \(TL(M_{\text{s}}, D)\) of
+the saturated model \(M_s\) as the surrogate for the lower bound. So the
 estimated prediction error is
 
 \begin{align}
@@ -246,16 +248,16 @@ distributional differences between the training and testing sets. For
 structured data, it is not always clear how best to perform this
 partition. (Burman, Chow, and Nolan 1994) discusses a modification of
 ordinary cross-validation procedure for stationary time series. In this
-paper, we focus on the cross-tabulated structure, which is the
+chapter, I focus on the cross-tabulated structure, which is the
 characteristic of survey data with discrete responses. In an unbalanced
 cross-tabulated data set, simple random sampling might result in
-undersampling of small cells. Thus, we adopt a stratified sampling
+undersampling of small cells. Thus, I adopt a stratified sampling
 approach to guarantee that each cell is partitioned into a training part
 and a testing part. Another possibility is to perform a cluster sampling
 and train the model on some cells and test the fitted model on others.
 This approach is related to transfer learning (Pan and Yang 2010). In
 the analysis of survey data, the focus is mostly on the existing cells
-rather than on hypothetical new cells, and so we only discuss
+rather than on hypothetical new cells, and so I only discuss
 cross-validation using stratified sampling on structured data.
 
 \section{Comparing Multilevel Models for Binary Survey
@@ -265,7 +267,7 @@ The 2006 Cooperative Congressional Election Survey, the example data set
 in this paper, is a national stratified sample of size 30,000 that
 includes a wide variety of response outcomes, thus providing an ideal
 setting to evaluate cross-validation. Although various demographic
-predictors are available in this data set, we keep our model simple by
+predictors are available in this data set, I keep this model simple by
 using only two predictors, state and income. Under this setting, the
 multilevel model is the preferred model over no pooling (saturated
 model) or complete pooling (additive model). On one hand, the saturated
@@ -288,16 +290,15 @@ a Gaussian process) can produce stable estimates even for cells that
 have few observations and thus can be viewed as a multivariate
 regression or interpolation procedure..
 
-We develop our model on a simple two-way cross-tabulation of survey
+I develop this model on a simple two-way cross-tabulation of survey
 data, with state and income as the two explanatory variables, having
 \(J_1\) and \(J_2\) levels
 respectively.\footnote{For the 2006 Cooperative Congressional Election Survey
   data set, there are 50 states ($J_1=50$), and 5 income levels ($J_2=5$),
   including less than \$20,000, \$20,000-\$40,000, \$40,000-\$75,000,
-  \$75,000-\$150,000, and \$150,000+.} We assume no continuous
-predictors in our model. Let \(N\) be the total sample size of the
-survey, then the array of cell counts follows a multinomial
-distribution,
+  \$75,000-\$150,000, and \$150,000+.} I assume no continuous predictors
+in this model. Let \(N\) be the total sample size of the survey, then
+the array of cell counts follows a multinomial distribution,
 
 \begin{equation*}\bm{N}\sim \text{Multinomial}(N, \bm{p})\end{equation*}
 
@@ -308,8 +309,8 @@ distribution,
   \bm{p}&=(p_{j_1j_2})_{J_1\times J_2}.
 \end{align*}
 
-\noindent The population is thus divided into \(J_1\times J_2\) cells.
-We constrain our discussion to binary outcomes. Then for a respondent in
+\noindent The population is thus divided into \(J_1\times J_2\) cells. I
+constrain the discussion to binary outcomes. Then for a respondent in
 cell \((j_1, j_2)\), the probability that he or she gives a positive
 response is \(\pi_{j_1j_2}\), which is modeled using logistic
 regression:
@@ -319,12 +320,12 @@ regression:
 \end{equation*}
 
 \noindent in which \(\bm Z\) is the covariate vector and \(\bm\beta\)
-includes the main and interaction effects. Since our goal of inference
+includes the main and interaction effects. Since the goal of inference
 is on cell proportions \(\pi_{j_1j_2}\) rather than cell assignment
-probabilities \(p_{j_1j_2}\), we treat \(p_{j_1j_2}\) as fixed
+probabilities \(p_{j_1j_2}\), I treat \(p_{j_1j_2}\) as fixed
 throughout.
 
-Under this setup, we consider three models:
+Under this setup, I consider three models:
 
 \begin{itemize}
 \item Complete pooling of interactions:
@@ -342,42 +343,40 @@ Under this setup, we consider three models:
 
 Although nonparametric multilevel modeling, both in the Bayesian (Hjort
 2010) and the frequentist (Ruppert, Wand, and Carroll 2003)
-perspectives, have been under rapid development, we adopt a linear
+perspectives, have been under rapid development, I adopt a linear
 parametric specification for the multilevel model, because linear
 parametric models are still the standard specification, and software
 that fit the routine linear parametric models are widely available and
 easily accessible to practitioners. In the remaining sections of this
-paper, we compare the prediction error of these three models under
+chapter, I compare the prediction error of these three models under
 various real data and simulation settings.
 
-We recognize that multilevel models in big-data applications can be much
-more complicated (Ghitza and Gelman 2013); we use a relatively simple
-example here to explore the basic ideas.
+Multilevel models in big-data applications can be much more complicated
+(Ghitza and Gelman 2013); I use a relatively simple example here to
+explore the basic ideas.
 
 \subsection{Computation}\label{computation}
 
-Ideally we want to do full Bayesian inference on our model, but for
-computational reasons we are currently using an approximate marginal
+Ideally I want to do full Bayesian inference on the model, but for
+computational reasons I am currently using an approximate marginal
 posterior mode estimate provided by blme (Dorie 2013) in R, which is an
 extension of the widely-used lme4 (Bates, Maechler, and Bolker 2013)
 package. The lme4 package approximately integrates out the random
 effects to obtain an approximate marginal MLE of the scale parameter and
 the fixed effects. However, modal estimates can end up on the boundary
-due to sampling variability (Chung et al. 2013), which in our case makes
+due to sampling variability (Chung et al. 2013), which in the case makes
 the partial pooling model reduce to complete pooling. In blme, the scale
 parameter \(\sigma\) is also given a gamma prior with shape parameter
 2.5 and rate parameter 0. The gamma prior is used to regularize the
 prior of the scale and pull the estimates of the interactions away from
-zero, a situation that often happens in modal estimation. We have
-developed an R package, mrp (Gelman et al. 2012), to streamline the
-multilevel model fitting and cross-validation procedure.
+zero, a situation that often happens in modal estimation.
 
 \subsection{Estimation Procedure}\label{estimation-procedure}
 
-For each outcome, we fit a multilevel logistic regression model, with
-additive, fully-interacted, and multilevel models. We use \(5\)-fold
+For each outcome, I fit a multilevel logistic regression model, with
+additive, fully-interacted, and multilevel models. I use \(5\)-fold
 cross-validation to estimate predictive loss (using more folds gives
-essentially identical results). We estimate the lower bound using the
+essentially identical results). I estimate the lower bound using the
 training loss of the saturated model.
 
 Under the aforementioned setting, the cross-validation loss estimate is,
@@ -405,10 +404,10 @@ and \(\overline{\log(1-\hat\pi_{ij})}\) has the similar form. The
 cross-validation loss estimate is approximately a measure of loss under
 cell proportion distribution
 \((\exp(\overline{\log\hat\pi_{ij}}), \exp(\overline{\log(1-\hat\pi_{ij})}))\)
-(here we say ``approximately'' because these two probabilities do not in
-general add up to 1). The quick calculation in section 1.2 suggests that
-we should expect to see only small improvements in cross-validation loss
-even from substantively important model improvements.
+(``approximately'' because these two probabilities do not in general add
+up to 1). The quick calculation in section 1.2 suggests that I should
+expect to see only small improvements in cross-validation loss even from
+substantively important model improvements.
 
 \section{Results}\label{results}
 
@@ -417,7 +416,7 @@ Outcomes}\label{prediction-errors-for-a-corpus-of-outcomes}
 
 \begin{figure*}[p!]
   \centering
-  \includegraphics{alloutcomesx1.pdf}
+  \includegraphics[width=\textwidth]{alloutcomesx1.pdf}
   \caption{\em Measure of fit (estimated prediction error) for all response outcomes
     in the 2006 Cooperative Congressional Election Survey. Outcomes are ordered by the lower bound
     (in-sample loss of the saturated model). The no pooling model
@@ -425,11 +424,11 @@ Outcomes}\label{prediction-errors-for-a-corpus-of-outcomes}
   \label{fig:figx1}
 \end{figure*}
 
-We begin by estimating the prediction errors of all outcomes in the
+I begin by estimating the prediction errors of all outcomes in the
 survey. The results are shown in Figure\textasciitilde{}\ref{fig:figx1}.
 The \(x\)-axis is ordered by the in-sample training loss of the
-saturated model \(TL(M_{\text{s}},D)\), which we use as a surrogate for
-a lower bound of predictive loss. For complete pooling and partial
+saturated model \(TL(M_{\text{s}},D)\), which I use as a surrogate for a
+lower bound of predictive loss. For complete pooling and partial
 pooling, the prediction error stays stable across different outcomes,
 while the no pooling model has huge prediction error for outcomes with
 small lower bounds. This finding makes sense since these are the
@@ -455,7 +454,7 @@ responses.
 
 This seems to suggest that partial pooling does not have enough
 information to estimate cell-to-cell variation, thus giving an overly
-conservative estimate. Indeed, when we plot the estimates of
+conservative estimate. Indeed, when I plot the estimates of
 \(\pi_{j_1j_2}\) for one particular outcome, vote preference for in the
 congressional election (see the left panel of
 Figure\textasciitilde{}\ref{fig:234}), the estimates from partial
@@ -466,28 +465,28 @@ estimates from partial pooling model and estimates from complete pooling
 model (see the right panel of Figure\textasciitilde{}\ref{fig:234}).
 This pattern is consistent across different outcomes.
 
-Although we believe partial pooling is intrinsically better than
-complete pooling, it seems that the given data are not sufficient for
-the partial pooling model to pick up the interaction and unpool the
-estimates appropriately. It is a result of the particular
-characteristics of this data set? There are three factors determining
-the structure of the data that might affect the extent of pooling of the
-model. First is the sample size. If we increase the sample size to a
-sufficiently large level, the partial pooling model will be able to
-partially pool the estimates to an appropriate amount. As sample size
-grows, the no pooling model will eventually have the same performance as
-partial pooling, and it might be interesting to see at what point the
-saturated model becomes acceptable. The second factor affecting the
-relative performance of the different models is the size of the
-interactions that are being estimated, and the third factor is the level
-of imbalance in the hierarchical structure. Survey data classified by
-demographic and geographic predictors are typically highly unbalanced
-due to the long tails of sizes typical in taxonomic structures
-(Mandelbrot 1955). For example, the 2006 CCES includes 3,637 respondents
-from California but only 131 from Arkansas. This unbalanced structure
-will affect the amount of pooling performed by a multilevel model.
+Although partial pooling is intrinsically better than complete
+pooling, it seems that the given data are not sufficient for the partial
+pooling model to pick up the interaction and unpool the estimates
+appropriately. It is a result of the particular characteristics of this
+data set? There are three factors determining the structure of the data
+that might affect the extent of pooling of the model. First is the
+sample size. If I increase the sample size to a sufficiently large
+level, the partial pooling model will be able to partially pool the
+estimates to an appropriate amount. As sample size grows, the no pooling
+model will eventually have the same performance as partial pooling, and
+it might be interesting to see at what point the saturated model becomes
+acceptable. The second factor affecting the relative performance of the
+different models is the size of the interactions that are being
+estimated, and the third factor is the level of imbalance in the
+hierarchical structure. Survey data classified by demographic and
+geographic predictors are typically highly unbalanced due to the long
+tails of sizes typical in taxonomic structures (Mandelbrot 1955). For
+example, the 2006 CCES includes 3,637 respondents from California but
+only 131 from Arkansas. This unbalanced structure will affect the amount
+of pooling performed by a multilevel model.
 
-In the following subsections, we conduct simulations that vary sample
+In the following subsections, I conduct simulations that vary sample
 size and the structure of the cells to investigate how these factors
 affect the relative performance of the three models as captured by
 cross-validation.
@@ -497,7 +496,7 @@ Dynamics}\label{how-sample-size-changes-the-dynamics}
 
 \begin{figure}[p!]
   \centering
-  \includegraphics{outcome234.pdf}
+  \includegraphics[width=\textwidth]{outcome234.pdf}
   \caption{\em Estimated prediction error of all response outcomes for augmented
     data sets. From top to bottom, the data sets have 2, 3, and 4 times as many
     data points as the original data set. The outcomes are ordered by the
@@ -506,23 +505,23 @@ Dynamics}\label{how-sample-size-changes-the-dynamics}
   \label{fig:figx234}
   \end{figure}
 
-We artificially augment the data set by combining the data set with
+I artificially augment the data set by combining the data set with
 itself. New data sets with sample size that are 2, 3 and 4 times as
 large are generated. This augmentation still maintains the same level of
-interactions and cell structure as those of the original data. Then we
+interactions and cell structure as those of the original data. Then I
 estimate the prediction errors for all outcomes for the three models.
-Results are plotted in Figure\textasciitilde{}\ref{fig:figx234}. As we
+Results are plotted in Figure\textasciitilde{}\ref{fig:figx234}. As I
 expected, as sample size grows, the prediction error of complete pooling
 model, which is essentially a wrong model, dominates the other two;
 while the prediction error of no pooling model keeps decreasing. When
 the sample size is 4 times as large as the original data set, no pooling
 model has almost the same prediction error as partial pooling model.
 This makes sense, since the problem of overfitting eventual goes away if
-we have sufficiently large sample size and fixed model structure.
+there are sufficiently large sample size and fixed model structure.
 
 \begin{figure*}[p!]
   \centering
-  \includegraphics{hourvote.pdf}
+  \includegraphics[width=\textwidth]{hourvote.pdf}
   \caption{\em Prediction error of the three models as sample size grows. The
     outcome under consideration is partisan vote preference in the upcoming
     congressional election. By this criterion, partial pooling and complete
@@ -533,9 +532,9 @@ we have sufficiently large sample size and fixed model structure.
 These results suggest that for a fixed data structure, partial pooling
 decisively outperforms no pooling and complete pooling only for a
 certain window of sample sizes. To have a closer look at the range of
-the window, we look at one particular outcome, the vote preference in
-the upcoming election for the U.S. House of Representatives. We augment
-the sample size and plot the relative performance of the three models in
+the window, I look at one particular outcome, the vote preference in the
+upcoming election for the U.S. House of Representatives. I augment the
+sample size and plot the relative performance of the three models in
 Figure\textasciitilde{}\ref{fig:hourvote}. Partial pooling model is
 noticeably better than complete pooling in this setup when the total
 sample size exceeds larger than 50,000. Other outcomes have similar
@@ -546,24 +545,24 @@ Structure}\label{balancedness-of-the-hierarchical-structure}
 
 One possible explanation for the steep learning curve of the partial
 pooling model is the highly unbalanced structure of the data. Although
-we have 50 states, the estimate of the covariance of the state random
+there are 50 states, the estimate of the covariance of the state random
 effects might not be reliable since some of the states have small sample
-sizes. To see how the balancedness of the structure affects the model,
-we simulate a data set based on partial pooling estimates from the
-original data set, but make each demographic-geographic cells of roughly
-the same size. The overall sample size is the same as that of the real
-data. Relative performance of the three models for all outcomes is
-plotted in Figure\textasciitilde{}\ref{fig:figbal}. The graph shows that
-with balanced hierarchical structure, at the same sample size and amount
-of interaction, partial pooling kicks in much more quickly. Thus partial
+sizes. To see how the balancedness of the structure affects the model, I
+simulate a data set based on partial pooling estimates from the original
+data set, but make each demographic-geographic cells of roughly the same
+size. The overall sample size is the same as that of the real data.
+Relative performance of the three models for all outcomes is plotted in
+Figure\textasciitilde{}\ref{fig:figbal}. The graph shows that with
+balanced hierarchical structure, at the same sample size and amount of
+interaction, partial pooling kicks in much more quickly. Thus partial
 pooling is consistently better than complete pooling in this scenario.
-As in the previous analysis, we also look at the relative performance of
+As in the previous analysis, I also look at the relative performance of
 the three models as sample size grows. The results are plotted in
 Figure\textasciitilde{}\ref{fig:hourvote_bal}.
 
 \begin{figure}[p!]
   \centering
-  \includegraphics{alloutcomesxbal.pdf}
+  \includegraphics[width=\textwidth]{alloutcomesxbal.pdf}
   \caption{\em Measure of fit (prediction error) for all outcomes, ordered by
     in-sample training loss. The data set is simulated from real data set, and
     has the same sample size in total as the real data set, but keeping all
@@ -577,7 +576,7 @@ Figure\textasciitilde{}\ref{fig:hourvote_bal}.
 
 \begin{figure}[p!]
   \centering
-  \includegraphics{hourvote_bal.pdf}
+  \includegraphics[width=\textwidth]{hourvote_bal.pdf}
   \caption{\em Prediction error of the three models as sample size grows under the
     simulated balanced data set. The outcome under consideration is the vote for
     the Republican candidate in the U.S House of Representatives. Partial
@@ -594,12 +593,12 @@ out situations where cross-validation might have problems. For example,
 (Shao 1993) shows that, under the frequentist setting, using
 leave-one-out cross-validation for linear model variable selection is
 not consistent. However, the simplicity and transparency of
-cross-validation gives it a near-universal appeal. In this paper, we
+cross-validation gives it a near-universal appeal. In this paper, I
 investigate the sensitivity of cross-validation as a model comparison
 instrument in a cross-tabulated multilevel survey data set.
 
-We set up the model selection problem, considering three models for
-these structured data: the classical models of complete pooling and no
+I set up the model selection problem, considering three models for these
+structured data: the classical models of complete pooling and no
 pooling, and a Bayesian multilevel model. The multilevel model captures
 important interactions that are not included in the complete pooling
 model, while at the same time avoiding the inevitable overfitting from
@@ -663,10 +662,6 @@ places: An application of james-stein procedures to census data.''
 Gelman, Andrew, and Jennifer Hill. 2007. \emph{Data analysis using
 regression and multilevel/Hierarchical models}. Cambridge University
 Press.
-
-\hyperdef{}{ref-mrp}{\label{ref-mrp}}
-Gelman, Andrew et al. 2012. \emph{Mrp: Multilevel regression and
-poststratification}. \url{http://CRAN.R-project.org/package=mrp}.
 
 \hyperdef{}{ref-redstate}{\label{ref-redstate}}
 Gelman, Andrew et al. 2009. \emph{Red state, blue state, rich state,
